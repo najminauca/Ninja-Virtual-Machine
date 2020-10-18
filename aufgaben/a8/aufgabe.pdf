@@ -4,8 +4,8 @@
 << /Title (Untitled)
 /Creator (Asciidoctor PDF 1.5.3, based on Prawn 2.2.2)
 /Producer (Asciidoctor PDF 1.5.3, based on Prawn 2.2.2)
-/ModDate (D:20201018021355+02'00')
-/CreationDate (D:20201018021739+02'00')
+/ModDate (D:20201018023017+02'00')
+/CreationDate (D:20201018023544+02'00')
 >>
 endobj
 2 0 obj
@@ -2161,7 +2161,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a8/instrs)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a8/instrs)
 >>
 /Subtype /Link
 /Rect [91.6247 769.83 172.7267 784.11]
@@ -2172,7 +2172,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a8/njc)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a8/njc)
 >>
 /Subtype /Link
 /Rect [449.7871 769.83 495.7981 784.11]
@@ -2183,7 +2183,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a8/nja)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a8/nja)
 >>
 /Subtype /Link
 /Rect [66.24 754.05 118.8975 768.33]
@@ -2194,7 +2194,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a8/njvm)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a8/njvm)
 >>
 /Subtype /Link
 /Rect [385.9854 732.27 411.8889 746.55]
@@ -2211,7 +2211,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a8/factor.nj)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a8/factor.nj)
 >>
 /Subtype /Link
 /Rect [48.24 587.57 167.7812 601.85]
@@ -2236,7 +2236,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a8/njlisp.nj)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a8/njlisp.nj)
 >>
 /Subtype /Link
 /Rect [267.3162 416.05 295.0047 430.33]
@@ -3539,51 +3539,51 @@ xref
 0000017519 00000 n 
 0000032168 00000 n 
 0000032601 00000 n 
-0000032808 00000 n 
-0000033013 00000 n 
-0000033215 00000 n 
-0000033421 00000 n 
-0000033465 00000 n 
-0000033509 00000 n 
-0000033717 00000 n 
-0000033889 00000 n 
-0000033933 00000 n 
-0000034144 00000 n 
-0000044241 00000 n 
-0000044596 00000 n 
-0000044670 00000 n 
-0000044808 00000 n 
-0000044993 00000 n 
-0000045155 00000 n 
-0000045342 00000 n 
-0000045501 00000 n 
-0000045576 00000 n 
-0000045846 00000 n 
-0000046116 00000 n 
-0000053886 00000 n 
-0000054105 00000 n 
-0000055467 00000 n 
-0000056381 00000 n 
-0000067397 00000 n 
-0000067611 00000 n 
-0000068973 00000 n 
-0000069888 00000 n 
-0000075319 00000 n 
-0000075532 00000 n 
-0000076894 00000 n 
-0000077808 00000 n 
-0000081818 00000 n 
-0000082032 00000 n 
-0000082339 00000 n 
-0000083254 00000 n 
-0000088820 00000 n 
-0000089044 00000 n 
-0000090406 00000 n 
+0000032822 00000 n 
+0000033041 00000 n 
+0000033257 00000 n 
+0000033477 00000 n 
+0000033521 00000 n 
+0000033565 00000 n 
+0000033787 00000 n 
+0000033959 00000 n 
+0000034003 00000 n 
+0000034228 00000 n 
+0000044325 00000 n 
+0000044680 00000 n 
+0000044754 00000 n 
+0000044892 00000 n 
+0000045077 00000 n 
+0000045239 00000 n 
+0000045426 00000 n 
+0000045585 00000 n 
+0000045660 00000 n 
+0000045930 00000 n 
+0000046200 00000 n 
+0000053970 00000 n 
+0000054189 00000 n 
+0000055551 00000 n 
+0000056465 00000 n 
+0000067481 00000 n 
+0000067695 00000 n 
+0000069057 00000 n 
+0000069972 00000 n 
+0000075403 00000 n 
+0000075616 00000 n 
+0000076978 00000 n 
+0000077892 00000 n 
+0000081902 00000 n 
+0000082116 00000 n 
+0000082423 00000 n 
+0000083338 00000 n 
+0000088904 00000 n 
+0000089128 00000 n 
+0000090490 00000 n 
 trailer
 << /Size 61
 /Root 2 0 R
 /Info 1 0 R
 >>
 startxref
-91320
+91404
 %%EOF

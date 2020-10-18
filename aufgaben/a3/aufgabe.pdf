@@ -4,8 +4,8 @@
 << /Title (Untitled)
 /Creator (Asciidoctor PDF 1.5.3, based on Prawn 2.2.2)
 /Producer (Asciidoctor PDF 1.5.3, based on Prawn 2.2.2)
-/ModDate (D:20201018021451+02'00')
-/CreationDate (D:20201018021735+02'00')
+/ModDate (D:20201018023038+02'00')
+/CreationDate (D:20201018023540+02'00')
 >>
 endobj
 2 0 obj
@@ -2701,7 +2701,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a3/nja)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a3/nja)
 >>
 /Subtype /Link
 /Rect [239.803 687.02 292.4605 701.3]
@@ -2737,7 +2737,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a3/prog1.asm)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a3/prog1.asm)
 >>
 /Subtype /Link
 /Rect [275.568 60.064 377.6298 74.344]
@@ -3330,7 +3330,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a3/njvm)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a3/njvm)
 >>
 /Subtype /Link
 /Rect [472.6918 609.81 498.5953 624.09]
@@ -3341,7 +3341,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a3/prog1.asm)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a3/prog1.asm)
 >>
 /Subtype /Link
 /Rect [76.6727 566.25 181.7763 580.53]
@@ -3352,7 +3352,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a3/prog2.asm)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a3/prog2.asm)
 >>
 /Subtype /Link
 /Rect [214.5758 566.25 319.6793 580.53]
@@ -3762,48 +3762,48 @@ xref
 0000034965 00000 n 
 0000035137 00000 n 
 0000035267 00000 n 
-0000035470 00000 n 
-0000035513 00000 n 
-0000035685 00000 n 
-0000035816 00000 n 
-0000035860 00000 n 
-0000036070 00000 n 
-0000043874 00000 n 
-0000044260 00000 n 
-0000044466 00000 n 
-0000044676 00000 n 
-0000044887 00000 n 
-0000044961 00000 n 
-0000045099 00000 n 
-0000045284 00000 n 
-0000045514 00000 n 
-0000045574 00000 n 
-0000045844 00000 n 
-0000046114 00000 n 
-0000053299 00000 n 
-0000053518 00000 n 
-0000054880 00000 n 
-0000055794 00000 n 
-0000065113 00000 n 
-0000065327 00000 n 
-0000066689 00000 n 
-0000067604 00000 n 
-0000071322 00000 n 
-0000071535 00000 n 
-0000072897 00000 n 
-0000073811 00000 n 
-0000075789 00000 n 
-0000076002 00000 n 
-0000076302 00000 n 
-0000077217 00000 n 
-0000083817 00000 n 
-0000084041 00000 n 
-0000085403 00000 n 
+0000035484 00000 n 
+0000035527 00000 n 
+0000035699 00000 n 
+0000035830 00000 n 
+0000035874 00000 n 
+0000036098 00000 n 
+0000043902 00000 n 
+0000044288 00000 n 
+0000044508 00000 n 
+0000044732 00000 n 
+0000044957 00000 n 
+0000045031 00000 n 
+0000045169 00000 n 
+0000045354 00000 n 
+0000045584 00000 n 
+0000045644 00000 n 
+0000045914 00000 n 
+0000046184 00000 n 
+0000053369 00000 n 
+0000053588 00000 n 
+0000054950 00000 n 
+0000055864 00000 n 
+0000065183 00000 n 
+0000065397 00000 n 
+0000066759 00000 n 
+0000067674 00000 n 
+0000071392 00000 n 
+0000071605 00000 n 
+0000072967 00000 n 
+0000073881 00000 n 
+0000075859 00000 n 
+0000076072 00000 n 
+0000076372 00000 n 
+0000077287 00000 n 
+0000083887 00000 n 
+0000084111 00000 n 
+0000085473 00000 n 
 trailer
 << /Size 55
 /Root 2 0 R
 /Info 1 0 R
 >>
 startxref
-86318
+86388
 %%EOF

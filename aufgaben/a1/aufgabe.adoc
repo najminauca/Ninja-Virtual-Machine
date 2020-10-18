@@ -3,7 +3,7 @@ ifndef::backend-pdf[]
 :includedir: ./
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a1/
+:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a1/
 endif::[]
 endif::[]
 

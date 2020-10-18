@@ -4,8 +4,8 @@
 << /Title (Untitled)
 /Creator (Asciidoctor PDF 1.5.3, based on Prawn 2.2.2)
 /Producer (Asciidoctor PDF 1.5.3, based on Prawn 2.2.2)
-/ModDate (D:20201018021417+02'00')
-/CreationDate (D:20201018021738+02'00')
+/ModDate (D:20201018023026+02'00')
+/CreationDate (D:20201018023543+02'00')
 >>
 endobj
 2 0 obj
@@ -1190,7 +1190,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/instrs)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/instrs)
 >>
 /Subtype /Link
 /Rect [480.3755 592.34 547.04 606.62]
@@ -1201,7 +1201,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/objects)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/objects)
 >>
 /Subtype /Link
 /Rect [198.9431 576.56 401.6828 590.84]
@@ -1212,7 +1212,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/refcmp)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/refcmp)
 >>
 /Subtype /Link
 /Rect [455.7306 576.56 547.04 590.84]
@@ -1223,7 +1223,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/refcmp)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/refcmp)
 >>
 /Subtype /Link
 /Rect [48.24 560.78 151.6545 575.06]
@@ -1234,7 +1234,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/newFraction.asm)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/newFraction.asm)
 >>
 /Subtype /Link
 /Rect [48.24 497.66 111.5338 511.94]
@@ -1245,7 +1245,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/subFraction.asm)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/subFraction.asm)
 >>
 /Subtype /Link
 /Rect [121.8055 497.66 181.4978 511.94]
@@ -1256,7 +1256,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/newMatrix.asm)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/newMatrix.asm)
 >>
 /Subtype /Link
 /Rect [209.0105 497.66 264.2405 511.94]
@@ -1278,7 +1278,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/njc)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/njc)
 >>
 /Subtype /Link
 /Rect [236.82 103.16 282.831 117.44]
@@ -1289,7 +1289,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/grammar)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/grammar)
 >>
 /Subtype /Link
 /Rect [70.5602 87.38 127.5855 101.66]
@@ -1300,7 +1300,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/tokens)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/tokens)
 >>
 /Subtype /Link
 /Rect [166.3643 87.38 201.5833 101.66]
@@ -1311,7 +1311,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/predef)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/predef)
 >>
 /Subtype /Link
 /Rect [267.1448 87.38 403.159 101.66]
@@ -1322,7 +1322,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/nja)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/nja)
 >>
 /Subtype /Link
 /Rect [48.24 71.6 100.8975 85.88]
@@ -5668,7 +5668,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/njvm)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/njvm)
 >>
 /Subtype /Link
 /Rect [48.24 775.83 74.1435 790.11]
@@ -7487,7 +7487,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/tree1)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/tree1)
 >>
 /Subtype /Link
 /Rect [448.8864 451.485 547.04 465.765]
@@ -7498,7 +7498,7 @@ endobj
 << /Border [0 0 0]
 /A << /Type /Action
 /S /URI
-/URI (https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/tree1)
+/URI (https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/tree1)
 >>
 /Subtype /Link
 /Rect [404.0306 435.705 446.2194 449.985]
@@ -7908,63 +7908,63 @@ xref
 0000018263 00000 n 
 0000018433 00000 n 
 0000018598 00000 n 
-0000018804 00000 n 
-0000019013 00000 n 
-0000019219 00000 n 
-0000019424 00000 n 
-0000019638 00000 n 
-0000019855 00000 n 
-0000020070 00000 n 
-0000020242 00000 n 
-0000020444 00000 n 
-0000020651 00000 n 
-0000020858 00000 n 
-0000021064 00000 n 
-0000021263 00000 n 
-0000077275 00000 n 
-0000077660 00000 n 
-0000077862 00000 n 
-0000077906 00000 n 
-0000077949 00000 n 
-0000078121 00000 n 
-0000101650 00000 n 
-0000102042 00000 n 
-0000102214 00000 n 
-0000102259 00000 n 
-0000102466 00000 n 
-0000102675 00000 n 
-0000102749 00000 n 
-0000102887 00000 n 
-0000103072 00000 n 
-0000103351 00000 n 
-0000103531 00000 n 
-0000103606 00000 n 
-0000103876 00000 n 
-0000104146 00000 n 
-0000111289 00000 n 
-0000111508 00000 n 
-0000112870 00000 n 
-0000113784 00000 n 
-0000124079 00000 n 
-0000124293 00000 n 
-0000125655 00000 n 
-0000126570 00000 n 
-0000131502 00000 n 
-0000131715 00000 n 
-0000133077 00000 n 
-0000133992 00000 n 
-0000139177 00000 n 
-0000139401 00000 n 
-0000140763 00000 n 
-0000141677 00000 n 
-0000143639 00000 n 
-0000143852 00000 n 
-0000144153 00000 n 
+0000018818 00000 n 
+0000019041 00000 n 
+0000019261 00000 n 
+0000019480 00000 n 
+0000019708 00000 n 
+0000019939 00000 n 
+0000020168 00000 n 
+0000020340 00000 n 
+0000020556 00000 n 
+0000020777 00000 n 
+0000020998 00000 n 
+0000021218 00000 n 
+0000021431 00000 n 
+0000077443 00000 n 
+0000077828 00000 n 
+0000078044 00000 n 
+0000078088 00000 n 
+0000078131 00000 n 
+0000078303 00000 n 
+0000101832 00000 n 
+0000102224 00000 n 
+0000102396 00000 n 
+0000102441 00000 n 
+0000102662 00000 n 
+0000102885 00000 n 
+0000102959 00000 n 
+0000103097 00000 n 
+0000103282 00000 n 
+0000103561 00000 n 
+0000103741 00000 n 
+0000103816 00000 n 
+0000104086 00000 n 
+0000104356 00000 n 
+0000111499 00000 n 
+0000111718 00000 n 
+0000113080 00000 n 
+0000113994 00000 n 
+0000124289 00000 n 
+0000124503 00000 n 
+0000125865 00000 n 
+0000126780 00000 n 
+0000131712 00000 n 
+0000131925 00000 n 
+0000133287 00000 n 
+0000134202 00000 n 
+0000139387 00000 n 
+0000139611 00000 n 
+0000140973 00000 n 
+0000141887 00000 n 
+0000143849 00000 n 
+0000144062 00000 n 
+0000144363 00000 n 
 trailer
 << /Size 67
 /Root 2 0 R
 /Info 1 0 R
 >>
 startxref
-145067
+145277
 %%EOF

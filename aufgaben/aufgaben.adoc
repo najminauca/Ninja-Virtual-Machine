@@ -48,7 +48,7 @@ ifndef::backend-pdf[]
 :includedir: a-pre/
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a-pre/
+:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a-pre/
 endif::[]
 
 
@@ -58,7 +58,7 @@ ifndef::backend-pdf[]
 :includedir: a0/
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a0/
+:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a0/
 endif::[]
 
 
@@ -68,7 +68,7 @@ ifndef::backend-pdf[]
 :includedir: a1/
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a1/
+:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a1/
 endif::[]
 include::a1/aufgabe.adoc[]
 
@@ -76,7 +76,7 @@ ifndef::backend-pdf[]
 :includedir: a2/
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a2/
+:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a2/
 endif::[]
 include::a2/aufgabe.adoc[]
 
@@ -84,7 +84,7 @@ ifndef::backend-pdf[]
 :includedir: a3/
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a3/
+:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a3/
 endif::[]
 include::a3/aufgabe.adoc[]
 
@@ -92,7 +92,7 @@ ifndef::backend-pdf[]
 :includedir: a4/
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a4/
+:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a4/
 endif::[]
 include::a4/aufgabe.adoc[]
 
@@ -100,7 +100,7 @@ ifndef::backend-pdf[]
 :includedir: a5/
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a5/
+:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a5/
 endif::[]
 include::a5/aufgabe.adoc[]
 
@@ -108,7 +108,7 @@ ifndef::backend-pdf[]
 :includedir: a6/
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a6/
+:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a6/
 endif::[]
 include::a6/aufgabe.adoc[]
 
@@ -116,7 +116,7 @@ ifndef::backend-pdf[]
 :includedir: a7/
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a7/
+:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a7/
 endif::[]
 include::a7/aufgabe.adoc[]
 
@@ -124,6 +124,6 @@ ifndef::backend-pdf[]
 :includedir: a8/
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/aufgaben/a8/
+:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a8/
 endif::[]
 include::a8/aufgabe.adoc[]
