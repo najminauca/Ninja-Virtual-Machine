@@ -6,7 +6,7 @@ from submitscript.api.api import SubmissionRoutes
 from submitscript.api.types import ApiSerializableSubmissionResponse, ApiSerializableSubmission
 from submitscript.data.team import Team
 from submitscript.util.prompt import prompt, YesNoParser
-from submitscript.util.properties import TextFileProperty, JsonProperty
+from submitscript.util.properties import TextFileProperty, JsonProperty, Property
 
 
 class Submission:
@@ -20,7 +20,7 @@ class Submission:
         self.upload_tgz_path = path / "upload.tgz"
 
         # Paths for files that relate to the submission response or evaluation result
-        self.submission_data = TextFileProperty(path / "submission.json").json_serialized(ApiSerializableSubmission).cached()
+        self.submission_data: Property[ApiSerializableSubmission] = TextFileProperty(path / "submission.json").json_serialized(ApiSerializableSubmission).cached()
         self.submission_response = TextFileProperty(path / "submission_response.json").json_serialized(ApiSerializableSubmissionResponse).cached()
         self.evaluation_log = TextFileProperty(path / "evaluation.log")
         self.submission_log = TextFileProperty(path / "submit.log")
@@ -42,7 +42,12 @@ class Submission:
         return self.is_accepted() and self.submission_data.get().evaluation_result is not None
 
     def rename(self, name: str):
-        self.__init__(self.parent, self.path.rename(self.path.with_name(name)))
+        # This workaround is needed because Path.rename does not return the new path in python version before 3.8
+        new_path = self.path.with_name(name)
+        self.path.rename(new_path)
+
+        # Recall __init__ to update all property paths
+        self.__init__(self.parent, new_path)
 
     def rename_with_prefix(self, prefix: str):
         self.rename("%s_%s" % (prefix, self.path.name))
