@@ -17,7 +17,9 @@
       "allowed_files": [
         "*.h",
         "*.c",
-        "mknjvm"
+        "mknjvm",
+        "*Makefile",
+        "*CMakeLists.txt"
       ],
       "variant_data": {}
     }
