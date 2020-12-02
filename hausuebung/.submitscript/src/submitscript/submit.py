@@ -7,6 +7,7 @@ from typing import List, Optional
 from submitscript.data.assignment import Assignment
 from submitscript.data.config import SkeletonVariant
 from submitscript.data.data_directory import DataDirectory
+from submitscript.data.submission import SubmissionStatus
 from submitscript.execute_subprocess import execute_subprocess
 from submitscript.util.prompt import prompt, YesNoParser, SelectionParser
 
@@ -15,15 +16,17 @@ def check_for_new_results(data_directory: DataDirectory):
     # Check every submission for new results
     for assignment in data_directory.get_assignments():
         for submission in assignment.get_submissions():
-            if not submission.is_accepted():
+            if not submission.bookkeeping_data.get().status == SubmissionStatus.accepted:
                 continue
 
-            if not submission.is_evaluated():
-                if submission.check_for_evaluation_results():
-                    submission.print_evaluation_results()
-                elif submission.submission_response.get().immediate_evaluation:
-                    if prompt("Do you want to subscribe to the results of submission %s?" % submission.submission_data.get().submission_id, YesNoParser(True)):
-                        submission.wait_for_evaluation_results()
+            if submission.check_for_evaluation_results():
+                submission.print_evaluation_results()
+                continue
+
+            # Check if the submission still exists (may have been removed) and if it is eligible for result subscription
+            if submission.bookkeeping_data.get().status == SubmissionStatus.accepted and submission.submission_response.get().immediate_evaluation:
+                if prompt("Do you want to subscribe to the results of submission %s?" % submission.submission_data.get().submission_id, YesNoParser(True)):
+                    submission.wait_for_evaluation_results()
 
 
 def select_assignment(options: List[Assignment]) -> Optional[Assignment]:
