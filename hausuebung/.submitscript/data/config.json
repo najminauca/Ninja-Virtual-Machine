@@ -19,7 +19,8 @@
         "*.c",
         "mknjvm",
         "*Makefile",
-        "*CMakeLists.txt"
+        "*CMakeLists.txt",
+        "*.a"
       ],
       "variant_data": {}
     }
