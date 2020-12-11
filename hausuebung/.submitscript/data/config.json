@@ -18,9 +18,12 @@
         "*.h",
         "*.c",
         "mknjvm",
-        "*Makefile",
+        "*akefile",
         "*CMakeLists.txt",
-        "*.a"
+        "*.a",
+        "*.txt",
+        "*.md",
+        "*.adoc"
       ],
       "variant_data": {}
     }
