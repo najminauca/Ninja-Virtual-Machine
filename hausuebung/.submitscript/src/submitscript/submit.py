@@ -55,8 +55,9 @@ def select_variant(root_directory: Path, data: DataDirectory) -> Optional[Skelet
 def build_solution(directory: Path, selected_variant: SkeletonVariant) -> bool:
     print("=== Building submission ===")
     print("Running '%s'." % selected_variant.build)
+    print("=== Building submission finished ===")
 
-    build_result = execute_subprocess([selected_variant.build], cwd=directory, is_shell_command=True)
+    build_result = execute_subprocess([selected_variant.build], cwd=directory, is_shell_command=True, merge_stdout_stderr=True)
 
     if not build_result.is_success():
         print("Building your solution failed! Aborting submission.")
@@ -64,10 +65,11 @@ def build_solution(directory: Path, selected_variant: SkeletonVariant) -> bool:
             print("=== BEGIN Build Log ===")
             print(build_result.stdout, end='')
             print("=== END Build Log ===")
-        print("Aborting submission")
-        return False
 
-    print("=== Building submission finished ===")
+        if not prompt("Do you want to submit your solution anyway, despite the failing build?", YesNoParser(False)):
+            print("Aborting submission")
+            return False
+
     return True
 
 
