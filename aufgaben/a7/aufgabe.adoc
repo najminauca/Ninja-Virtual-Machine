@@ -87,7 +87,7 @@ link:{includedir}njvm[njvm]
 |`getsz`                  |`38`| `+... object  -->  ... number_fields+`
 |`pushn`                  |`39`| `+...  -->  ... nil+`
 |`refeq`                  |`40`| `+... ref1 ref2  -->  ... ref1==ref2+`
-|`refne`                  |`41`| `+... ref1 ref2  -->  ... ref1!=ref2 +`
+|`refne`                  |`41`| `+... ref1 ref2  -->  ... ref1!=ref2+`
 |===
 
 
