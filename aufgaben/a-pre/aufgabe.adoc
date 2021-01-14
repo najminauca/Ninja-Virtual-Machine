@@ -8,7 +8,7 @@ endif::[]
 endif::[]
 == KSP Vorbereitung zum Praktikum
 
-. Installieren Sie Linux auf Ihrem Rechner (Tipp: Ubuntu). Machen Sie sich mit dem Installieren von Paketen vertraut (`apt`). Sie benötigen einen Editor Ihrer Wahl, sowie die üblichen Entwicklungswerkzeuge (gcc, bison, flex).
+. Installieren Sie Linux auf Ihrem Rechner (Tipp: Ubuntu). Machen Sie sich mit dem Installieren von Paketen vertraut (`apt`). Sie benötigen einen Editor Ihrer Wahl, sowie die üblichen Entwicklungswerkzeuge (gcc, bison, flex, make, cmake). Außerdem sind folgende Programme ganz hilfreich: Debugger (gdb) und Speicherprüfer (valgrind).
 
 [NOTE]
 --
@@ -26,7 +26,7 @@ Hier noch eine Liste an installierten/verfügbaren IDEs und Editoren:
 * VIM (Editor, IDE, ...)
 * CLION (Jetbrains, muss selbstständig installiert werden. Lizenz kann kostenlos geholt werden: link:https://www.jetbrains.com/shop/eform/students[])
 
-Generell sollte für diesen Kurs auch MacOSX oder ein Windows 10 mit WSL2 ausreichen, solange alle notwendigen Pakete installiert sind. Hier sind sie jedoch auch aus sich alleine gestellt.
+Generell sollte für diesen Kurs auch MacOSX oder ein Windows 10 mit WSL2 ausreichen, solange alle notwendigen Pakete installiert sind. Hier sind sie jedoch auch auf sich alleine gestellt.
 --
 
 . Editieren Sie folgendes Programm mit einer IDE / einem Editor Ihrer Wahl in einer Datei `hello.c`:
