@@ -47,6 +47,8 @@ ifdef::preface-title[:preface-title: Vorwort]
 
 * Generell wird der Rückgabewert `0` erwartet, falls der Aufruf von `njvm` erfolgreich war.
 
+* Alle Binärdateien der Tests haben die Versionsnummer 8. Achten Sie also darauf, dass die Abgabeversion Ihrer `njvm` auch die Version 8 der Binärdateien akzeptiert. 
+
 * Einige Tests prüfen, ob der Garbage Collector (GC) nicht genügend Speicher bereitstellen kann. In diesem Fall muss der Returnwert `1` sein.
 
 * Einige Tests prüfen, ob die VM mehr Speicher anfordert als erlaubt. In diesem Fall muss der Returnwert `1` sein.
