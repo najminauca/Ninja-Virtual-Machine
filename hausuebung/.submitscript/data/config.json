@@ -1,10 +1,10 @@
 {
-  "course_name": "KSP-ws20",
+  "course_name": "KSP-ss21",
   "server": {
     "hostname": "http://vmar01.mni.thm.de",
     "port": 8000
   },
-  "max_team_size": 3,
+  "max_team_size": 2,
   "assignment_ids": [
     "Aufgabe-1",
     "Aufgabe-2"
