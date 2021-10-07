@@ -1,6 +1,8 @@
 import shutil
 import tarfile
 import tempfile
+import traceback
+import sys
 from pathlib import Path
 from typing import List, Optional
 
@@ -9,24 +11,32 @@ from submitscript.data.config import SkeletonVariant
 from submitscript.data.data_directory import DataDirectory
 from submitscript.data.submission import SubmissionStatus
 from submitscript.execute_subprocess import execute_subprocess
+from submitscript.output import interface_print, global_log_file
 from submitscript.util.prompt import prompt, YesNoParser, SelectionParser
 
 
 def check_for_new_results(data_directory: DataDirectory):
     # Check every submission for new results
-    for assignment in data_directory.get_assignments():
-        for submission in assignment.get_submissions():
-            if not submission.bookkeeping_data.get().status == SubmissionStatus.accepted:
-                continue
+    try:
+        for assignment in data_directory.get_assignments():
+            for submission in assignment.get_submissions():
+                if not submission.bookkeeping_data.get().status == SubmissionStatus.accepted:
+                    continue
 
-            if submission.check_for_evaluation_results():
-                submission.print_evaluation_results()
-                continue
+                if submission.check_for_evaluation_results():
+                    submission.print_evaluation_results()
+                    continue
 
-            # Check if the submission still exists (may have been removed) and if it is eligible for result subscription
-            if submission.bookkeeping_data.get().status == SubmissionStatus.accepted and submission.submission_response.get().immediate_evaluation:
-                if prompt("Do you want to subscribe to the results of submission %s?" % submission.submission_data.get().submission_id, YesNoParser(True)):
-                    submission.wait_for_evaluation_results()
+                # Check if the submission still exists (may have been removed) and if it is eligible for result subscription
+                if submission.bookkeeping_data.get().status == SubmissionStatus.accepted and submission.submission_response.get().immediate_evaluation:
+                    if prompt("Do you want to subscribe to the results of submission %s?" % submission.submission_data.get().submission_id, YesNoParser(True)):
+                        submission.wait_for_evaluation_results()
+    except Exception as e:
+        global_log_file.error("".join(traceback.format_exception(*sys.exc_info())))
+
+        # Errors when checking for new results should never prevent students from submitting, so we are a fault tolerant.
+        interface_print("Error while checking for new results: %s" % str(e))
+        interface_print("Please report this issue. You will still be able to submit a solution.")
 
 
 def select_assignment(options: List[Assignment]) -> Optional[Assignment]:
@@ -43,7 +53,7 @@ def select_variant(root_directory: Path, data: DataDirectory) -> Optional[Skelet
     found_options = [v for v in data.config.get().skeleton_variants if (root_directory / v.root).is_dir()]
 
     if len(found_options) == 0:
-        print("No skeleton variant found! Did you delete all of them?")
+        interface_print("No skeleton variant found! Did you delete all of them?")
         return None
 
     if len(found_options) == 1:
@@ -53,21 +63,21 @@ def select_variant(root_directory: Path, data: DataDirectory) -> Optional[Skelet
 
 
 def build_solution(directory: Path, selected_variant: SkeletonVariant) -> bool:
-    print("=== Building submission ===")
-    print("Running '%s'." % selected_variant.build)
-    print("=== Building submission finished ===")
+    interface_print("=== Building submission ===")
+    interface_print("Running '%s'." % selected_variant.build)
+    interface_print("=== Building submission finished ===")
 
     build_result = execute_subprocess([selected_variant.build], cwd=directory, is_shell_command=True, merge_stdout_stderr=True)
 
     if not build_result.is_success():
-        print("Building your solution failed! Aborting submission.")
+        interface_print("Building your solution failed!")
         if prompt("Do you want to view the build log?", YesNoParser(True)):
-            print("=== BEGIN Build Log ===")
-            print(build_result.stdout, end='')
-            print("=== END Build Log ===")
+            interface_print("=== BEGIN Build Log ===")
+            interface_print(build_result.stdout, end='')
+            interface_print("=== END Build Log ===")
 
         if not prompt("Do you want to submit your solution anyway, despite the failing build?", YesNoParser(False)):
-            print("Aborting submission")
+            interface_print("Aborting submission.")
             return False
 
     return True
@@ -86,28 +96,31 @@ def clean_directory(directory: Path, selected_variant: SkeletonVariant):
             if not any(path.iterdir()):
                 path.rmdir()
 
-    print("=== Cleaning directory for submission ===")
+    interface_print("=== Cleaning directory for submission ===")
     clean_helper(directory)
-    print("=== Cleaning directory finished ===")
+    interface_print("=== Cleaning directory finished ===")
 
 
 def submit(root_directory: Path, data: DataDirectory) -> bool:
-    print("=== Submitting ===")
+    """
+    :returns Whether a solution was submitted.
+    """
+    interface_print("=== Submitting ===")
 
     submission = None
     try:
         selected_assignment = select_assignment(data.get_assignments())
-        print()
+        interface_print()
         if selected_assignment is None:
             return False
 
         selected_variant = select_variant(root_directory, data)
-        print()
+        interface_print()
 
         if selected_variant is None:
             return False
 
-        print("Selected variant '%s' for assignment '%s'." % (selected_variant.name, selected_assignment.assignment_id))
+        interface_print("Selected variant '%s' for assignment '%s'." % (selected_variant.name, selected_assignment.assignment_id))
 
         submission = selected_assignment.create_submission()
 
@@ -130,9 +143,9 @@ def submit(root_directory: Path, data: DataDirectory) -> bool:
 
                 submission.set_upload_file(temp_file)
 
-        submission.submit()
+        return submission.submit()
     except KeyboardInterrupt:
-        print("=== Aborted Submitting ===")
+        interface_print("=== Aborted Submitting ===")
         if submission is not None:
             submission.delete()
         return False

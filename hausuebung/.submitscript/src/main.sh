@@ -1,25 +1,30 @@
 #!/usr/bin/env bash
 
 {
+
   function is_macos() {
-      [[ "$OSTYPE" == "darwin"* ]]
-      return $?
+    [[ "$OSTYPE" == "darwin"* ]]
+    return $?
   }
 
   function resolve_absolute_path() {
-    # TODO: Maybe find a cross platform alternative that does not need greadlink
-    if is_macos; then greadlink -f "$*"
+    if is_macos; then
+      if which greadlink >/dev/null; then
+        # Use greadlink if defined because we know for sure this works
+        greadlink -f "$*"
+      else
+        # If greadlink is not available we can hack our way there with this.
+        # https://stackoverflow.com/a/5756763
+        ABSPATH="$(cd "$(dirname "$*")"; pwd -P)/$(basename "$*")"
+        echo "$ABSPATH"
+      fi
     else readlink -f "$*"; fi
   }
 
-  # Check for gnu-tools on MacOs
-  if is_macos && which greadlink > /dev/null; then
-    echo 'ERROR: GNU utils required for Mac. You may use homebrew to install them: brew install coreutils'
-    exit 1
-  fi
-
   SCRIPT=$(resolve_absolute_path "$0")
   SCRIPTPATH=$(dirname "$SCRIPT")
+
+  exec &> >(tee "$SCRIPTPATH/bootstrap.log")
 
   PYTHON3_INTERPRETER=""
   PYTHON3_PIP=""
@@ -78,7 +83,7 @@
         PYTHON3_INTERPRETER=$(resolve_absolute_path "$*")
         regex="Python ([0-9]+)\.([0-9]+)\.([0-9]+)"
 
-        v=$(eval "$PYTHON3_INTERPRETER" --version)
+        v=$(eval "$PYTHON3_INTERPRETER" --version 2>/dev/null)
 
         if [[ "$v" =~ $regex ]]; then
           major=${BASH_REMATCH[1]}
@@ -94,12 +99,12 @@
         return 1
       }
 
-      check_python3_interpreter_version "$(which python3)" && return 0
       check_python3_interpreter_version "$(which python3.10)" && return 0
       check_python3_interpreter_version "$(which python3.9)" && return 0
       check_python3_interpreter_version "$(which python3.8)" && return 0
       check_python3_interpreter_version "$(which python3.7)" && return 0
       check_python3_interpreter_version "$(which python3.6)" && return 0
+      check_python3_interpreter_version "$(which python3)" && return 0
 
       log "No suitable python3 interpreter identified. I require at least Python 3.6"
       return 1
@@ -245,16 +250,32 @@
   ensure_python3_and_pip
   ensure_pipenv
 
-  cmd="$PIPENV install"
-  log "Running '$cmd' to ensure the existence of a virtual environment."
-  log "This may take a moment."
-  if ! (eval "$cmd"); then
-    log "Installing script dependencies with '$cmd' failed."
-    log "There is nothing more I can do about this. Please get help from your teacher."
-    give_up
+  function pipenv_install() {
+    cmd="$PIPENV install --python $major.$minor"
+    log "Running '$cmd' to ensure the existence of a virtual environment."
+    log "This may take a moment."
+    eval "$cmd"
+    return $?
+  }
+
+  if ! pipenv_install; then
+    log "Installing script dependencies failed."
+    log "I will now try to remove and recreate a potentially existing virtual environment."
+
+    if ! (eval "$PIPENV --rm"); then
+      log "I could not remove the virtual environment."
+      give_up
+    fi
+
+    if ! pipenv_install; then
+      log "Installing script dependencies failed again."
+      log "There is nothing more I can do about this. Please get help from your teacher."
+      give_up
+    fi
   fi
 
   log "Running the script in a virtual environment."
+  echo "$PIPENV run python3 ./main.py"
   eval "$PIPENV run python3 ./main.py"
 
   exit 0

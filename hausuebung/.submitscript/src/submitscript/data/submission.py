@@ -8,6 +8,7 @@ from submitscript import data
 from submitscript.api.api import SubmissionRoutes
 from submitscript.api.types import ApiSerializableSubmissionResponse, ApiSerializableSubmission
 from submitscript.data.team import Team
+from submitscript.output import interface_print
 from submitscript.util.prompt import prompt, YesNoParser
 from submitscript.util.properties import TextFileProperty, JsonProperty, Property
 from submitscript.util.serialize import SerializableData, deserialize_enum, serialize_enum
@@ -100,22 +101,22 @@ class Submission:
         self.update_name(new_id)
 
     def submit(self) -> bool:
-        print("=== Starting Upload ===")
+        interface_print("=== Starting Upload ===")
         self.submission_response.set(self.parent.get_backend().submissions.post(self.upload_tgz_path, self.variant.base_property.get(), self.team.base_property.get()))
         self.submission_data.set(self.submission_response.get().submission)
         self.submission_log.set(self.submission_response.get().log)
 
-        print("=== Upload finished ===")
-        print("=== BEGIN Upload Log")
-        print(self.submission_response.get().log)
-        print("=== END Upload Log")
+        interface_print("=== Upload finished ===")
+        interface_print("=== BEGIN Upload Log")
+        interface_print(self.submission_response.get().log)
+        interface_print("=== END Upload Log")
 
         if not self.submission_response.get().accepted:
-            print("Submitting your solution failed. Please see the upload log above for more details.")
+            interface_print("Submitting your solution failed. Please see the upload log above for more details.")
             self.set_status(SubmissionStatus.rejected)
             return False
         else:
-            print("Successfully submitted your solution. Please see the upload log above for more details.")
+            interface_print("Successfully submitted your solution. Please see the upload log above for more details.")
             self.set_status(SubmissionStatus.accepted, self.submission_response.get().submission.submission_id)
 
             if self.submission_response.get().immediate_evaluation:
@@ -131,14 +132,18 @@ class Submission:
             self.wait_for_evaluation_results()
 
     def check_for_evaluation_results(self) -> Optional[bool]:
+        if not self.bookkeeping_data.has_value():
+            interface_print("Error: There appears to be a data corruption. Bookkeeping data for a submission are missing.")
+            return None
+
         if self.bookkeeping_data.get().status != SubmissionStatus.accepted:
-            print("Error: Can only check for results of accepted submissions. Please report this as a bug in the script.")
+            interface_print("Error: Can only check for results of accepted submissions. Please report this as a bug in the script.")
             return None
 
         evaluated = self.get_backend().is_evaluated()
 
         if evaluated is None:
-            print("- Submission '%s' can no longer be found on the server and will be marked as [removed]." % self.submission_data.get().submission_id)
+            interface_print("- Submission '%s' can no longer be found on the server and will be marked as [removed]." % self.submission_data.get().submission_id)
             self.set_status(SubmissionStatus.removed)
             return None
         elif evaluated:
@@ -147,7 +152,7 @@ class Submission:
 
             self.set_status(SubmissionStatus.evaluated)
 
-            print("\n=== Evaluation results for submission '%s' retrieved. ===" % self.submission_data.get().submission_id)
+            interface_print("\n=== Evaluation results for submission '%s' retrieved. ===" % self.submission_data.get().submission_id)
 
             return True
 
@@ -159,29 +164,29 @@ class Submission:
                 if self.submission_data.get().evaluation_result.max_score != 0 \
                 else 0
 
-        print("You achieved the score %d/%d (%d%%)." % (self.submission_data.get().evaluation_result.score,
+        interface_print("You achieved the score %d/%d (%d%%)." % (self.submission_data.get().evaluation_result.score,
                                                         self.submission_data.get().evaluation_result.max_score,
                                                         score_percentage))
 
         if self.submission_data.get().evaluation_result.comment is not None:
-            print("The following comment was left by your teacher:")
-            print(self.submission_data.get().evaluation_result.comment)
+            interface_print("The following comment was left by your teacher:")
+            interface_print(self.submission_data.get().evaluation_result.comment)
 
         if self.submission_data.get().evaluation_result.passed:
-            print("You have PASSED this assignment.")
+            interface_print("You have PASSED this assignment.")
         else:
-            print("You have NOT PASSED this assignment.")
+            interface_print("You have NOT PASSED this assignment.")
 
         if self.submission_data.get().evaluation_result.log is not None:
             if prompt("Do you want to view the evaluation log now?", YesNoParser(True)):
-                print("=== BEGIN Evaluation Log")
-                print(self.submission_data.get().evaluation_result.log)
-                print("=== END Evaluation Log")
+                interface_print("=== BEGIN Evaluation Log")
+                interface_print(self.submission_data.get().evaluation_result.log)
+                interface_print("=== END Evaluation Log")
 
-        print("NOTE: This evaluation log is also available at '%s'" % self.evaluation_log.path.absolute())
+        interface_print("NOTE: This evaluation log is also available at '%s'" % self.evaluation_log.path.absolute())
 
     def wait_for_evaluation_results(self) -> bool:
-        print("Polling for results (Press CTRL + C to abort).", end="")
+        interface_print("Polling for results (Press CTRL + C to abort).", end="")
 
         try:
             import time
@@ -195,11 +200,11 @@ class Submission:
                 if results_found is None:
                     break
 
-                print(".", end="", flush=True)
+                interface_print(".", end="", flush=True)
                 time.sleep(1)
 
         except KeyboardInterrupt:
-            print("\nResult polling aborted.")
+            interface_print("\nResult polling aborted.")
 
         return True
 

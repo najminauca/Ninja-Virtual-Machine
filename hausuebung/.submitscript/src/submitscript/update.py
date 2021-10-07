@@ -6,6 +6,7 @@ import semver
 
 from submitscript.data import DataDirectory
 from submitscript.execute_subprocess import execute_subprocess
+from submitscript.output import interface_print
 from submitscript.util.prompt import YesNoParser, prompt
 
 
@@ -21,15 +22,15 @@ def update(data: DataDirectory) -> None:
     available = backend.get_current_version()
 
     if current < available:
-        print("Update available")
+        interface_print("Update available")
 
         if prompt("Do you want to view the changelog?", YesNoParser(True)):
             changelogs = backend.get_changelogs()
 
             for key in sorted(changelogs.keys()):
-                print("=== Changes in version %s ===" % str(key))
-                print(changelogs[key])
-                print()
+                interface_print("=== Changes in version %s ===" % str(key))
+                interface_print(changelogs[key])
+                interface_print()
 
         if prompt("Do you want to download the update now?", YesNoParser(True)):
             with TemporaryDirectory() as temp_dir:
@@ -41,6 +42,6 @@ def update(data: DataDirectory) -> None:
                 with tarfile.open(str(path)) as f:
                     f.extractall(str(Path.cwd().parent))
 
-                print("Update complete. Restarting script.")
+                interface_print("Update complete. Restarting script.")
                 execute_subprocess(["./main.sh"], capture_output=False)
                 exit(0)

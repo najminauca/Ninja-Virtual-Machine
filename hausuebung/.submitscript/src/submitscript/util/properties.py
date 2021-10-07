@@ -3,6 +3,7 @@ from abc import abstractmethod, ABC
 from pathlib import Path
 from typing import Optional, Generic, TypeVar, Type
 
+from submitscript.output import global_log_file
 from submitscript.util.map_optional import map_optional
 from submitscript.util.serialize import SerializableData
 
@@ -49,6 +50,9 @@ class TextFileProperty(Property[str]):
             with open(self.path, "w") as f:
                 f.write(value)
                 f.write("\n")
+
+            if not self.path.exists():
+                global_log_file.error("Assertion error! Property file '%s' does not exist after it should have been created." % str(self.path))
 
     def has_value(self) -> bool:
         return self.path.exists()

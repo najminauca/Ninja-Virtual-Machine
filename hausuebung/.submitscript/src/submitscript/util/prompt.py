@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Optional, Any, Tuple, List
 
+from submitscript.output import interface_print
+
 
 class InputParser(ABC):
     def __init__(self):
@@ -94,7 +96,7 @@ def prompt(description: str, input_parser: InputParser):
         result = input_parser.parse(input("%s %s " % (description, input_parser.get_format_description())))
 
         if result is None:
-            print("Sorry, again.")
+            interface_print("Sorry, again.")
             continue
 
         return result

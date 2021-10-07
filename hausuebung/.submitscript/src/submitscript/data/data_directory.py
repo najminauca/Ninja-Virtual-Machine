@@ -1,5 +1,6 @@
+import datetime
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, TextIO
 
 from submitscript.api.api import Backend, CourseRoutes
 from submitscript.data.assignment import Assignment
@@ -14,6 +15,13 @@ class DataDirectory:
         self.team = TextFileProperty(path / "team.json").json_serialized(Team)
         self.config = TextFileProperty(path / "config.json").json_serialized(Config)
         self.assignments_path = path / "assignments"
+
+        self.logs_path = path / "logs"
+
+    def create_logfile(self) -> TextIO:
+        self.logs_path.mkdir(parents=True, exist_ok=True)
+
+        return (self.logs_path / datetime.datetime.now().strftime('log%y-%m-%dT%H_%M_%S.log')).open("w")
 
     def get_assignment(self, assignment_id: str) -> Optional['Assignment']:
         if assignment_id not in self.config.get().assignment_ids:
