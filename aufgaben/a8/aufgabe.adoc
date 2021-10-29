@@ -3,7 +3,7 @@ ifndef::backend-pdf[]
 :includedir: ./
 endif::[]
 ifdef::backend-pdf[]
-:includedir: https://git.thm.de/arin07/KSP_public_WS20_21/-/blob/master/aufgaben/a8/
+:includedir: https://git.thm.de/arin07/KSP_public/-/blob/master/aufgaben/a8/
 endif::[]
 endif::[]
 
@@ -13,19 +13,34 @@ Statten Sie Ihre VM mit einem kompaktierenden Garbage-Collector nach dem "Stop &
 
 === Vorbereitungen
 
-. Legen Sie beim Programmstart den Stack dynamisch mit `malloc()` an. Sehen Sie eine Kommandozeilenoption `--stack n` vor, die einen Stack mit n KiB bereitstellt (ACHTUNG: n * 1024 Bytes, NICHT Stack Slots, NICHT n * 1000 Bytes). Der Defaultwert soll n = 64 sein, falls diese Kommandozeilenoption nicht angegeben wird. Hinweis: Sie werden möglicherweise Ihren Test auf Stackoverflow anpassen müssen!
+. Legen Sie beim Programmstart den Stack dynamisch mit `malloc()` an. Sehen Sie eine Kommandozeilenoption `--stack n` vor, die einen Stack mit `n` KiB bereitstellt (*ACHTUNG*: `n * 1024` Bytes, NICHT Stack Slots, NICHT `n * 1000` Bytes). Der Defaultwert soll n = 64 sein, falls diese Kommandozeilenoption nicht angegeben wird. Hinweis: Sie werden möglicherweise Ihren Test auf Stackoverflow anpassen müssen!
 
-. Legen Sie beim Programmstart mit `malloc()` dynamisch einen eigenen Heap an, dessen Größe man durch die Kommandozeilenoption `--heap n` festlegen kann. Dabei soll n die Gesamtgröße des Heaps in KiB sein (ACHTUNG: n * 1024 Bytes, NICHT n * 1000 Bytes). Der Defaultwert soll n = 8192 sein, falls diese Kommandozeilenoption nicht angegeben wird.
+. Legen Sie beim Programmstart mit `malloc()` dynamisch einen eigenen Heap an, dessen Größe man durch die Kommandozeilenoption `--heap n` festlegen kann. Dabei soll n die Gesamtgröße des Heaps in KiB sein (ACHTUNG: `n * 1024` Bytes, NICHT `n * 1000` Bytes). Der Defaultwert soll `n` = `8192` sein, falls diese Kommandozeilenoption nicht angegeben wird.
 
 . Teilen Sie den Heap in zwei gleich große Hälften. Ändern Sie das Anlegen von Objekten so ab, dass Sie den benötigten Speicherplatz fortlaufend von einer Hälfte des Heaps nehmen. Brechen Sie Ihr Programm ab, wenn diese Hälfte erschöpft ist.
 
 === Garbage Collector
 
-1. Programmieren Sie einen kompaktierenden Garbage-Collector nach dem Verfahren "Stop & Copy", der anstelle des Programmabbruchs einen Sammeldurchlauf ausführt. Steht nach dem Durchlauf immer noch nicht genügend Platz für die verlangte Allokation zur Verfügung, sollte Ihre VM mit einer passenden Fehlermeldung terminieren. Hinweise: Als "Broken Heart Flag" lässt sich sehr gut das zweithöchste Bit der `size`-Komponente benutzen. Der eigentliche "Forward Pointer" (= Byte-Offset in den Zielhalbspeicher, wo sich das kopierte Objekt befindet) belegt die restlichen 30 Bits. Das geht problemlos, da die `size`-Komponente bei bereits kopierten Objekten nicht mehr benötigt wird. Die Zeiger zu den "Root-Objekten" findet man an allen Stellen in unserer VM, die Objektreferenzen halten: der statische Datenbereich, das Return-Value-Register, diejenigen Stack-Slots, die auf Objekte verweisen, und - nicht vergessen! - die vier Komponenten des Big-Integer-Prozessors `bip`.
+. Programmieren Sie einen kompaktierenden Garbage-Collector nach dem Verfahren _Stop & Copy_, der anstelle des Programmabbruchs einen Sammeldurchlauf ausführt. Steht nach dem Durchlauf immer noch nicht genügend Platz für die verlangte Allokation zur Verfügung, sollte Ihre VM mit einer passenden Fehlermeldung terminieren.
+** Die Zeiger zu den "Root-Objekten" findet man an allen Stellen in unserer VM, die Objektreferenzen halten: der statische Datenbereich, das Return-Value-Register, diejenigen Stack-Slots, die auf Objekte verweisen, und - nicht vergessen! - die vier Komponenten des Big-Integer-Prozessors `bip`.
 
+[NOTE]
+====
+Als "Broken Heart Flag" lässt sich sehr gut das zweithöchste Bit der `size`-Komponente benutzen. Der eigentliche "Forward Pointer" (= Byte-Offset in den Zielhalbspeicher, wo sich das kopierte Objekt befindet) belegt die restlichen 30 Bits. Das geht problemlos, da die `size`-Komponente bei bereits kopierten Objekten nicht mehr benötigt wird.
+
+Alternativen zur Speicherung in der `size`-Komponente -- also die Verwendung von zusätzlichen Komponenten im struct `ObjRef` -- wurden in der Veranstaltung besprochen.
+
+====
+
+[start=2]
 2. Da man beim Integrieren eines Garbage-Collectors leicht einmal einen eigentlich zu verfolgenden Zeiger vergessen kann, stellen Sie eine Kommandozeilenoption `--gcpurge` zur Verfügung, die bewirkt, dass direkt nach einem Sammeldurchlauf der alte Halbspeicher mit Nullen überschrieben wird. So sollten sich Fehler der genannten Art schneller bemerkbar machen.
 
-3. Instrumentieren Sie Ihren Garbage-Collector so, dass man mit der Kommandozeilenoption `--gcstats` beim Sammeldurchlauf die folgenden Werte angezeigt bekommt: Anzahl der seit dem letzten Durchlauf angelegten Objekte (sowie die davon belegte Zahl von Bytes), Anzahl lebender Objekte (sowie die davon belegte Zahl von Bytes), freier Platz nach dem Sammeldurchlauf (Bytes im momentan benutzten Halbspeicher). Sie sollten nach dem Ausführen der `halt`-Instruktion den Garbage-Collector einmal explizit aufrufen, damit man auch für kleine Programme mit wenig Speicherbedarf, die den GC sonst nicht triggern würden, diese statistischen Angaben erhält.
+3. Instrumentieren Sie Ihren Garbage-Collector so, dass man mit der Kommandozeilenoption `--gcstats` beim Sammeldurchlauf die folgenden Werte angezeigt bekommt:
+
+* Anzahl der seit dem letzten Durchlauf angelegten Objekte (sowie die davon belegte Zahl von Bytes),
+* Anzahl lebender Objekte (sowie die davon belegte Zahl von Bytes), freier Platz nach dem Sammeldurchlauf (Bytes im momentan benutzten Halbspeicher).
+
+* *Außerdem*: Sie sollten nach dem Ausführen der `halt`-Instruktion den Garbage-Collector einmal explizit aufrufen, damit man auch für kleine Programme mit wenig Speicherbedarf, die den GC sonst nicht triggern würden, diese statistischen Angaben erhält.
 
 4. Der link:{includedir}instrs[Instruktionssatz] ist gegenüber Aufgabe 7 unverändert; auch der link:{includedir}njc[Compiler] und der link:{includedir}nja[Assembler] bleiben exakt gleich (bis auf die Versionsnummern).
 
