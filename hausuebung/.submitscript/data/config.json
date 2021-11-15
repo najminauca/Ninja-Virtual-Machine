@@ -4,7 +4,7 @@
     "hostname": "http://vmar01.mni.thm.de",
     "port": 8000
   },
-  "max_team_size": 2,
+  "max_team_size": 3,
   "assignment_ids": [
     "Aufgabe-1",
     "Aufgabe-2"
