@@ -48,7 +48,7 @@ another component of the BIP. The following functions are available:
     int bigToInt(void);                      /* conversion big --> int */
     void bigRead(FILE *in);                  /* read a big integer */
     void bigPrint(FILE *out);                /* print a big integer */
-    void bigDump(FILE *out, ObjRef objRef);  /* dump a big integer */
+    void bigDump(FILE *out, BigObjRef bigObjRef);  /* dump a big integer */
 
 Some of these functions accept or return ordinary integers. For the
 exact definition of each function's interface, please see the comments
@@ -64,10 +64,23 @@ happen"). In either case a user-supplied error routine is called, which
 is supposed to print an error message and then to terminate the program.
 
 The library does not attempt to manage memory. For this purpose, it
-relies on a user-supplied function "ObjRef newPrimObject(int dataSize)",
+relies on a user-supplied function "void* newPrimObject(int dataSize)",
 which should allocate sufficiently many bytes and return a pointer to
-the created object. For details see file "support.c" in the directory
-"tst".
+a created object. In addition, the library needs to access a data field
+- that implements the size-as-needed cocept - within the created object, 
+to actualy manage the data structures that represent the values of the 
+integer number. For this, the following function can be used:
+
+void * getPrimObjectDataPointer(void * obj){
+  ObjRef oo = ((ObjRef)  (obj));
+  return oo->data;
+}
+
+This function must also be a user-supplied function that must be 
+implemented by the program that wants to use this library.
+
+For details about these three user-supplied functions take a look in 
+the file "support.c" in the directory "tst".
 
 
 5. What is in the directory "tst"?
