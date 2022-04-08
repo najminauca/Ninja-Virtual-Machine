@@ -17,7 +17,7 @@ Installieren Sie Linux auf Ihrem Rechner (Tipp: Ubuntu). Machen Sie sich mit dem
 
 ==== Alternative 2: Verwendung der vorbereiteten VirtualBox VM
 
-Unter link:https://hbx.fhhrz.net/getlink/fiW5bCoF7czq1FRKtUCTwoC8/debs.ova[] können Sie ein VM Image für Oracle VirtualBox (link:https://www.virtualbox.org/[]) herunterladen, das alle Anforderungen zur Entwicklung der Ninja VM erfüllt. Wenn Sie bereits Linux auf Ihrem System installiert haben, empfiehlt es sich trotzdem die bereitgestellte VM zu verwenden, da dort alle benötigten Pakete installiert sind. Beachten Sie bitte: Wir geben keinen Support für Probleme die auf Eigeninstallationen auftreten. D.h. Benutzen Sie Ihr eigenes System, kümmern Sie sich bitte selbst darum, dass alles läuft. Was in der Regel heißt bestimmte Softwarepakete zu installieren.
+Unter link:https://hbx.fhhrz.net/getlink/fiHxBP28Hf4Y1rKx3MJHGoRz/debs%2011.ova[] können Sie ein VM Image für Oracle VirtualBox (link:https://www.virtualbox.org/[]) herunterladen, das alle Anforderungen zur Entwicklung der Ninja VM erfüllt. Wenn Sie bereits Linux auf Ihrem System installiert haben, empfiehlt es sich trotzdem die bereitgestellte VM zu verwenden, da dort alle benötigten Pakete installiert sind. Beachten Sie bitte: Wir geben keinen Support für Probleme die auf Eigeninstallationen auftreten. D.h. Benutzen Sie Ihr eigenes System, kümmern Sie sich bitte selbst darum, dass alles läuft. Was in der Regel heißt bestimmte Softwarepakete zu installieren.
 
 Das Passwort für den Benutzer (`student`) der bereitgestellten Virtualbox VM: `student` 
 
