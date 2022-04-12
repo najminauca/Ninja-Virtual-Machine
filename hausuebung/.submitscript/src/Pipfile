@@ -6,7 +6,7 @@ verify_ssl = true
 [packages]
 requests = "*"
 semver = "*"
-pathlib = "*"
+pathlib2 = "*"
 datetime = "*"
 uuid = "*"
 typing = "*"
