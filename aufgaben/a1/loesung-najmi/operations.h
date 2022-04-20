@@ -1,81 +1,36 @@
+#ifndef OPERATIONS_H
+#define OPERATIONS_H
+
 #define HALT 0
 
 #define PUSHC 1
-void pushc(int immediate) {
-    stack[sp] = immediate;
-    sp++;
-}
+void pushc(int immediate);
 
 #define ADD 2
-void add() {
-    if(sp > 1){
-        stack[sp - 2] = stack[sp - 2] + stack[sp - 1];
-        sp--;
-    }
-}
+void add();
 
 #define SUB 3
-void sub() {
-    if(sp > 1){
-        stack[sp - 2] = stack[sp - 2] - stack[sp - 1];
-        sp--;
-    }
-}
+void sub();
 
 #define MUL 4
-void mul() {
-    if(sp > 1){
-        stack[sp - 2] = stack[sp - 2] * stack[sp - 1];
-        sp--;
-    }
-}
+void mul();
 
 #define DIV 5
-void divnjvm() {
-    if(sp > 1 && stack[sp - 1] != 0){
-        stack[sp - 2] = stack[sp - 2] / stack[sp - 1];
-        sp--;
-    }
-}
+void divnjvm();
 
 #define MOD 6
-void mod() {
-    if(sp > 1){
-        stack[sp - 2] = stack[sp - 2] % stack[sp - 1];
-        sp--;
-    }
-}
+void mod();
 
 #define RDINT 7
-void rdint() {
-    int read;
-    scanf("%d", &read);
-    stack[sp] = read;
-    sp++;
-}
+void rdint();
 
 #define WRINT 8
-void wrint() {
-    if(sp > 0) {
-        printf("%d", stack[sp - 1]);
-        stack[sp - 1] = 0;
-        sp--;
-    }
-}
+void wrint();
 
 #define RDCHR 9
-void rdchr() {
-    char read;
-    scanf("%c", &read);
-    stack[sp] = read;
-    sp++;
-}
+void rdchr();
 
 #define WRCHR 10
-void wrchr() {
-    if(sp > 0) {
-        printf("%c", stack[sp - 1]);
-        stack[sp - 1] = 0;
-        sp--;
-    }
-}
+void wrchr();
+
+#endif

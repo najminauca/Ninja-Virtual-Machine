@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "memory.h"
 #include "operations.h"
 #include "execute.h"
 #include "prog.h"
+
+unsigned int programm_speicher[1000];
+int stack[1000];
+int sp = 0;
+int pc = 0;
 
 const int VERSION = 1;
 
@@ -22,14 +26,48 @@ int main(int argc, char** argv) {
             printf("Ninja Virtual Machine version %d (compiled %s, %s)\n", VERSION,__DATE__,__TIME__);
             return 0;
         } else if(strcmp("--prog1", argv[1]) == 0) {
-            listProg(code1);
-            execute(code1);
+            while(1) {
+                unsigned int ir = code1[pc];
+                pc = pc + 1;
+                listProg(ir, pc - 1);
+                if(ir >> 24 == 0) break;
+            }
+            pc = 0;
+            while(1) {
+                unsigned int ir = code1[pc];
+                pc = pc + 1;
+                execute(ir);
+                if(ir >> 24 == 0) break;
+            }  
         } else if(strcmp("--prog2", argv[1]) == 0) {
-            listProg(code2);
-            execute(code2);
+            while(1) {
+                unsigned int ir = code2[pc];
+                pc = pc + 1;
+                listProg(ir, pc - 1);
+
+                if(ir >> 24 == 0) break;
+            }
+            pc = 0;
+            while(1) {
+                unsigned int ir = code2[pc];
+                pc = pc + 1;
+                execute(ir);
+                if(ir >> 24 == 0) break;
+            }
         } else if(strcmp("--prog3", argv[1]) == 0) {
-            listProg(code3);
-            execute(code3);
+            while(1) {
+                unsigned int ir = code3[pc];
+                pc = pc + 1;
+                listProg(ir, pc - 1);
+                if(ir >> 24 == 0) break;
+            }
+            pc = 0;
+            while(1) {
+                unsigned int ir = code3[pc];
+                pc = pc + 1;
+                execute(ir);
+                if(ir >> 24 == 0) break;
+            }
         } else {
             printf("unknown command line argument '%s', try '%s --help'\n",argv[1],argv[0]);
             return 1;
