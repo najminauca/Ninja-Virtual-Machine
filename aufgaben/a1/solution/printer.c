@@ -14,7 +14,7 @@ void printProgram() {
             printf("halt\n");
             break;
         } else if (opcode == PUSHC) {
-            printf("pushc %d\n", SIGN_EXTEND(ins & 0x00FFFFFF));
+            printf("pushc %d\n", SIGN_EXTEND(IMM(ins)));
         } else if (opcode == ADD) {
             printf("add\n");
         } else if (opcode == SUB) {

@@ -7,8 +7,8 @@
 
 int pop(int32_t* ret) {
     if (sp > 0) {
-        *ret = stack[sp];
         sp = sp-1;
+        *ret = stack[sp];
         return 0;
     } else {
         printf("Tried to pop on stack pointer %d\n",sp);
@@ -33,16 +33,17 @@ int execute(uint32_t ins) {
         printf("Found halt instruction\n");
         return 1;
     } else if(dec_ins == PUSHC ) {
-        int32_t imm = SIGN_EXTEND(ins & 0x00FFFFFF);
+        int32_t imm = SIGN_EXTEND(IMM(ins));
         if (push(imm) != 0) {
             return 1;
         }
     } else if(dec_ins == ADD || dec_ins == SUB || dec_ins == MUL || dec_ins == DIV || dec_ins == MOD) {
-        int32_t a, b, r;
+        int32_t a,b,r;
         if (pop(&b) != 0)
             return 1;
         if (pop(&a) != 0)
             return 1;
+        printf("a:%d b:%d\n",a,b);
         if (dec_ins == ADD) {
             r = a + b;
         } else if (dec_ins == SUB) {
@@ -81,7 +82,7 @@ int execute(uint32_t ins) {
         int32_t v;
         if (pop(&v) != 0)
             return 1;
-        printf("%c",(char)v);
+        printf("%c",v);
     } else {
         printf("Found unknown op code %d\n",dec_ins);
         return 1;

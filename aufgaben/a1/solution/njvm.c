@@ -35,6 +35,8 @@ void load_program(const int32_t source[]) {
 
 void run() {
     int count = 0;
+    sp = 0;
+    pc = 0;
     while(1) {
         uint32_t ins = programm_speicher[pc];
         pc = pc + 1;
