@@ -8,4 +8,4 @@ set(CMAKE_CXX_FLAGS -std=c99)
 set(CMAKE_CXX_FLAGS -pedantic)
 
 add_executable(KSP_public
-        aufgaben/a0/njvm.c aufgaben/a1/solution/njvm.h)
+        aufgaben/a1/solution/njvm.c aufgaben/a1/solution/njvm.h aufgaben/a1/solution/programme.h aufgaben/a1/solution/exec.h aufgaben/a1/solution/exec.c aufgaben/a1/solution/printer.h aufgaben/a1/solution/printer.c)

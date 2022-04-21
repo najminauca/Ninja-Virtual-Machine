@@ -3,6 +3,7 @@
 //
 
 #ifndef KSP_PUBLIC_NJVM_H
+#define KSP_PUBLIC_NJVM_H
 #include <stdint.h>
 
 #define HALT 0
@@ -17,51 +18,16 @@
 #define RDCHR 9
 #define WRCHR 10
 
+#define IMM(x) ((x) & 0x00FFFFFF)
 #define SIGN_EXTEND(i) ((i) & 0x00800000 ? (i) | 0xFF000000 : (i))
 #define ENC(i) (i << 24)
-
-const uint32_t prog_1[] = {
-        ENC(PUSHC) | 3,
-        ENC(PUSHC) | 4,
-        ENC(ADD),
-        ENC(PUSHC) | 10,
-        ENC(PUSHC) | 6,
-        ENC(SUB),
-        ENC(MUL),
-        ENC(WRINT),
-        ENC(PUSHC) | 10,
-        ENC(WRCHR),
-        ENC(HALT)
-};
-
-const uint32_t prog_2[] = {
-        ENC(PUSHC) | -2,
-        ENC(RDINT),
-        ENC(MUL),
-        ENC(PUSHC) | 3,
-        ENC(ADD),
-        ENC(WRINT),
-        ENC(PUSHC) | '\n',
-        ENC(WRCHR),
-        ENC(HALT)
-};
-
-const uint32_t prog_3[] = {
-        ENC(RDCHR),
-        ENC(WRINT),
-        ENC(PUSHC) | '\n',
-        ENC(WRCHR),
-        ENC(HALT)
-};
 
 #define PROGRAM_LIMIT 1000
 #define STACK_LIMIT 1000
 
-uint32_t programm_speicher[PROGRAM_LIMIT];
-int32_t stack[STACK_LIMIT];
-int sp = 0;
-int pc = 0;
-
-#define KSP_PUBLIC_NJVM_H
+extern uint32_t programm_speicher[PROGRAM_LIMIT];
+extern int32_t stack[STACK_LIMIT];
+extern int sp;
+extern int pc;
 
 #endif //KSP_PUBLIC_NJVM_H

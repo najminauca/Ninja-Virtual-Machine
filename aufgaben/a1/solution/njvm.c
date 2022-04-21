@@ -10,8 +10,16 @@
 #include <string.h>
 #include <stdint.h>
 #include "njvm.h"
+#include "exec.h"
+#include "programme.h"
+#include "printer.h"
 
 const int VERSION = 0;
+
+uint32_t programm_speicher[PROGRAM_LIMIT];
+int32_t stack[STACK_LIMIT];
+int sp = 0;
+int pc = 0;
 
 void load_program(const int32_t source[]) {
     pc = 0;
@@ -21,65 +29,21 @@ void load_program(const int32_t source[]) {
             break;
         pc = pc + 1;
     }
-    printf("Loaded %d instructions",pc);
+    printf("Loaded %d instructions\n",pc);
     pc = 0;
 }
 
-int pop(int32_t* ret) {
-    if (sp > 0) {
-        sp = sp -1;
-        *ret = stack[sp + 1];
-        return 0;
-    } else {
-        printf("Tried to pop on stack pointer %d",sp);
-        return 1;
-    }
-}
-
-int push(int32_t val) {
-    if (sp > STACK_LIMIT) {
-        printf("Tried to push over stack limit");
-        return 1;
-    } else {
-        sp = sp + 1;
-        stack[sp] = val;
-        return 0;
-    }
-}
-
-int execute(uint32_t ins) {
-    uint32_t dec_ins = ins >> 24;
-    if(dec_ins == HALT) {
-        printf("Found halt instruction");
-        return 1;
-    } else if(dec_ins == PUSHC ) {
-        int32_t imm = SIGN_EXTEND(ins & 0x00FFFFFF);
-
-    } else if(dec_ins == ADD ) {
-
-    } else if(dec_ins == SUB ) {
-
-    } else if(dec_ins == MUL ) {
-
-    } else if(dec_ins == DIV ) {
-
-    } else if(dec_ins == MOD ) {
-    } else if(dec_ins == RDINT ) {
-    } else if(dec_ins == WRINT ) {
-    } else if(dec_ins == RDCHR ) {
-    } else if(dec_ins == WRCHR ) {0
-
-    return 0;
-}
-
 void run() {
+    int count = 0;
     while(1) {
         uint32_t ins = programm_speicher[pc];
         pc = pc + 1;
+        count = count + 1;
         if(execute(ins)) {
             break;
         }
     }
+    printf("Finished after %d cycles\n",count);
 }
 
 int main(int argc, char * argv[]) {
@@ -107,8 +71,9 @@ int main(int argc, char * argv[]) {
         }
     }
 
+    printProgram();
     printf("Ninja Virtual Machine started\n");
-
+    run();
     printf("Ninja Virtual Machine stopped\n");
 
     return 0;
