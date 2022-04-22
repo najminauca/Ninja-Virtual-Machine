@@ -21,7 +21,7 @@ int32_t stack[STACK_LIMIT];
 int sp = 0;
 int pc = 0;
 
-void load_program(const int32_t source[]) {
+void load_program(const uint32_t source[]) {
     pc = 0;
     while(1) {
         programm_speicher[pc] = source[pc];

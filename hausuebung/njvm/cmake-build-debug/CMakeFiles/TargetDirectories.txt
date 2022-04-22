@@ -1,0 +1,3 @@
+/home/dev/KSP_public/hausuebung/njvm/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/dev/KSP_public/hausuebung/njvm/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/dev/KSP_public/hausuebung/njvm/cmake-build-debug/CMakeFiles/njvm.dir

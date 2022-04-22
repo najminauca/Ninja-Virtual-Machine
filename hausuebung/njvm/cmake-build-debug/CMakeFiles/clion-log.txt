@@ -1,0 +1,4 @@
+/home/dev/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/213.7172.20/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/home/dev/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/213.7172.20/bin/ninja/linux/ninja -G Ninja /home/dev/KSP_public/hausuebung/njvm
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/dev/KSP_public/hausuebung/njvm/cmake-build-debug

@@ -1,8 +1,8 @@
 //
 // Created by dev on 21.04.22.
 //
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 #include "njvm.h"
 
 int pop(int32_t* ret) {
@@ -63,7 +63,11 @@ int execute(uint32_t ins) {
         }
     } else if(dec_ins == RDINT ) {
         int32_t in = 0;
-        scanf("%d", &in);
+        int r = scanf(" %d", &in);
+        if(r != 1) {
+            printf("Invalid user input, expected 1 number, got %d, aborting\n",r);
+            return 1;
+        }
         if (push(in) != 0) {
             return 1;
         }
@@ -74,7 +78,11 @@ int execute(uint32_t ins) {
         printf("%d",v);
     } else if(dec_ins == RDCHR ) {
         char in = 0;
-        scanf("%c", &in);
+        int r = scanf(" %c", &in);
+        if (r != 1) {
+            printf("Invalid user input, expected 1 character, got %d, aborting\n",r);
+            return 1;
+        }
         if (push((int32_t) in) != 0) {
             return 1;
         }
