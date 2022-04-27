@@ -114,8 +114,8 @@ int main(int argc, char** argv) {
 
     printf("Ninja Virtual Machine started\n");
     print();
-    printf("Ninja Virtual Machine stopped\n");
     run();
+    printf("Ninja Virtual Machine stopped\n");
 
     return 0;
 }
