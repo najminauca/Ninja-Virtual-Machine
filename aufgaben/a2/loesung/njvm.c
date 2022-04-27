@@ -8,7 +8,7 @@
 const int VERSION = 2;
 
 unsigned int *program_memory;
-int stack[1000];
+int stack[10000];
 int sp = 0;
 int pc = 0;
 int fp;
