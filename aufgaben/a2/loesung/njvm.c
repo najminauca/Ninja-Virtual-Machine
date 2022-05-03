@@ -64,10 +64,16 @@ void readBin(FILE *filepointer) {
     read_len = fread(&n, 1, 4, filepointer);
     int count = SIGN_EXTEND(IMMEDIATE(n));
     program_memory = malloc(count*sizeof(unsigned int));
+    if(program_memory == NULL) {
+        error(-1);
+    }
 
     read_len = fread(&n, 1, 4, filepointer);
     sdaSize = SIGN_EXTEND(IMMEDIATE(n));
     sda = malloc(sdaSize*sizeof(int));
+    if(sda == NULL) {
+        error(-1);
+    }
 
     pc = 0;
     unsigned int ir;
