@@ -4,8 +4,10 @@
 
 void printNum(int i) {
     if(i < 10) {
-        printf("00%d:\t", i);
+        printf("000%d:\t", i);
     } else if(i < 100) {
+        printf("00%d:\t", i);
+    } else if(i < 1000) {
         printf("0%d:\t", i);
     } else {
         printf("%d:\t", i);

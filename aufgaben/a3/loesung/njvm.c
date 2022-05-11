@@ -5,6 +5,7 @@
 #include "execute.h"
 #include "prog.h"
 #include "njvm.h"
+#include "debug.h"
 
 const int VERSION = 3;
 
@@ -17,6 +18,9 @@ int fSize = 0;
 int fp;
 int *sda;
 int sdaSize;
+int runBool = 0;
+int debugBool = 0;
+int quit = 0;
 
 void print() {
     pc = 0;
@@ -38,6 +42,17 @@ void run() {
         execute(ir);
         if(ir >> 24 == HALT) break;
     } 
+}
+
+void debug() {
+    pc = 0;
+    unsigned int ir;
+    while(1) {
+        ir = program_memory[pc];
+        pc = pc + 1;
+        debugRun(ir);
+        if(ir >> 24 == HALT || quit == 1) break;
+    }
 }
 
 void loadProg(unsigned int *prog) {
@@ -116,19 +131,28 @@ int main(int argc, char** argv) {
             }
             readBin(filepointer);
         } else if(strcmp("--debug", argv[1]) == 0) {
-
-            //printf("DEBUG: file '%s' loaded (code size = %d, data size = %d)\n", filename, count, sdac);
-
+            debugBool = 1;
+            if(strcmp("prog1.bin", argv[2]) == 0)
+            if((filepointer = fopen("prog1.bin", "r")) == NULL) {
+                perror("Datei nicht zu oeffnen!\n");
+                exit(25);
+            }
+            readBin(filepointer);
+            printf("DEBUG: file '%s' loaded (code size = %d, data size = %d)\n", argv[2], pcSize, sdaSize);
+            printf("Ninja Virtual Machine started\n");
+            debug();
+            printf("Ninja Virtual Machine stopped\n");
         } else {
             printf("unknown command line argument '%s', try '%s --help'\n",argv[1],argv[0]);
             return 1;
         }
     }
 
-    printf("Ninja Virtual Machine started\n");
-    print();
-    run();
-    printf("Ninja Virtual Machine stopped\n");
+    if(debugBool != 1) {
+        printf("Ninja Virtual Machine started\n");
+        run();
+        printf("Ninja Virtual Machine stopped\n");
+    }
     free(program_memory);
     free(sda);
 

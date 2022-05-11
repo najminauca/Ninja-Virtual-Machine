@@ -7,9 +7,15 @@ extern unsigned int *programm_speicher;
 extern int stack[MAX];
 extern int sp;
 extern int pc;
+extern int pcSize;
 extern int fSize;
 extern int fp;
 extern int *sda;
 extern int sdaSize;
+extern int runBool;
+extern int quit;
+
+void run();
+void print();
 
 #endif

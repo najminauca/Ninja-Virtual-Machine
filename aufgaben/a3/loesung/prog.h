@@ -1,3 +1,6 @@
+#ifndef PROG_H
+#define PROG_H
+
 unsigned int code1[] = {
     (PUSHC << 24) | IMMEDIATE(3),
     (PUSHC << 24) | IMMEDIATE(4),
@@ -31,3 +34,5 @@ unsigned int code3[] = {
     (WRCHR << 24),
     (HALT << 24)
 };
+
+#endif

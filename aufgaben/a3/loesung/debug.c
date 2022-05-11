@@ -3,20 +3,9 @@
 #include <stdlib.h>
 #include "operations.h"
 #include "execute.h"
-#include "prog.h"
 #include "njvm.h"
 
-unsigned int *program_memory;
-int stack[10000];
-int sp = 0;
-int pc = 0;
-int pcSize = 0;
-int fp;
-int *sda;
-int sdaSize;
-int bp;
-int runBool = 0;    //Default 0
-
+int bp = -1;
 
 void printStack(int i) {
     if(sp == fp) {
@@ -36,13 +25,11 @@ void printStack(int i) {
         printNum(i);
         printf("%d\n", stack[i]);
     }
-    printf(stack[i]);
 }
 
-void debugRun() {
-    unsigned int ir = program_memory[pc];
-    listProg(ir, pc - 1);
-    while(1) {
+void debugRun(unsigned int ir) {
+    while(runBool != 1) {
+        listProg(ir, pc - 1);
         printf("DEBUG: inspect, list, breakpoint, step, run, quit?\n");
 
         char c[20] = "";
@@ -60,7 +47,6 @@ void debugRun() {
                     i--;
                 }
                 printf("		--- bottom of stack ---\n");
-                listProg(ir, pc - 1);
             } else if(strcmp(c, "data") == 0) {
                 for(int i = 0; i < sdaSize; i++) {
                     if(i < 10) {
@@ -70,48 +56,46 @@ void debugRun() {
                     } else {
                         printf("data[%d]:	%d\n", i, sda[i]);
                     }
-                    printf("	--- end of data ---\n");
-                    listProg(ir, pc - 1);
                 }
-            }
-            if(strcmp(c, "list") == 0) {
-                int temp = pc;
-                print();
-                pc = temp;
-            } else if(strcmp(c, "breakpoint") == 0) {
-                if(bp == -1) {
-                    printf("DEBUG [breakpoint]: cleared\n");
-                } else {
-                    printf("DEBUG [breakpoint]: set at %d\n", bp);
-                }
-                printf("DEBUG [breakpoint]: address to set, -1 to clear, <ret> for no change?\n");
-
-                if(scanf("%d", &bp) == 1) {
-                    if(bp == -1) {
-                        printf("DEBUG [breakpoint]: now cleared\n");
-                    } else {
-                        printf("DEBUG [breakpoint]: now set at %d\n", bp);
-                    }
-                }
-                listProg(ir, pc - 1);
-            } else if(strcmp(c, "step" == 0)) {
-                break;
-            } else if(strcmp(c, "run") == 0) {
-                int temp = pc;
-                printf("Ninja Virtual Machine started\n");
-                print();
-                run();
-                printf("Ninja Virtual Machine stopped\n");
-                pc = temp;
-                break;
-            } else if(strcmp(c, "quit") == 0) {
-                break;
-            } else {
-                continue
+                printf("	--- end of data ---\n");
             }
         }
-    }
-}
+        if(strcmp(c, "list") == 0) {
+                int temp = pc;
+                print();
+                printf("	--- end of code ---\n");
+                pc = temp;
+        } else if(strcmp(c, "breakpoint") == 0) {
+            if(bp == -1) {
+                printf("DEBUG [breakpoint]: cleared\n");
+            } else {
+                printf("DEBUG [breakpoint]: set at %d\n", bp);
+            }
+            printf("DEBUG [breakpoint]: address to set, -1 to clear, <ret> for no change?\n");
 
-int main(int argc, char** argv) {
+            if(scanf("%d", &bp) == 1) {
+                if(bp == -1) {
+                    printf("DEBUG [breakpoint]: now cleared\n");
+                } else {
+                    printf("DEBUG [breakpoint]: now set at %d\n", bp);
+                }
+            }
+        } else if(strcmp(c, "step") == 0) {
+            execute(ir);
+            break;
+        } else if(strcmp(c, "run") == 0) {
+            runBool = 1;
+        } else if(strcmp(c, "quit") == 0) {
+            quit = 1; //Quit debug
+            break;
+        } else {
+            continue;
+        }
+    }
+
+    if(runBool == 1) {
+        execute(ir);
+    }
+
+    if(pc == bp) runBool = 0;
 }
