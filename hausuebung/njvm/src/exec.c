@@ -29,11 +29,11 @@ int push(int32_t val) {
 
 int execute(uint32_t ins) {
     uint32_t dec_ins = ins >> 24;
+    int32_t imm = SIGN_EXTEND(IMM(ins));
     if(dec_ins == HALT) {
         printf("Found halt instruction\n");
         return 1;
     } else if(dec_ins == PUSHC ) {
-        int32_t imm = SIGN_EXTEND(IMM(ins));
         if (push(imm) != 0) {
             return 1;
         }
@@ -90,7 +90,28 @@ int execute(uint32_t ins) {
         int32_t v;
         if (pop(&v) != 0)
             return 1;
-        printf("%c",v);
+        printf("%c", v);
+    } else if(dec_ins == PUSHG) {
+        if (imm < static_data_area_size && imm >= 0) {
+            push(static_data_area[imm]);
+        } else {
+            printf("Tried to PUSHG %d which is outside the SDA!",imm);
+            return 1;
+        }
+    } else if(dec_ins == POPG) {
+        int32_t v;
+        if (pop(&v) != 0)
+            return 1;
+        if (imm < static_data_area_size && imm >= 0) {
+            static_data_area[imm] = v;
+        } else {
+            printf("Tried to POPG %d which is outside the SDA!",imm);
+            return 1;
+        }
+    //} else if(dec_ins == TODO) {
+    //} else if(dec_ins == TODO) {
+    //} else if(dec_ins == TODO) {
+    //} else if(dec_ins == TODO) {
     } else {
         printf("Found unknown op code %d\n",dec_ins);
         return 1;

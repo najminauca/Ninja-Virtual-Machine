@@ -33,6 +33,10 @@ void printProgram() {
             printf("rdchr\n");
         } else if (opcode == WRCHR) {
             printf("wrchr\n");
+        } else if (opcode == PUSHG) {
+            printf("pushg %d\n", SIGN_EXTEND(IMM(ins)));
+        } else if (opcode == POPG) {
+            printf("popg %d\n", SIGN_EXTEND(IMM(ins)));
         } else {
             printf("Unknown opcode %d at %d.. Aborting\n", opcode,i-1);
             break;

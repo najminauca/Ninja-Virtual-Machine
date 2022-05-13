@@ -17,10 +17,15 @@
 
 const int VERSION = 0;
 
+uint32_t programm_size = 0;
 uint32_t *programm_speicher;
+// globale variabeln
+uint32_t static_data_area_size = 0;
+uint32_t *static_data_area;
 int32_t stack[STACK_LIMIT];
 int sp = 0;
 int pc = 0;
+int fp = 0;
 
 void load_program(const char* path) {
     FILE * fp;
@@ -37,14 +42,18 @@ void load_program(const char* path) {
         printf("ERROR: Could not read a full header for the programm.");
         exit(1);
     }
+    programm_size = headers[2];
+    static_data_area_size = headers[3];
+
     printf("Format %c\n",headers[0]);
     printf("Version %d\n",headers[1]);
-    printf("Number of instructions %d\n",headers[2]);
-    printf("Static variables %d\n",headers[3]);
-
-    programm_speicher = malloc(headers[2]);
-    read_ojects = fread(programm_speicher,sizeof(uint32_t),headers[2],fp);
-    if (read_ojects != headers[2]) {
+    printf("Number of instructions %d\n",programm_size);
+    printf("Static variables %d\n",static_data_area_size);
+    static_data_area = malloc(static_data_area_size);
+    // TODO: größe aufschreiben
+    programm_speicher = malloc(programm_size);
+    read_ojects = fread(programm_speicher,sizeof(uint32_t),programm_size,fp);
+    if (read_ojects != programm_size) {
         printf("ERROR: Mismatch of instruction size header and file length!");
         exit(1);
     }
@@ -100,6 +109,7 @@ int main(int argc, char * argv[]) {
     printf("Ninja Virtual Machine stopped\n");
 
     free(programm_speicher);
+    free(static_data_area);
     return 0;
 }
 
