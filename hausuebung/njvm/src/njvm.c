@@ -48,6 +48,7 @@ void load_program(const char* path) {
         printf("ERROR: Mismatch of instruction size header and file length!");
         exit(1);
     }
+    fclose(fp);
 
 //    pc = 0;
 //    while(1) {
@@ -98,6 +99,7 @@ int main(int argc, char * argv[]) {
     run();
     printf("Ninja Virtual Machine stopped\n");
 
+    free(programm_speicher);
     return 0;
 }
 
