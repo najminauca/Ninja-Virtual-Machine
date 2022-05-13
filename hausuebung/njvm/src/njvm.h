@@ -22,10 +22,10 @@
 #define SIGN_EXTEND(i) ((i) & 0x00800000 ? (i) | 0xFF000000 : (i))
 #define ENC(i) (i << 24)
 
-#define PROGRAM_LIMIT 1000
+//#define PROGRAM_LIMIT 1000
 #define STACK_LIMIT 1000
 
-extern uint32_t programm_speicher[PROGRAM_LIMIT];
+extern uint32_t *programm_speicher;//[PROGRAM_LIMIT];
 extern int32_t stack[STACK_LIMIT];
 extern int sp;
 extern int pc;
