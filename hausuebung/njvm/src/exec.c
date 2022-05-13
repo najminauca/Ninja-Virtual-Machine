@@ -93,7 +93,7 @@ int execute(uint32_t ins) {
         printf("%c", v);
     } else if(dec_ins == PUSHG) {
         if (imm < static_data_area_size && imm >= 0) {
-            push(static_data_area[imm]); // TODO: uint / int ?
+            push(static_data_area[imm]);
         } else {
             printf("Tried to PUSHG %d which is outside the SDA!\n",imm);
             return 1;
@@ -116,20 +116,30 @@ int execute(uint32_t ins) {
         fp = sp;
         sp = sp + imm;
     } else if(dec_ins == RSF) {
+        sp = fp;
         int32_t v;
         if (pop(&v) != 0)
             return 1;
-        sp = fp;
         fp = v;
     } else if(dec_ins == PUSHL) {
-        if (push(stack[fp + imm]) != 0) {
+        int pos = fp + imm;
+        if (pos >= sp) {
+            printf("PUSHL over sp!\n");
+            return 1;
+        }
+        if (push(stack[pos]) != 0) {
             return 1; // TODO: check fp + imm are valid
         }
     } else if(dec_ins == POPL) {
+        int pos = fp + imm;
+        if (pos >= sp || sp <= fp) {
+            printf("POPL invalid: SP %d FP %d pos %d",sp,fp,pos);
+            return 1;
+        }
         int32_t v;
         if (pop(&v) != 0)
             return 1;
-        static_data_area[fp + imm] = v; // TODO check valid region
+        stack[pos] = v;
     } else {
         printf("Found unknown op code %d\n",dec_ins);
         return 1;

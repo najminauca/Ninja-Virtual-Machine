@@ -35,7 +35,7 @@ extern uint32_t *programm_speicher;//[PROGRAM_LIMIT];
 extern uint32_t programm_size;
 // globale variabeln
 extern uint32_t static_data_area_size;
-extern uint32_t *static_data_area;
+extern int32_t *static_data_area;
 extern int32_t stack[STACK_LIMIT];
 // Stackpointer
 extern int sp;

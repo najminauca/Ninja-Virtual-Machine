@@ -9,6 +9,7 @@ void printProgram() {
     while (1) {
         uint32_t ins = programm_speicher[i];
         uint32_t opcode = ins >> 24;
+        printf("%03d ",i);
         i = i+1;
         if (opcode == HALT) {
             printf("halt\n");

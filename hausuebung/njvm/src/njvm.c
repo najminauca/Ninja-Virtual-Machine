@@ -21,7 +21,7 @@ uint32_t programm_size = 0;
 uint32_t *programm_speicher;
 // globale variabeln
 uint32_t static_data_area_size = 0;
-uint32_t *static_data_area;
+int32_t *static_data_area;
 int32_t stack[STACK_LIMIT];
 int sp = 0;
 int pc = 0;
@@ -45,10 +45,10 @@ void load_program(const char* path) {
     programm_size = headers[2];
     static_data_area_size = headers[3];
 
-    printf("Format %c\n",headers[0]);
-    printf("Version %d\n",headers[1]);
-    printf("Number of instructions %d\n",programm_size);
-    printf("Static variables %d\n",static_data_area_size);
+    //printf("Format %c\n",headers[0]);
+    //printf("Version %d\n",headers[1]);
+    //printf("Number of instructions %d\n",programm_size);
+    //printf("Static variables %d\n",static_data_area_size);
     static_data_area = malloc(static_data_area_size);
     // TODO: größe aufschreiben
     programm_speicher = malloc(programm_size);
@@ -74,6 +74,7 @@ void run() {
     int count = 0;
     sp = 0;
     pc = 0;
+    fp = 0;
     while(1) {
         uint32_t ins = programm_speicher[pc];
         pc = pc + 1;
@@ -96,10 +97,7 @@ int main(int argc, char * argv[]) {
             printf("Ninja Virtual Machine version %d (compiled %s, %s)\n", VERSION, __DATE__, __TIME__);
             return 0;
         } else {
-//            printf("unknown command line argument '%s', try '%s --help'\n",argv[1],argv[0]);
-//            return 1;
             load_program(argv[1]);
-            //return 0;
         }
     }
 
