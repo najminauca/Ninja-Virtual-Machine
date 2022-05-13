@@ -6,7 +6,7 @@
 #include "njvm.h"
 
 int pop(int32_t* ret) {
-    if (sp > 0) {
+    if (sp > 0) { // TODO: check for invalid pop over stackframe
         sp = sp-1;
         *ret = stack[sp];
         return 0;
@@ -93,9 +93,9 @@ int execute(uint32_t ins) {
         printf("%c", v);
     } else if(dec_ins == PUSHG) {
         if (imm < static_data_area_size && imm >= 0) {
-            push(static_data_area[imm]);
+            push(static_data_area[imm]); // TODO: uint / int ?
         } else {
-            printf("Tried to PUSHG %d which is outside the SDA!",imm);
+            printf("Tried to PUSHG %d which is outside the SDA!\n",imm);
             return 1;
         }
     } else if(dec_ins == POPG) {
@@ -105,13 +105,31 @@ int execute(uint32_t ins) {
         if (imm < static_data_area_size && imm >= 0) {
             static_data_area[imm] = v;
         } else {
-            printf("Tried to POPG %d which is outside the SDA!",imm);
+            printf("Tried to POPG %d which is outside the SDA!\n",imm);
             return 1;
         }
-    //} else if(dec_ins == TODO) {
-    //} else if(dec_ins == TODO) {
-    //} else if(dec_ins == TODO) {
-    //} else if(dec_ins == TODO) {
+    } else if(dec_ins == ASF) {
+        if (push(fp) != 0) {
+            printf("No more space for pushing sp in ASF call\n");
+            return 1;
+        }
+        fp = sp;
+        sp = sp + imm;
+    } else if(dec_ins == RSF) {
+        int32_t v;
+        if (pop(&v) != 0)
+            return 1;
+        sp = fp;
+        fp = v;
+    } else if(dec_ins == PUSHL) {
+        if (push(stack[fp + imm]) != 0) {
+            return 1; // TODO: check fp + imm are valid
+        }
+    } else if(dec_ins == POPL) {
+        int32_t v;
+        if (pop(&v) != 0)
+            return 1;
+        static_data_area[fp + imm] = v; // TODO check valid region
     } else {
         printf("Found unknown op code %d\n",dec_ins);
         return 1;

@@ -37,6 +37,14 @@ void printProgram() {
             printf("pushg %d\n", SIGN_EXTEND(IMM(ins)));
         } else if (opcode == POPG) {
             printf("popg %d\n", SIGN_EXTEND(IMM(ins)));
+        } else if (opcode == ASF) {
+            printf("asf %d\n", SIGN_EXTEND(IMM(ins)));
+        } else if (opcode == RSF) {
+            printf("rsf %d\n", SIGN_EXTEND(IMM(ins)));
+        } else if (opcode == PUSHL) {
+            printf("pushl %d\n", SIGN_EXTEND(IMM(ins)));
+        } else if (opcode == POPL) {
+            printf("popl %d\n", SIGN_EXTEND(IMM(ins)));
         } else {
             printf("Unknown opcode %d at %d.. Aborting\n", opcode,i-1);
             break;
