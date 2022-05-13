@@ -102,9 +102,7 @@ void asf(int size) {
 
 void rsf() {
     if(fp != 0) {
-        while(sp != fp) {
-            sp--;
-        }
+        sp = fp;
         fp = pop();
         fSize = sp - fp;
     }
