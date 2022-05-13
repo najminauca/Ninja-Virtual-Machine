@@ -61,7 +61,7 @@ int execute(uint32_t ins) {
         if (push(r) != 0) {
             return 1;
         }
-    } else if(dec_ins == RDINT ) {
+    } else if(dec_ins == RDINT ) {e
         int32_t in = 0;
         int r = scanf(" %d", &in);
         if(r != 1) {
