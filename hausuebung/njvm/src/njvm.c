@@ -42,7 +42,15 @@ void load_program(const char *path) {
     static_data_area_size = headers[3];
 
     //printf("Format %c\n",headers[0]);
+    if (headers[0] != 0x46424a4e) {
+        printf("ERROR: invalid binary header %x",headers[0]);
+        exit(1);
+    }
     //printf("Version %d\n",headers[1]);
+    if (headers[1] != 3) {
+        printf("ERROR: Invalid binary version %d",headers[1]);
+        exit(1);
+    }
     //printf("Number of instructions %d\n",programm_size);
     //printf("Static variables %d\n",static_data_area_size);
     static_data_area = malloc(static_data_area_size);
@@ -82,19 +90,35 @@ void run() {
     printf("Finished after %d cycles\n", count);
 }
 
+void help(char* binary_name) {
+    printf("usage: %s [options] <code file>\n", binary_name);
+    printf("\t --version   show version and exit\n");
+    printf("\t --help      show this help and exit\n");
+}
+
 int main(int argc, char *argv[]) {
+    int debug = 0;
     if (argc > 1) {
-        if (strcmp(argv[1], "--help") == 0) {
-            printf("usage: %s [options] <code file>\n", argv[0]);
-            printf("\t --version   show version and exit\n");
-            printf("\t --help      show this help and exit\n");
-            return 0;
-        } else if (strcmp(argv[1], "--version") == 0) {
-            printf("Ninja Virtual Machine version %d (compiled %s, %s)\n", VERSION, __DATE__, __TIME__);
-            return 0;
-        } else {
-            load_program(argv[1]);
+        int i;
+        for(i = 1; i < argc; i++) {
+            if (strcmp(argv[i], "--help") == 0) {
+                help(argv[0]);
+                return 0;
+            } else if (strcmp(argv[i], "--version") == 0) {
+                printf("Ninja Virtual Machine version %d (compiled %s, %s)\n", VERSION, __DATE__, __TIME__);
+                return 0;
+            } else if (strcmp(argv[i], "--debug") == 0) {
+                debug = 1;
+            } else if(i == argc -1) {
+                load_program(argv[i]);
+            } else {
+                printf("ERROR: Unknown argument `%s`",argv[i]);
+                return 1;
+            }
         }
+    } else {
+        help(argv[0]);
+        return 0;
     }
 
     printProgram();

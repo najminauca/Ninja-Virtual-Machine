@@ -10,87 +10,87 @@ void printProgram() {
     while (run) {
         uint32_t ins = programm_speicher[i];
         uint32_t opcode = ins >> 24;
-        printf("%03d ", i);
+        printf("%04d\t", i);
         i = i + 1;
         switch (opcode) {
             case HALT:
-                printf("halt\n");
+                printf("halt\t\n");
                 run = 0;
                 break;
             case PUSHC:
-                printf("pushc %d\n", SIGN_EXTEND(IMM(ins)));
+                printf("pushc\t%d\n", SIGN_EXTEND(IMM(ins)));
                 break;
             case ADD:
-                printf("add\n");
+                printf("add\t\n");
                 break;
             case SUB:
-                printf("sub\n");
+                printf("sub\t\n");
                 break;
             case MUL:
-                printf("mul\n");
+                printf("mul\t\n");
                 break;
             case DIV:
-                printf("div\n");
+                printf("div\t\n");
                 break;
             case MOD:
-                printf("mod\n");
+                printf("mod\t\n");
                 break;
             case RDINT:
-                printf("rdint\n");
+                printf("rdint\t\n");
                 break;
             case WRINT:
-                printf("wrint\n");
+                printf("wrint\t\n");
                 break;
             case RDCHR:
-                printf("rdchr\n");
+                printf("rdchr\t\n");
                 break;
             case WRCHR:
-                printf("wrchr\n");
+                printf("wrchr\t\n");
                 break;
             case PUSHG:
-                printf("pushg %d\n", SIGN_EXTEND(IMM(ins)));
+                printf("pushg\t%d\n", SIGN_EXTEND(IMM(ins)));
                 break;
             case POPG:
-                printf("popg %d\n", SIGN_EXTEND(IMM(ins)));
+                printf("popg\t%d\n", SIGN_EXTEND(IMM(ins)));
                 break;
             case ASF:
-                printf("asf %d\n", SIGN_EXTEND(IMM(ins)));
+                printf("asf \t%d\n", SIGN_EXTEND(IMM(ins)));
                 break;
             case RSF:
-                printf("rsf %d\n", SIGN_EXTEND(IMM(ins)));
+                printf("rsf \t%d\n", SIGN_EXTEND(IMM(ins)));
                 break;
             case PUSHL:
-                printf("pushl %d\n", SIGN_EXTEND(IMM(ins)));
+                printf("pushl\t%d\n", SIGN_EXTEND(IMM(ins)));
                 break;
             case POPL:
-                printf("popl %d\n", SIGN_EXTEND(IMM(ins)));
+                printf("popl\t%d\n", SIGN_EXTEND(IMM(ins)));
                 break;
             case EQ:
-                printf("EQ\n");
+                printf("eq  \t\n");
                 break;
             case NE:
-                printf("NE\n");
+                printf("ne  \t\n");
                 break;
             case LT:
-                printf("LT\n");
+                printf("lt  \t\n");
                 break;
             case LE:
-                printf("LE\n");
+                printf("le  \t\n");
                 break;
             case GT:
-                printf("GT\n");
+                printf("gt  \t\n");
                 break;
             case GE:
-                printf("GE\n");
+                printf("ge  \t\n");
                 break;
             case JMP:
-                printf("JMP %d\n", SIGN_EXTEND(IMM(ins)));
+                printf("jmp \t%04d\n", SIGN_EXTEND(IMM(ins)));
                 break;
             case BRF:
-                printf("BRF %d\n", SIGN_EXTEND(IMM(ins)));
+                printf("brf \t%04d\n", SIGN_EXTEND(IMM(ins)));
                 break;
             case BRT:
-                printf("BRT %d\n", SIGN_EXTEND(IMM(ins)));
+                printf("brt \t%04d\n", SIGN_EXTEND(IMM(ins)));
                 break;
             default:
                 printf("Unknown opcode %d at %d.. Aborting\n", opcode, i - 1);
