@@ -1,9 +1,5 @@
 //
-// Created by dev on 20.04.22.
-//
-
-//
-// Created by dev on 12.04.22.
+// Created by Aron Heinecke on 12.04.22.
 //
 
 #include <stdio.h>
@@ -27,17 +23,17 @@ int sp = 0;
 int pc = 0;
 int fp = 0;
 
-void load_program(const char* path) {
-    FILE * fp;
+void load_program(const char *path) {
+    FILE *fp;
     size_t read_ojects;
-    fp = fopen(path,"r");
+    fp = fopen(path, "r");
     if (fp == NULL) {
         perror("Unable to load program from file.");
         exit(1);
     }
     int header_count = 4;
     uint32_t headers[header_count];
-    read_ojects = fread(headers,sizeof(uint32_t),header_count,fp);
+    read_ojects = fread(headers, sizeof(uint32_t), header_count, fp);
     if (read_ojects != header_count) {
         printf("ERROR: Could not read a full header for the programm.");
         exit(1);
@@ -52,7 +48,7 @@ void load_program(const char* path) {
     static_data_area = malloc(static_data_area_size);
     // TODO: größe aufschreiben
     programm_speicher = malloc(programm_size);
-    read_ojects = fread(programm_speicher,sizeof(uint32_t),programm_size,fp);
+    read_ojects = fread(programm_speicher, sizeof(uint32_t), programm_size, fp);
     if (read_ojects != programm_size) {
         printf("ERROR: Mismatch of instruction size header and file length!");
         exit(1);
@@ -75,25 +71,25 @@ void run() {
     sp = 0;
     pc = 0;
     fp = 0;
-    while(1) {
+    while (1) {
         uint32_t ins = programm_speicher[pc];
         pc = pc + 1;
         count = count + 1;
-        if(execute(ins)) {
+        if (execute(ins)) {
             break;
         }
     }
-    printf("Finished after %d cycles\n",count);
+    printf("Finished after %d cycles\n", count);
 }
 
-int main(int argc, char * argv[]) {
+int main(int argc, char *argv[]) {
     if (argc > 1) {
-        if (strcmp(argv[1],"--help") == 0) {
-            printf("usage: %s [options] <code file>\n",argv[0]);
+        if (strcmp(argv[1], "--help") == 0) {
+            printf("usage: %s [options] <code file>\n", argv[0]);
             printf("\t --version   show version and exit\n");
             printf("\t --help      show this help and exit\n");
             return 0;
-        } else if (strcmp(argv[1],"--version") == 0) {
+        } else if (strcmp(argv[1], "--version") == 0) {
             printf("Ninja Virtual Machine version %d (compiled %s, %s)\n", VERSION, __DATE__, __TIME__);
             return 0;
         } else {

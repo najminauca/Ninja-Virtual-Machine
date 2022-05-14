@@ -1,5 +1,5 @@
 //
-// Created by dev on 21.04.22.
+// Created by Aron Heinecke on 21.04.22.
 //
 
 #ifndef KSP_PUBLIC_PROGRAMME_H

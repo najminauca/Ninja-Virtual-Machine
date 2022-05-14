@@ -1,8 +1,14 @@
 //
-// Created by dev on 21.04.22.
+// Created by Aron Heinecke on 21.04.22.
 //
 
 #ifndef KSP_PUBLIC_EXEC_H
 #define KSP_PUBLIC_EXEC_H
+
 int execute(uint32_t ins);
+
+int pop(int32_t *);
+
+int push(int32_t);
+
 #endif //KSP_PUBLIC_EXEC_H

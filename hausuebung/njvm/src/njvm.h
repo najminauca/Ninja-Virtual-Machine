@@ -1,5 +1,5 @@
 //
-// Created by dev on 20.04.22.
+// Created by Aron Heinecke on 20.04.22.
 //
 
 #ifndef KSP_PUBLIC_NJVM_H
@@ -23,6 +23,16 @@
 #define RSF 14
 #define PUSHL 15
 #define POPL 16
+#define EQ 17
+#define NE 18
+#define LT 19
+#define LE 20
+#define GT 21
+#define GE 22
+#define JMP 23
+#define BRF 24
+#define BRT 25
+
 
 #define IMM(x) ((x) & 0x00FFFFFF)
 #define SIGN_EXTEND(i) ((i) & 0x00800000 ? (i) | 0xFF000000 : (i))
