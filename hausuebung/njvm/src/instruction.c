@@ -8,45 +8,35 @@
 
 int add() {
     int32_t a, b, r;
-    if (pop(&b) != 0)
-        return 1;
-    if (pop(&a) != 0)
+    if (pop(&b) != 0 || pop(&a) != 0)
         return 1;
     return push(a + b);
 }
 
 int sub() {
     int32_t a, b, r;
-    if (pop(&b) != 0)
-        return 1;
-    if (pop(&a) != 0)
+    if (pop(&b) != 0 || pop(&a) != 0)
         return 1;
     return push(a - b);
 }
 
 int mul() {
     int32_t a, b;
-    if (pop(&b) != 0)
-        return 1;
-    if (pop(&a) != 0)
+    if (pop(&b) != 0 || pop(&a) != 0)
         return 1;
     return push(a * b);
 }
 
 int div() {
     int32_t a, b;
-    if (pop(&b) != 0)
-        return 1;
-    if (pop(&a) != 0)
+    if (pop(&b) != 0 || pop(&a) != 0)
         return 1;
     return push(a / b);
 }
 
 int mod() {
     int32_t a, b;
-    if (pop(&b) != 0)
-        return 1;
-    if (pop(&a) != 0)
+    if (pop(&b) != 0 || pop(&a) != 0)
         return 1;
     return push(a % b);
 }
@@ -90,6 +80,7 @@ int wrchr() {
 int pushg(int32_t imm) {
     if (imm < static_data_area_size && imm >= 0) {
         push(static_data_area[imm]);
+        return 0;
     } else {
         printf("Error: PUSHG to %d which is outside the SDA!\n", imm);
         return 1;
@@ -102,6 +93,7 @@ int popg(int32_t imm) {
         return 1;
     if (imm < static_data_area_size && imm >= 0) {
         static_data_area[imm] = v;
+        return 0;
     } else {
         printf("Error: POPG to %d which is outside the SDA!\n", imm);
         return 1;
@@ -129,77 +121,65 @@ int rsf() {
 
 int pushl(int32_t imm) {
     int pos = fp + imm;
-    if (pos >= sp) {
+    if (pos >= sp || pos < 0) {
         printf("Error: PUSHL over sp!\n");
         return 1;
     }
-    // TODO: check fp + imm are valid
     return push(stack[pos]);
 }
 
 int popl(int32_t imm) {
     int pos = fp + imm;
     if (pos >= sp || sp <= fp) {
-        printf("Error: POPL invalid SP %d FP %d pos %d", sp, fp, pos);
+        printf("Error: POPL invalid SP %d FP %d pos %d\n", sp, fp, pos);
         return 1;
     }
     int32_t v;
-    if (pop(&v) != 0)
+    if (pop(&v) != 0) {
         return 1;
+    }
     stack[pos] = v;
     return 0;
 }
 
 int eq() {
     int32_t a, b;
-    if (pop(&a) != 0)
-        return 1;
-    if (pop(&b) != 0)
+    if (pop(&b) != 0 || pop(&a) != 0)
         return 1;
     return push(a == b);
 }
 
 int ne() {
     int32_t a, b;
-    if (pop(&a) != 0)
-        return 1;
-    if (pop(&b) != 0)
+    if (pop(&b) != 0 || pop(&a) != 0)
         return 1;
     return push(a != b);
 }
 
 int lt() {
     int32_t a, b;
-    if (pop(&a) != 0)
-        return 1;
-    if (pop(&b) != 0)
+    if (pop(&b) != 0 || pop(&a) != 0)
         return 1;
     return push(a < b);
 }
 
 int le() {
     int32_t a, b;
-    if (pop(&a) != 0)
-        return 1;
-    if (pop(&b) != 0)
+    if (pop(&b) != 0 || pop(&a) != 0)
         return 1;
     return push(a <= b);
 }
 
 int gt() {
     int32_t a, b;
-    if (pop(&a) != 0)
-        return 1;
-    if (pop(&b) != 0)
+    if (pop(&b) != 0 || pop(&a) != 0)
         return 1;
     return push(a > b);
 }
 
 int ge() {
     int32_t a, b;
-    if (pop(&a) != 0)
-        return 1;
-    if (pop(&b) != 0)
+    if (pop(&b) != 0 || pop(&a) != 0)
         return 1;
     return push(a >= b);
 }

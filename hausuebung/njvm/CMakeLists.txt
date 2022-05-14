@@ -7,4 +7,4 @@ set(CMAKE_CXX_FLAGS -Wall)
 set(CMAKE_CXX_FLAGS -std=c99)
 set(CMAKE_CXX_FLAGS -pedantic)
 
-add_executable(njvm src/njvm.c src/njvm.h src/exec.c src/exec.h src/printer.c src/printer.h src/programme.h)
+add_executable(njvm src/njvm.c src/njvm.h src/exec.c src/exec.h src/printer.c src/printer.h src/programme.h src/instruction.c src/instruction.h)

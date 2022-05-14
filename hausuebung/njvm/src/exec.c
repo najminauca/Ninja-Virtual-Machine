@@ -162,6 +162,7 @@ int execute(uint32_t ins) {
             if (brt(imm)) {
                 return 1;
             }
+            break;
         default:
             printf("Found unknown op code %d\n", dec_ins);
             return 1;
