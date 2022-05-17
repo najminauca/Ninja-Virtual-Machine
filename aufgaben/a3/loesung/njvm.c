@@ -47,7 +47,6 @@ void run() {
 }
 
 void readBin(char * filename) {//FILE *filepointer
-    
     if((filepointer = fopen(filename, "r")) == NULL) {
         printf("Error: cannot open code file '%s'\n", filename);
         exit(25);
@@ -89,6 +88,8 @@ void readBin(char * filename) {//FILE *filepointer
 }
 
 int main(int argc, char** argv) {
+    char * filename;
+
     if (argc > 1) {
         int i;
         for(i = 1; i < argc; i++) {
@@ -112,15 +113,20 @@ int main(int argc, char** argv) {
                 }
             } 
             else {
-                readBin(argv[i]);
+                filename = argv[i];
+                readBin(filename);
             }
         }
     }
     
     if(filepointer == NULL) {
-                printf("Error: no code file specified\n");
-                return 1;
-            }
+        printf("Error: no code file specified\n");
+        return 1;
+    }
+
+    if(debugBool == 1) {
+        printf("DEBUG: file '%s' loaded (code size = %d, data size = %d)\n", filename, pcSize, sdaSize);
+    }
 
     printf("Ninja Virtual Machine started\n");
     run();

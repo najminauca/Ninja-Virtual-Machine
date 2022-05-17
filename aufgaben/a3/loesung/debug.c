@@ -60,7 +60,7 @@ void debugRun(unsigned int ir) {
                 printf("	--- end of data ---\n");
             }
         }
-        if(strcmp(c, "list") == 0) {
+        else if(strcmp(c, "list") == 0) {
                 int temp = pc;
                 print();
                 printf("	--- end of code ---\n");
