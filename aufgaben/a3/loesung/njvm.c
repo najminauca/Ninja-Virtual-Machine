@@ -21,6 +21,7 @@ int sdaSize;
 int runBool = 0;
 int debugBool = 0;
 int quit = 0;
+FILE * filepointer;
 
 void print() {
     pc = 0;
@@ -39,33 +40,19 @@ void run() {
     while(1) {
         ir = program_memory[pc];
         pc = pc + 1;
-        execute(ir);
-        if(ir >> 24 == HALT) break;
+        if(debugBool == 1) debugRun(ir);
+        else { execute(ir); }
+        if(ir >> 24 == HALT || quit == 1) break;
     } 
 }
 
-void debug() {
-    pc = 0;
-    unsigned int ir;
-    while(1) {
-        ir = program_memory[pc];
-        pc = pc + 1;
-        debugRun(ir);
-        if(ir >> 24 == HALT || quit == 1) break;
+void readBin(char * filename) {//FILE *filepointer
+    
+    if((filepointer = fopen(filename, "r")) == NULL) {
+        printf("Error: cannot open code file '%s'\n", filename);
+        exit(25);
     }
-}
 
-void loadProg(unsigned int *prog) {
-    program_memory = malloc(10000*sizeof(unsigned int));
-    pc = 0;
-    while(1) {
-        program_memory[pc] = prog[pc];
-        if(prog[pc] >> 24 == HALT) break;
-        pc++;
-    }
-}
-
-void readBin(FILE *filepointer) {
     int read_len = 0;
     char c[4];
     read_len = fread(c, 1, 4, filepointer);
@@ -102,57 +89,43 @@ void readBin(FILE *filepointer) {
 }
 
 int main(int argc, char** argv) {
-    FILE * filepointer;
     if (argc > 1) {
-        if (strcmp(argv[1],"--help") == 0) {
-            printf("usage: %s [option] [option] ...\n",argv[0]);
-            printf("\t --version   show version and exit\n");
-            printf("\t --help      show this help and exit\n");
-            return 0;
-        } else if (strcmp(argv[1],"--version") == 0) {
-            printf("Ninja Virtual Machine version %d (compiled %s, %s)\n", VERSION,__DATE__,__TIME__);
-            return 0;
-        } else if(strcmp("--prog1", argv[1]) == 0) {
-            loadProg(code1); 
-        } else if(strcmp("--prog2", argv[1]) == 0) {
-            loadProg(code2);
-        } else if(strcmp("--prog3", argv[1]) == 0) {
-            loadProg(code3);
-        } else if(strcmp("prog1.bin", argv[1]) == 0) {
-            if((filepointer = fopen("prog1.bin", "r")) == NULL) {
-                perror("Datei nicht zu oeffnen!\n");
-                exit(25);
+        int i;
+        for(i = 1; i < argc; i++) {
+            //If argv starts with --
+            if(argv[i][0] == '-' && argv[i][1] == '-') {
+                if (strcmp(argv[i],"--help") == 0) {
+                    printf("Usage: ./njvm [options] <code file>\n");
+                    printf("Options:\n");
+                    printf("  --debug          start virtual machine in debug mode\n");
+                    printf("  --version        show version and exit\n");
+                    printf("  --help           show this help and exit\n");
+                    return 0;
+                } else if (strcmp(argv[i],"--version") == 0) {
+                    printf("Ninja Virtual Machine version %d (compiled %s, %s)\n", VERSION,__DATE__,__TIME__);
+                    return 0;
+                } else if(strcmp("--debug", argv[i]) == 0) {
+                    debugBool = 1;
+                } else {
+                    printf("unknown command line argument '%s', try '%s --help'\n",argv[i],argv[0]);
+                    return 1;
+                }
+            } 
+            else {
+                readBin(argv[i]);
             }
-            readBin(filepointer);
-        } else if(strcmp("prog2.bin", argv[1]) == 0) {
-            if((filepointer = fopen("prog2.bin", "r")) == NULL) {
-                perror("Datei nicht zu oeffnen!\n");
-                exit(25);
-            }
-            readBin(filepointer);
-        } else if(strcmp("--debug", argv[1]) == 0) {
-            debugBool = 1;
-            if(strcmp("prog1.bin", argv[2]) == 0)
-            if((filepointer = fopen("prog1.bin", "r")) == NULL) {
-                perror("Datei nicht zu oeffnen!\n");
-                exit(25);
-            }
-            readBin(filepointer);
-            printf("DEBUG: file '%s' loaded (code size = %d, data size = %d)\n", argv[2], pcSize, sdaSize);
-            printf("Ninja Virtual Machine started\n");
-            debug();
-            printf("Ninja Virtual Machine stopped\n");
-        } else {
-            printf("unknown command line argument '%s', try '%s --help'\n",argv[1],argv[0]);
-            return 1;
         }
     }
+    
+    if(filepointer == NULL) {
+                printf("Error: no code file specified\n");
+                return 1;
+            }
 
-    if(debugBool != 1) {
-        printf("Ninja Virtual Machine started\n");
-        run();
-        printf("Ninja Virtual Machine stopped\n");
-    }
+    printf("Ninja Virtual Machine started\n");
+    run();
+    printf("Ninja Virtual Machine stopped\n");
+        
     free(program_memory);
     free(sda);
 
