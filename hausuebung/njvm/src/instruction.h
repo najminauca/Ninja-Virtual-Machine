@@ -54,6 +54,19 @@ int brt(int32_t imm);
 
 int eq();
 
+int call(int32_t imm);
+
+int ret();
+
+int drop(int32_t imm);
+
+int pushr();
+
+int popr();
+
+int dup();
+
+
 #define NJVM_INSTRUCTION_H
 
 #endif //NJVM_INSTRUCTION_H

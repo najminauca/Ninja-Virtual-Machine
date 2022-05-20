@@ -6,16 +6,13 @@
 
 void printProgram() {
     int i = 0;
-    int run = 1;
-    while (run) {
+    for (i = 0; i < programm_size; i++) {
         uint32_t ins = programm_speicher[i];
         uint32_t opcode = ins >> 24;
         printf("%04d\t", i);
-        i = i + 1;
         switch (opcode) {
             case HALT:
                 printf("halt\t\n");
-                run = 0;
                 break;
             case PUSHC:
                 printf("pushc\t%d\n", SIGN_EXTEND(IMM(ins)));
@@ -57,7 +54,7 @@ void printProgram() {
                 printf("asf \t%d\n", SIGN_EXTEND(IMM(ins)));
                 break;
             case RSF:
-                printf("rsf \t%d\n", SIGN_EXTEND(IMM(ins)));
+                printf("rsf\n");
                 break;
             case PUSHL:
                 printf("pushl\t%d\n", SIGN_EXTEND(IMM(ins)));
@@ -92,9 +89,27 @@ void printProgram() {
             case BRT:
                 printf("brt \t%04d\n", SIGN_EXTEND(IMM(ins)));
                 break;
+            case CALL:
+                printf("call \t%04d\n", SIGN_EXTEND(IMM(ins)));
+                break;
+            case RET:
+                printf("ret\n");
+                break;
+            case DROP:
+                printf("drop \t%04d\n", SIGN_EXTEND(IMM(ins)));
+                break;
+            case PUSHR:
+                printf("pushr\n");
+                break;
+            case POPR:
+                printf("popr\n");
+                break;
+            case DUP:
+                printf("dup\n");
+                break;
             default:
                 printf("Unknown opcode %d at %d.. Aborting\n", opcode, i - 1);
-                run = 0;
+                break;
         }
     }
 }

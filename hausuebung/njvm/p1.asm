@@ -1,62 +1,26 @@
 //
-// prog1.asm -- an assembler example with global variables
+// prog01.asm -- call/ret without args, and without ret value
 //
 
-//
-// compute the gcd of two positive numbers
-//
-// global Integer x;
-// global Integer y;
-// x = readInteger();
-// y = readInteger();
-// while (x != y) {
-//   if (x > y) {
-//     x = x - y;
-//   } else {
-//     y = y - x;
-//   }
-// }
-// writeInteger(x);
-// writeCharacter('\n');
-
-	// x = readInteger();
-	rdint
-	popg	0
-	// y = readInteger();
-	rdint
-	popg	1
-	// while ...
-L1:
-	// x != y
-	pushg	0
-	pushg	1
-	ne
-	brf	L2
-	// if ...
-	pushg	0
-	pushg	1
-	gt
-	brf	L3
-	// x = x - y
-	pushg	0
-	pushg	1
-	sub
-	popg	0
-	jmp	L4
-L3:
-	// y = y - x
-	pushg	1
-	pushg	0
-	sub
-	popg	1
-L4:
-	jmp	L1
-L2:
-	// writeInteger(x);
-	pushg	0
+	asf	3
+	pushc	11
 	wrint
-	// writeCharacter('\n');
 	pushc	'\n'
 	wrchr
+	call	proc
+	pushc	33
+	wrint
+	pushc	'\n'
+	wrchr
+	rsf
 	halt
+
+proc:
+	asf	2
+	pushc	22
+	wrint
+	pushc	'\n'
+	wrchr
+	rsf
+	ret
 

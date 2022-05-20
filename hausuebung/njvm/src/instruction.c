@@ -220,3 +220,37 @@ int brt(int32_t imm) {
     }
     return 0;
 }
+
+int call(int32_t imm) {
+    if(push(pc) != 0) {
+        return 1;
+    }
+    pc = imm;
+    return 0;
+}
+
+int ret() {
+    return pop(&pc);
+}
+
+int drop(int32_t imm) {
+    sp = sp - imm;
+    if(sp < 0) {
+        printf("Error: drop to %d out of range\n", sp);
+        return 1;
+    }
+    return 0;
+}
+
+int pushr () {
+    return push(rvr);
+}
+
+int popr() {
+    return pop(&rvr);
+}
+
+int dup() {
+    int32_t v = stack[sp-1];
+    return push(v);
+}

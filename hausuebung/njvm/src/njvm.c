@@ -22,6 +22,7 @@ int32_t stack[STACK_LIMIT];
 int sp = 0;
 int pc = 0;
 int fp = 0;
+int32_t rvr = 0;
 
 void load_program(const char *path) {
     FILE *fp;
@@ -47,7 +48,7 @@ void load_program(const char *path) {
         exit(1);
     }
     //printf("Version %d\n",headers[1]);
-    if (headers[1] != 3) {
+    if (headers[1] != 4) {
         printf("ERROR: Invalid binary version %d",headers[1]);
         exit(1);
     }
@@ -79,6 +80,7 @@ void run() {
     sp = 0;
     pc = 0;
     fp = 0;
+    rvr = 0;
     while (1) {
         uint32_t ins = programm_speicher[pc];
         pc = pc + 1;

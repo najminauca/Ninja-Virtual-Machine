@@ -163,6 +163,36 @@ int execute(uint32_t ins) {
                 return 1;
             }
             break;
+        case CALL:
+            if (call(imm)) {
+                return 1;
+            }
+            break;
+        case RET:
+            if (ret()) {
+                return 1;
+            }
+            break;
+        case DROP:
+            if (drop(imm)) {
+                return 1;
+            }
+            break;
+        case PUSHR:
+            if (pushr()) {
+                return 1;
+            }
+            break;
+        case POPR:
+            if (popr()) {
+                return 1;
+            }
+            break;
+        case DUP:
+            if (dup()) {
+                return 1;
+            }
+            break;
         default:
             printf("Found unknown op code %d\n", dec_ins);
             return 1;
