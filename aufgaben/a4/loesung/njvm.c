@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "operations.h"
 #include "execute.h"
-#include "prog.h"
 #include "njvm.h"
 #include "debug.h"
 
