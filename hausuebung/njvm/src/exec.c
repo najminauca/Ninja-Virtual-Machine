@@ -13,14 +13,14 @@ int pop(int32_t *ret) {
         return 0;
     } else {
         printf("Tried to pop on stack pointer %d\n", sp);
-        return 1;
+        return 2;
     }
 }
 
 int push(int32_t val) {
     if (sp > STACK_LIMIT) {
         printf("Tried to push over stack limit\n");
-        return 1;
+        return 2;
     } else {
         stack[sp] = val;
         sp = sp + 1;
@@ -40,162 +40,162 @@ int execute(uint32_t ins) {
             break;
         case PUSHC:
             if (push(imm) != 0) {
-                return 1;
+                return 2;
             }
             break;
         case ADD:
             if (add()) {
-                return 1;
+                return 2;
             }
             break;
         case SUB:
             if (sub()) {
-                return 1;
+                return 2;
             }
             break;
         case MUL:
             if (mul()) {
-                return 1;
+                return 2;
             }
             break;
         case DIV:
             if (div()) {
-                return 1;
+                return 2;
             }
             break;
         case MOD:
             if (mod()) {
-                return 1;
+                return 2;
             }
             break;
         case RDINT:
             if (rdint()) {
-                return 1;
+                return 2;
             }
             break;
         case WRINT:
             if (wrint()) {
-                return 1;
+                return 2;
             }
             break;
         case RDCHR:
             if (rdchr()) {
-                return 1;
+                return 2;
             }
             break;
         case WRCHR:
             if (wrchr()) {
-                return 1;
+                return 2;
             }
             break;
         case PUSHG:
             if (pushg(imm)) {
-                return 1;
+                return 2;
             }
             break;
         case POPG:
             if (popg(imm)) {
-                return 1;
+                return 2;
             }
             break;
         case ASF:
             if (asf(imm)) {
-                return 1;
+                return 2;
             }
             break;
         case RSF:
             if (rsf()) {
-                return 1;
+                return 2;
             }
             break;
         case PUSHL:
             if (pushl(imm)) {
-                return 1;
+                return 2;
             }
             break;
         case POPL:
             if (popl(imm)) {
-                return 1;
+                return 2;
             }
             break;
         case EQ:
             if (eq()) {
-                return 1;
+                return 2;
             }
             break;
         case NE:
             if (ne()) {
-                return 1;
+                return 2;
             }
             break;
         case LT:
             if (lt()) {
-                return 1;
+                return 2;
             }
             break;
         case LE:
             if (le()) {
-                return 1;
+                return 2;
             }
             break;
         case GT:
             if (gt()) {
-                return 1;
+                return 2;
             }
             break;
         case GE:
             if (ge()) {
-                return 1;
+                return 2;
             }
             break;
         case JMP:
             if (jmp(imm)) {
-                return 1;
+                return 2;
             }
             break;
         case BRF:
             if (brf(imm)) {
-                return 1;
+                return 2;
             }
             break;
         case BRT:
             if (brt(imm)) {
-                return 1;
+                return 2;
             }
             break;
         case CALL:
             if (call(imm)) {
-                return 1;
+                return 2;
             }
             break;
         case RET:
             if (ret()) {
-                return 1;
+                return 2;
             }
             break;
         case DROP:
             if (drop(imm)) {
-                return 1;
+                return 2;
             }
             break;
         case PUSHR:
             if (pushr()) {
-                return 1;
+                return 2;
             }
             break;
         case POPR:
             if (popr()) {
-                return 1;
+                return 2;
             }
             break;
         case DUP:
             if (dup()) {
-                return 1;
+                return 2;
             }
             break;
         default:
             printf("Found unknown op code %d\n", dec_ins);
-            return 1;
+            return 2;
     }
 
     return 0;

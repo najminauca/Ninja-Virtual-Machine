@@ -55,7 +55,6 @@ void load_program(const char *path) {
     //printf("Number of instructions %d\n",programm_size);
     //printf("Static variables %d\n",static_data_area_size);
     static_data_area = malloc(static_data_area_size);
-    // TODO: größe aufschreiben
     programm_speicher = malloc(programm_size);
     read_ojects = fread(programm_speicher, sizeof(uint32_t), programm_size, fp);
     if (read_ojects != programm_size) {
@@ -63,33 +62,58 @@ void load_program(const char *path) {
         exit(1);
     }
     fclose(fp);
-
-//    pc = 0;
-//    while(1) {
-//        programm_speicher[pc] = source[pc];
-//        if (source[pc] >> 24 == 0)
-//            break;
-//        pc = pc + 1;
-//    }
-//    printf("Loaded %d instructions\n",pc);
-//    pc = 0;
 }
 
-void run() {
+int run(int debug) {
     int count = 0;
+    int ret = 0;
     sp = 0;
     pc = 0;
     fp = 0;
     rvr = 0;
+
+    int pause = debug;
+
     while (1) {
         uint32_t ins = programm_speicher[pc];
+        if(pause) {
+            printf("Debug mode. Possible actions: stack, statics, list, next, continue, quit\n");
+            printInstruction(pc,ins);
+            char input [20];
+            if (fgets(input,20,stdin) == NULL) {
+                continue;
+            } else {
+                if(strcmp(input, "stack\n") == 0) {
+                    printStack();
+                    continue;
+                } else if(strcmp(input, "statics\n") == 0) {
+                    printStatics();
+                    continue;
+                } else if(strcmp(input, "list\n") == 0) {
+                    printProgram();
+                    continue;
+                } else if(strcmp(input, "next\n") == 0) {
+                    pause = 1;
+                } else if(strcmp(input, "continue\n") == 0) {
+                    pause = 0;
+                } else if(strcmp(input, "quit\n") == 0) {
+                    ret = 0;
+                    break;
+                } else {
+                    printf("Invalid command\n");
+                    continue;
+                }
+            }
+        }
         pc = pc + 1;
         count = count + 1;
-        if (execute(ins)) {
+        ret = execute(ins);
+        if (ret != 0) {
             break;
         }
     }
     //printf("Finished after %d cycles\n", count);
+    return ret;
 }
 
 void help(char* binary_name) {
@@ -122,14 +146,12 @@ int main(int argc, char *argv[]) {
         help(argv[0]);
         return 0;
     }
-
-    //printProgram();
     printf("Ninja Virtual Machine started\n");
-    run();
+    int ret = run(debug);
     printf("Ninja Virtual Machine stopped\n");
 
     free(programm_speicher);
     free(static_data_area);
-    return 0;
+    return ret;
 }
 
