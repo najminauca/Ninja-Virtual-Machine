@@ -89,7 +89,7 @@ void run() {
             break;
         }
     }
-    printf("Finished after %d cycles\n", count);
+    //printf("Finished after %d cycles\n", count);
 }
 
 void help(char* binary_name) {
@@ -123,7 +123,7 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    printProgram();
+    //printProgram();
     printf("Ninja Virtual Machine started\n");
     run();
     printf("Ninja Virtual Machine stopped\n");

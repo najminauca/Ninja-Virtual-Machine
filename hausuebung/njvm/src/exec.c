@@ -35,7 +35,7 @@ int execute(uint32_t ins) {
     // was wiederum sehr unsauber ist
     switch (dec_ins) {
         case HALT:
-            printf("Found halt instruction\n");
+            //printf("Found halt instruction\n");
             return 1;
             break;
         case PUSHC:
