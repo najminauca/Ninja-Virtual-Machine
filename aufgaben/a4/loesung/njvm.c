@@ -46,7 +46,7 @@ void run() {
     } 
 }
 
-void readBin(char * filename) {//FILE *filepointer
+void readBin(char * filename) {
     if((filepointer = fopen(filename, "r")) == NULL) {
         printf("Error: cannot open code file '%s'\n", filename);
         exit(25);

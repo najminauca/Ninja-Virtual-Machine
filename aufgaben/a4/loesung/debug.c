@@ -41,7 +41,6 @@ void debugRun(unsigned int ir) {
 
             if(strcmp(c, "stack") == 0) {
                 int i = sp;
-                //printf("sp      --->	0010:	xxxx")
                 while(i >= 0) {
                     printStack(i);
                     i--;
@@ -86,7 +85,7 @@ void debugRun(unsigned int ir) {
         } else if(strcmp(c, "run") == 0) {
             runBool = 1;
         } else if(strcmp(c, "quit") == 0) {
-            quit = 1; //Quit debug
+            quit = 1;
             break;
         } else {
             continue;
