@@ -1,14 +1,19 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "njvm.h"
 
 int pop(void) {
     sp--;
-    return stack[sp];
+    return *(int *)stack[sp].u.objRef->data;
 }
 
 void push(int i) {
     if(sp < MAX) {
-        stack[sp] = i;
+        ObjRef obj = malloc(sizeof(unsigned int) + sizeof(int));
+        obj->size = sizeof(int);
+        *(int *)obj->data = i;
+        stack[sp].isObjRef = true;
+        stack[sp].u.objRef = obj;
         sp++;
     }
 }
@@ -42,7 +47,7 @@ void mul(void) {
 }
 
 void divnjvm(void) {
-    if(sp > 1 && stack[sp - 1] != 0){
+    if(sp > 1 && *(int *)stack[sp - 1].u.objRef->data != 0){
         int b = pop();
         int a = pop();
         pushc(a / b);
@@ -83,20 +88,27 @@ void wrchr(void) {
 
 void pushg(int i) {
     if(i < sdaSize) {
-        pushc(sda[i]);
+        pushc(*(int *)sda[i]->data);
     }
 }
 
 void popg(int i) {
     if(i < sdaSize) {
-        sda[i] = pop();
+        ObjRef obj = malloc(sizeof(unsigned int) + sizeof(int));
+        obj->size = sizeof(int);
+        *(int *)obj->data = pop();
+        sda[i] = obj;
     }
 }
 
 void asf(int size) {
     pushc(fp);
     fp = sp;
-    sp = sp + size;
+    int i = 0;
+    while(i < size) {
+        pushc(0);
+        i++;
+    }
     fSize = size;
 }
 
@@ -111,14 +123,18 @@ void rsf(void) {
 void pushl(int i) {
     int pos = fp + i;
     if(pos < fp + fSize) {
-        pushc(stack[pos]);
+        pushc(*(int *)stack[pos].u.objRef->data);
     }
 }
 
 void popl(int i) {
     int pos = fp + i;
     if(sp > fp && pos < fp + fSize) {
-        stack[pos] = pop();
+        ObjRef obj = malloc(sizeof(unsigned int) + sizeof(int));
+        obj->size = sizeof(int);
+        *(int *)obj->data = pop();
+        stack[pos].isObjRef = true;
+        stack[pos].u.objRef = obj;
     }
 }
 
@@ -233,16 +249,20 @@ void drop(int n) {
 
 void pushr(void) {
     if(sp > 1) {
-        pushc(returnRegister);
+        pushc(*(int *)returnRegister->data);
     }
 }
 
 void popr(void) {
-    returnRegister = pop();
+    ObjRef obj = malloc(sizeof(unsigned int) + sizeof(int));
+    obj->size = sizeof(int);
+    *(int *)obj->data = pop();
+    returnRegister = obj;
+    sp--;
 }
 
 void dup(void) {
     if(sp > 0) {
-        pushc(stack[sp - 1]);
+        pushc(*(int*)stack[sp - 1].u.objRef->data);
     }
 }

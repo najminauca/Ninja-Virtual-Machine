@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "operations.h"
 #include "execute.h"
 #include "njvm.h"
@@ -9,18 +10,18 @@
 const int VERSION = 4;
 
 unsigned int *program_memory;
-int stack[MAX];
+StackSlot stack[MAX];
 int sp = 0;
 int pc = 0;
 int pcSize = 0;
 int fSize = 0;
 int fp;
-int *sda;
+ObjRef *sda;
 int sdaSize;
 int runBool = 0;
 int debugBool = 0;
 int quit = 0;
-int returnRegister;
+ObjRef returnRegister;
 FILE * filepointer;
 
 void print() {
@@ -46,7 +47,7 @@ void run() {
     } 
 }
 
-void readBin(char * filename) {//FILE *filepointer
+void readBin(char * filename) {
     if((filepointer = fopen(filename, "r")) == NULL) {
         printf("Error: cannot open code file '%s'\n", filename);
         exit(25);
@@ -74,7 +75,7 @@ void readBin(char * filename) {//FILE *filepointer
 
     read_len = fread(&n, 1, 4, filepointer);
     sdaSize = SIGN_EXTEND(IMMEDIATE(n));
-    sda = malloc(sdaSize*sizeof(int));
+    sda = malloc(sdaSize*sizeof(sizeof(unsigned int) + sizeof(int)));
     if(sda == NULL) {
         exit(-1);
     }

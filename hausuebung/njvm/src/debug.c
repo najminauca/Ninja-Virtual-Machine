@@ -19,11 +19,11 @@ void printStack(int i) {
     } else if(fp == i) {
         printf("fp      --->	");
         printNum(i);
-        printf("%d\n", stack[i]);
+        printf("%d\n", *(int *)stack[i].u.objRef->data);
     } else {
         printf("		");
         printNum(i);
-        printf("%d\n", stack[i]);
+        printf("%d\n", *(int *)stack[i].u.objRef->data);
     }
 }
 
@@ -41,7 +41,6 @@ void debugRun(unsigned int ir) {
 
             if(strcmp(c, "stack") == 0) {
                 int i = sp;
-                //printf("sp      --->	0010:	xxxx")
                 while(i >= 0) {
                     printStack(i);
                     i--;
@@ -50,11 +49,11 @@ void debugRun(unsigned int ir) {
             } else if(strcmp(c, "data") == 0) {
                 for(int i = 0; i < sdaSize; i++) {
                     if(i < 10) {
-                        printf("data[000%d]:	%d\n", i, sda[i]);
+                        printf("data[000%d]:	%d\n", i, *(int *)sda[i]->data);
                     } else if(i < 100) {
-                        printf("data[0%d]:	%d\n", i, sda[i]);
+                        printf("data[0%d]:	%d\n", i, *(int *)sda[i]->data);
                     } else {
-                        printf("data[%d]:	%d\n", i, sda[i]);
+                        printf("data[%d]:	%d\n", i, *(int *)sda[i]->data);
                     }
                 }
                 printf("	--- end of data ---\n");
@@ -86,7 +85,7 @@ void debugRun(unsigned int ir) {
         } else if(strcmp(c, "run") == 0) {
             runBool = 1;
         } else if(strcmp(c, "quit") == 0) {
-            quit = 1; //Quit debug
+            quit = 1;
             break;
         } else {
             continue;

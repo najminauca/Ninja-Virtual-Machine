@@ -197,7 +197,7 @@ void listProg(unsigned int ir, int pc) {
             printf("brt\t%d\n", immediate);
             break;
         case CALL: 
-            printf("brt\t%d\n", immediate);
+            printf("call\t%d\n", immediate);
             break; 
         case RET: 
             printf("ret\t\n");
