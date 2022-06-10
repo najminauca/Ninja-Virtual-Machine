@@ -7,8 +7,14 @@
 
 int execute(uint32_t ins);
 
-int pop(int32_t *);
+int popInt(int32_t *);
+int popObjRef(ObjRef *ret);
 
-int push(int32_t);
+int pushObjRef(ObjRef val);
+int pushInt(int32_t val);
+
+ObjRef createIntObj(int32_t value);
+int32_t getObjInt(ObjRef ref);
+void setObjInt(ObjRef ref, int32_t val);
 
 #endif //KSP_PUBLIC_EXEC_H

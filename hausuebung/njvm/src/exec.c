@@ -3,13 +3,47 @@
 //
 #include <stdint.h>
 #include <stdio.h>
+#include <malloc.h>
+#include <stdlib.h>
 #include "njvm.h"
 #include "instruction.h"
 
-int pop(int32_t *ret) {
+int32_t getObjInt(ObjRef ref) {
+    if(ref->size != sizeof(int32_t)) {
+        printf("Can't get int of object with size %d!\n",ref->size);
+        exit(1);
+    }
+    return *(int32_t* )ref->data;
+}
+
+void setObjInt(ObjRef ref, int32_t val) {
+    if(ref->size != sizeof(int32_t)) {
+        printf("Can't set int of object with size %d!\n",ref->size);
+        exit(1);
+    }
+    *(int32_t *)ref->data = val;
+}
+
+ObjRef createIntObj(int32_t value) {
+    ObjRef intObject;
+    unsigned int msize = sizeof(uint32_t) + sizeof(int32_t);
+    if ((intObject = malloc(msize)) == NULL) {
+        printf("Failed to allocate int object!\n");
+        exit(1);
+    }
+    intObject->size = sizeof(int32_t);
+    *(int*)intObject->data = value;
+    return intObject;
+}
+
+int popObjRef(ObjRef *ret) {
     if (sp > 0) { // TODO: check for invalid pop over stackframe
         sp = sp - 1;
-        *ret = stack[sp];
+        if (!stack[sp].isObjRef) {
+            printf("Tried to pop objref on int! stack pointer %d\n", sp);
+            return 2;
+        }
+        *ret = stack[sp].objRef;
         return 0;
     } else {
         printf("Tried to pop on stack pointer %d\n", sp);
@@ -17,12 +51,40 @@ int pop(int32_t *ret) {
     }
 }
 
-int push(int32_t val) {
+int popInt(int32_t *ret) {
+    if (sp > 0) { // TODO: check for invalid pop over stackframe
+        sp = sp - 1;
+        if (stack[sp].isObjRef) {
+            printf("Tried to pop int on objref! stack pointer %d\n", sp);
+            return 2;
+        }
+        *ret = stack[sp].number;
+        return 0;
+    } else {
+        printf("Tried to pop on stack pointer %d\n", sp);
+        return 2;
+    }
+}
+
+int pushObjRef(ObjRef val) {
     if (sp > STACK_LIMIT) {
-        printf("Tried to push over stack limit\n");
+        printf("Tried to pushObjRef over stack limit\n");
         return 2;
     } else {
-        stack[sp] = val;
+        stack[sp].isObjRef = true;
+        stack[sp].objRef = val;
+        sp = sp + 1;
+        return 0;
+    }
+}
+
+int pushInt(int32_t val) {
+    if (sp > STACK_LIMIT) {
+        printf("Tried to pushObjRef over stack limit\n");
+        return 2;
+    } else {
+        stack[sp].isObjRef = false;
+        stack[sp].number = val;
         sp = sp + 1;
         return 0;
     }
@@ -39,7 +101,7 @@ int execute(uint32_t ins) {
             return 1;
             break;
         case PUSHC:
-            if (push(imm) != 0) {
+            if (pushObjRef(imm) != 0) {
                 return 2;
             }
             break;
@@ -59,7 +121,7 @@ int execute(uint32_t ins) {
             }
             break;
         case DIV:
-            if (div()) {
+            if (c_div()) {
                 return 2;
             }
             break;

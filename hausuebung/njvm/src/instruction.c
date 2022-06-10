@@ -7,38 +7,53 @@
 #include "exec.h"
 
 int add() {
-    int32_t a, b, r;
-    if (pop(&b) != 0 || pop(&a) != 0)
+    ObjRef ao, bo;
+    if (popObjRef(&bo) != 0 || popObjRef(&ao) != 0)
         return 1;
-    return push(a + b);
+    int32_t a, b;
+    a = getObjInt(ao);
+    b = getObjInt(bo);
+    return pushObjRef(createIntObj(a+b));
 }
 
 int sub() {
-    int32_t a, b, r;
-    if (pop(&b) != 0 || pop(&a) != 0)
+    ObjRef ao, bo;
+    if (popObjRef(&bo) != 0 || popObjRef(&ao) != 0)
         return 1;
-    return push(a - b);
+    int32_t a, b;
+    a = getObjInt(ao);
+    b = getObjInt(bo);
+    return pushObjRef(createIntObj(a - b));
 }
 
 int mul() {
-    int32_t a, b;
-    if (pop(&b) != 0 || pop(&a) != 0)
+    ObjRef ao, bo;
+    if (popObjRef(&bo) != 0 || popObjRef(&ao) != 0)
         return 1;
-    return push(a * b);
+    int32_t a, b;
+    a = getObjInt(ao);
+    b = getObjInt(bo);
+    return pushObjRef(createIntObj(a * b));
 }
 
-int div() {
-    int32_t a, b;
-    if (pop(&b) != 0 || pop(&a) != 0)
+int c_div() {
+    ObjRef ao, bo;
+    if (popObjRef(&bo) != 0 || popObjRef(&ao) != 0)
         return 1;
-    return push(a / b);
+    int32_t a, b;
+    a = getObjInt(ao);
+    b = getObjInt(bo);
+    return pushObjRef(createIntObj(a / b));
 }
 
 int mod() {
-    int32_t a, b;
-    if (pop(&b) != 0 || pop(&a) != 0)
+    ObjRef ao, bo;
+    if (popObjRef(&bo) != 0 || popObjRef(&ao) != 0)
         return 1;
-    return push(a % b);
+    int32_t a, b;
+    a = getObjInt(ao);
+    b = getObjInt(bo);
+    return pushObjRef(createIntObj(a % b));
 }
 
 int rdint() {
@@ -48,13 +63,14 @@ int rdint() {
         printf("ERROR: Invalid user input, expected 1 number, got %d, aborting\n", r);
         return 1;
     }
-    return push(in);
+    return pushObjRef(createIntObj(in));
 }
 
 int wrint() {
-    int32_t v;
-    if (pop(&v) != 0)
+    ObjRef vo;
+    if (popObjRef(&vo) != 0)
         return 1;
+    int32_t v = getObjInt(vo);
     printf("%d", v);
     return 0;
 }
@@ -66,20 +82,21 @@ int rdchr() {
         printf("ERROR: Invalid user input, expected 1 character, got %d, aborting\n", r);
         return 1;
     }
-    return push((int32_t) in);
+    return pushObjRef(createIntObj((int32_t) in));
 }
 
 int wrchr() {
-    int32_t v;
-    if (pop(&v) != 0)
+    ObjRef vo;
+    if (popObjRef(&vo) != 0)
         return 1;
+    int32_t v = getObjInt(vo);
     printf("%c", v);
     return 0;
 }
 
 int pushg(int32_t imm) {
     if (imm < static_data_area_size && imm >= 0) {
-        push(static_data_area[imm]);
+        pushObjRef(static_data_area[imm]);
         return 0;
     } else {
         printf("Error: PUSHG to %d which is outside the SDA!\n", imm);
@@ -88,8 +105,8 @@ int pushg(int32_t imm) {
 }
 
 int popg(int32_t imm) {
-    int32_t v;
-    if (pop(&v) != 0)
+    ObjRef v;
+    if (popObjRef(&v) != 0)
         return 1;
     if (imm < static_data_area_size && imm >= 0) {
         static_data_area[imm] = v;
@@ -101,7 +118,7 @@ int popg(int32_t imm) {
 }
 
 int asf(int32_t imm) {
-    if (push(fp) != 0) {
+    if (pushInt(fp) != 0) {
         printf("Error: No more space for pushing sp in ASF call\n");
         return 1;
     }
@@ -113,7 +130,7 @@ int asf(int32_t imm) {
 int rsf() {
     sp = fp;
     int32_t v;
-    if (pop(&v) != 0)
+    if (popInt(&v) != 0)
         return 1;
     fp = v;
     return 0;
@@ -125,7 +142,11 @@ int pushl(int32_t imm) {
         printf("Error: PUSHL over sp!\n");
         return 1;
     }
-    return push(stack[pos]);
+    if(!stack[pos].isObjRef) {
+        printf("Error: PUSHL on int, wanted objref!\n");
+        return 1;
+    }
+    return pushObjRef(stack[pos].objRef);
 }
 
 int popl(int32_t imm) {
@@ -134,54 +155,79 @@ int popl(int32_t imm) {
         printf("Error: POPL invalid SP %d FP %d pos %d\n", sp, fp, pos);
         return 1;
     }
-    int32_t v;
-    if (pop(&v) != 0) {
+    ObjRef v;
+    if (popObjRef(&v) != 0) {
         return 1;
     }
-    stack[pos] = v;
+    stack[pos].isObjRef = true;
+    stack[pos].objRef = v;
     return 0;
 }
 
 int eq() {
-    int32_t a, b;
-    if (pop(&b) != 0 || pop(&a) != 0)
+    ObjRef a, b;
+    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
         return 1;
-    return push(a == b);
+    int val = 0;
+    if (getObjInt(a) == getObjInt(b)) {
+        val = 1;
+    }
+    return pushObjRef(createIntObj(val));
 }
 
 int ne() {
-    int32_t a, b;
-    if (pop(&b) != 0 || pop(&a) != 0)
+    ObjRef a, b;
+    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
         return 1;
-    return push(a != b);
+    int val = 0;
+    if (getObjInt(a) != getObjInt(b)) {
+        val = 1;
+    }
+    return pushObjRef(createIntObj(val));
 }
 
 int lt() {
-    int32_t a, b;
-    if (pop(&b) != 0 || pop(&a) != 0)
+    ObjRef a, b;
+    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
         return 1;
-    return push(a < b);
+    int val = 0;
+    if (getObjInt(a) < getObjInt(b)) {
+        val = 1;
+    }
+    return pushObjRef(createIntObj(val));
 }
 
 int le() {
-    int32_t a, b;
-    if (pop(&b) != 0 || pop(&a) != 0)
+    ObjRef a, b;
+    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
         return 1;
-    return push(a <= b);
+    int val = 0;
+    if (getObjInt(a) <= getObjInt(b)) {
+        val = 1;
+    }
+    return pushObjRef(createIntObj(val));
 }
 
 int gt() {
-    int32_t a, b;
-    if (pop(&b) != 0 || pop(&a) != 0)
+    ObjRef a, b;
+    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
         return 1;
-    return push(a > b);
+    int val = 0;
+    if (getObjInt(a) > getObjInt(b)) {
+        val = 1;
+    }
+    return pushObjRef(createIntObj(val));
 }
 
 int ge() {
-    int32_t a, b;
-    if (pop(&b) != 0 || pop(&a) != 0)
+    ObjRef a, b;
+    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
         return 1;
-    return push(a >= b);
+    int val = 0;
+    if (getObjInt(a) >= getObjInt(b)) {
+        val = 1;
+    }
+    return pushObjRef(createIntObj(val));
 }
 
 int jmp(int32_t imm) {
@@ -194,10 +240,10 @@ int jmp(int32_t imm) {
 }
 
 int brf(int32_t imm) {
-    int32_t a;
-    if (pop(&a) != 0)
+    ObjRef a;
+    if (popObjRef(&a) != 0)
         return 1;
-    if (a == 0) {
+    if (getObjInt(a) == 0) {
         if (imm > programm_size || imm < 0) {
             printf("Error: BRF to %d out of range\n", imm);
             return 1;
@@ -208,10 +254,10 @@ int brf(int32_t imm) {
 }
 
 int brt(int32_t imm) {
-    int32_t a;
-    if (pop(&a) != 0)
+    ObjRef a;
+    if (popObjRef(&a) != 0)
         return 1;
-    if (a == 1) {
+    if (getObjInt(a) == 1) {
         if (imm > programm_size || imm < 0) {
             printf("Error: BRT to %d out of range\n", imm);
             return 1;
@@ -222,7 +268,7 @@ int brt(int32_t imm) {
 }
 
 int call(int32_t imm) {
-    if(push(pc) != 0) {
+    if(pushInt(pc) != 0) {
         return 1;
     }
     pc = imm;
@@ -230,7 +276,7 @@ int call(int32_t imm) {
 }
 
 int ret() {
-    return pop(&pc);
+    return popInt(&pc);
 }
 
 int drop(int32_t imm) {
@@ -243,14 +289,17 @@ int drop(int32_t imm) {
 }
 
 int pushr () {
-    return push(rvr);
+    return pushObjRef(rvr);
 }
 
 int popr() {
-    return pop(&rvr);
+    return popObjRef(&rvr);
 }
 
 int dup() {
-    int32_t v = stack[sp-1];
-    return push(v);
+    if (!stack[sp-1].isObjRef) {
+        printf("Error: can't dup on int, expected objref! stackpointer %d\n",sp);
+        return 1;
+    }
+    return pushObjRef(stack[sp-1].objRef);
 }

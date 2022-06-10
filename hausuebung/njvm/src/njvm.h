@@ -5,6 +5,7 @@
 #ifndef KSP_PUBLIC_NJVM_H
 #define KSP_PUBLIC_NJVM_H
 #include <stdint.h>
+#include <stdbool.h>
 
 #define HALT 0
 #define PUSHC 1
@@ -39,6 +40,8 @@
 #define POPR 30
 #define DUP 31
 
+#define NJVM_VERSION 5
+
 
 #define IMM(x) ((x) & 0x00FFFFFF)
 #define SIGN_EXTEND(i) ((i) & 0x00800000 ? (i) | 0xFF000000 : (i))
@@ -47,12 +50,25 @@
 //#define PROGRAM_LIMIT 1000
 #define STACK_LIMIT 1000
 
+typedef struct {
+    uint32_t size;
+    unsigned char data[1];
+} *ObjRef;
+
+typedef struct {
+    bool isObjRef;
+    union {
+        ObjRef  objRef;
+        int32_t number;
+    };
+} Stackslot;
+
 extern uint32_t *programm_speicher;//[PROGRAM_LIMIT];
 extern uint32_t programm_size;
 // globale variabeln
 extern uint32_t static_data_area_size;
-extern int32_t *static_data_area;
-extern int32_t stack[STACK_LIMIT];
+extern ObjRef *static_data_area;
+extern Stackslot stack[STACK_LIMIT];
 // Stackpointer
 extern int sp;
 // Programmcounter
@@ -60,6 +76,6 @@ extern int pc;
 // Framepointer
 extern int fp;
 // return value register
-extern int32_t rvr;
+extern ObjRef rvr;
 
 #endif //KSP_PUBLIC_NJVM_H

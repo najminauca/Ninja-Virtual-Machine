@@ -12,7 +12,8 @@ int sub();
 
 int mul();
 
-int div();
+// has to be renamed due to stdlib import via exit()
+int c_div();
 
 int mod();
 

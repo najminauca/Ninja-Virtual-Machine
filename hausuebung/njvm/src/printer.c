@@ -24,7 +24,7 @@ void printInstruction(int i, uint32_t ins) {
             printf("mul\t\n");
             break;
         case DIV:
-            printf("div\t\n");
+            printf("c_div\t\n");
             break;
         case MOD:
             printf("mod\t\n");
@@ -117,21 +117,40 @@ void printProgram() {
     }
 }
 
+void printObjRef(ObjRef ref) {
+    if (ref->size == sizeof(int32_t)) {
+        printf("size: %d, data: (int) %d\n",ref->size,*(int*)ref->data);
+    } else {
+        printf("size: %d, data: ",ref->size);
+        int i;
+        for (i=0; i < ref->size; i++) {
+            printf("%x",ref->data[i]);
+        }
+        printf("\n");
+    }
+}
+
 void printStack() {
     int i;
-    for(i = sp; i >= 0; i--) {
+    for (i = sp; i >= 0; i--) {
         if (fp == i) {
             printf("fp\t->\t");
         } else {
             printf("\t\t");
         }
-        printf("%04d:\t%d\n",i,stack[i]);
+        if (stack[i].isObjRef) {
+            printf("%04d:\tObjref: ", i);
+            printObjRef(stack[i].objRef);
+        } else {
+            printf("%04d:\t%d\n", i, stack[i].number);
+        }
     }
 }
 
 void printStatics() {
     int i;
     for(i = 0; i < static_data_area_size; i++) {
-        printf("%04d:\t%d\n",i,static_data_area[i]);
+        printf("%04d:\t",i);
+        printObjRef(static_data_area[i]);
     }
 }
