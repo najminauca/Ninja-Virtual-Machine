@@ -13,7 +13,7 @@ int add() {
     int32_t a, b;
     a = getObjInt(ao);
     b = getObjInt(bo);
-    return pushObjRef(createIntObj(a+b));
+    return pushObjRef(createIntObj(a + b));
 }
 
 int sub() {
@@ -142,7 +142,7 @@ int pushl(int32_t imm) {
         printf("Error: PUSHL over sp!\n");
         return 1;
     }
-    if(!stack[pos].isObjRef) {
+    if (!stack[pos].isObjRef) {
         printf("Error: PUSHL on int, wanted objref!\n");
         return 1;
     }
@@ -268,7 +268,7 @@ int brt(int32_t imm) {
 }
 
 int call(int32_t imm) {
-    if(pushInt(pc) != 0) {
+    if (pushInt(pc) != 0) {
         return 1;
     }
     pc = imm;
@@ -281,14 +281,14 @@ int ret() {
 
 int drop(int32_t imm) {
     sp = sp - imm;
-    if(sp < 0) {
+    if (sp < 0) {
         printf("Error: drop to %d out of range\n", sp);
         return 1;
     }
     return 0;
 }
 
-int pushr () {
+int pushr() {
     return pushObjRef(rvr);
 }
 
@@ -297,9 +297,9 @@ int popr() {
 }
 
 int dup() {
-    if (!stack[sp-1].isObjRef) {
-        printf("Error: can't dup on int, expected objref! stackpointer %d\n",sp);
+    if (!stack[sp - 1].isObjRef) {
+        printf("Error: can't dup on int, expected objref! stackpointer %d\n", sp);
         return 1;
     }
-    return pushObjRef(stack[sp-1].objRef);
+    return pushObjRef(stack[sp - 1].objRef);
 }

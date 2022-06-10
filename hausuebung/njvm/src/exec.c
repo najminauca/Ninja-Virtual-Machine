@@ -9,19 +9,19 @@
 #include "instruction.h"
 
 int32_t getObjInt(ObjRef ref) {
-    if(ref->size != sizeof(int32_t)) {
-        printf("Can't get int of object with size %d!\n",ref->size);
+    if (ref->size != sizeof(int32_t)) {
+        printf("Can't get int of object with size %d!\n", ref->size);
         exit(1);
     }
-    return *(int32_t* )ref->data;
+    return *(int32_t *) ref->data;
 }
 
 void setObjInt(ObjRef ref, int32_t val) {
-    if(ref->size != sizeof(int32_t)) {
-        printf("Can't set int of object with size %d!\n",ref->size);
+    if (ref->size != sizeof(int32_t)) {
+        printf("Can't set int of object with size %d!\n", ref->size);
         exit(1);
     }
-    *(int32_t *)ref->data = val;
+    *(int32_t *) ref->data = val;
 }
 
 ObjRef createIntObj(int32_t value) {
@@ -32,7 +32,7 @@ ObjRef createIntObj(int32_t value) {
         exit(1);
     }
     intObject->size = sizeof(int32_t);
-    *(int*)intObject->data = value;
+    *(int *) intObject->data = value;
     return intObject;
 }
 
