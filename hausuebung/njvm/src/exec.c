@@ -101,7 +101,7 @@ int execute(uint32_t ins) {
             return 1;
             break;
         case PUSHC:
-            if (pushObjRef(imm) != 0) {
+            if (pushObjRef(createIntObj(imm)) != 0) {
                 return 2;
             }
             break;
