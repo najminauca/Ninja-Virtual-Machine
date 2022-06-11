@@ -203,7 +203,7 @@ int lt() {
     bip.op1 = a;
     bip.op2 = b;
     int val = 0;
-    if (bigCmp() == -1) { // <
+    if (bigCmp() < 0) { // <
         val = 1;
     }
     return pushObjRef(createIntObj(val));
@@ -216,7 +216,7 @@ int le() {
     bip.op1 = a;
     bip.op2 = b;
     int val = 0;
-    if (bigCmp() != 1) { // <=
+    if (bigCmp() < 1) { // <=
         val = 1;
     }
     return pushObjRef(createIntObj(val));
@@ -229,7 +229,7 @@ int gt() {
     bip.op1 = a;
     bip.op2 = b;
     int val = 0;
-    if (bigCmp() == 1) { // >
+    if (bigCmp() >= 1) { // >
         val = 1;
     }
     return pushObjRef(createIntObj(val));
@@ -242,7 +242,7 @@ int ge() {
     bip.op1 = a;
     bip.op2 = b;
     int val = 0;
-    if (bigCmp() != -1) { // >=
+    if (bigCmp() > -1) { // >=
         val = 1;
     }
     return pushObjRef(createIntObj(val));
@@ -278,7 +278,7 @@ int brt(int32_t imm) {
     if (popObjRef(&a) != 0)
         return 1;
     bip.op1 = a;
-    if (bigSgn() == 1) {
+    if (bigSgn() != 0) {
         if (imm > programm_size || imm < 0) {
             printf("Error: BRT to %d out of range\n", imm);
             return 1;
