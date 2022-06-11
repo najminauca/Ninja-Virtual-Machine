@@ -40,7 +40,7 @@
 #define POPR 30
 #define DUP 31
 
-#define NJVM_VERSION 5
+#define NJVM_VERSION 6
 
 
 #define IMM(x) ((x) & 0x00FFFFFF)
@@ -60,7 +60,7 @@ typedef struct {
     union {
         ObjRef  objRef;
         int32_t number;
-    };
+    } u;
 } Stackslot;
 
 extern uint32_t *programm_speicher;//[PROGRAM_LIMIT];

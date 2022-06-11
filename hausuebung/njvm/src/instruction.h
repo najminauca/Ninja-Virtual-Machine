@@ -6,6 +6,8 @@
 
 #include <stdint.h>
 
+int pushc(int32_t imm);
+
 int add();
 
 int sub();

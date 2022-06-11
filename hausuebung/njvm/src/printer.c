@@ -3,6 +3,7 @@
 //
 #include "stdio.h"
 #include "njvm.h"
+#include "bigint.h"
 
 void printInstruction(int i, uint32_t ins) {
     uint32_t opcode = ins >> 24;
@@ -121,12 +122,17 @@ void printObjRef(ObjRef ref) {
     if (ref->size == sizeof(int32_t)) {
         printf("size: %d, data: (int) %d\n",ref->size,*(int*)ref->data);
     } else {
-        printf("size: %d, data: ",ref->size);
-        int i;
-        for (i=0; i < ref->size; i++) {
-            printf("%x",ref->data[i]);
-        }
+        printf("size: %d, data: (bigint) ",ref->size);
+        bip.op1 = ref;
+        bigPrint(stdout);
         printf("\n");
+// old code for anything
+//        printf("size: %d, data: ",ref->size);
+//        int i;
+//        for (i=0; i < ref->size; i++) {
+//            printf("%x",ref->data[i]);
+//        }
+//        printf("\n");
     }
 }
 
@@ -140,9 +146,9 @@ void printStack() {
         }
         if (stack[i].isObjRef) {
             printf("%04d:\tObjref: ", i);
-            printObjRef(stack[i].objRef);
+            printObjRef(stack[i].u.objRef);
         } else {
-            printf("%04d:\t%d\n", i, stack[i].number);
+            printf("%04d:\t%d\n", i, stack[i].u.number);
         }
     }
 }

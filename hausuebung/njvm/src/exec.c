@@ -7,14 +7,7 @@
 #include <stdlib.h>
 #include "njvm.h"
 #include "instruction.h"
-
-int32_t getObjInt(ObjRef ref) {
-    if (ref->size != sizeof(int32_t)) {
-        printf("Can't get int of object with size %d!\n", ref->size);
-        exit(1);
-    }
-    return *(int32_t *) ref->data;
-}
+#include "bigint.h"
 
 void setObjInt(ObjRef ref, int32_t val) {
     if (ref->size != sizeof(int32_t)) {
@@ -24,16 +17,17 @@ void setObjInt(ObjRef ref, int32_t val) {
     *(int32_t *) ref->data = val;
 }
 
+/// Directly call bigint lib to convert from int32, return result
 ObjRef createIntObj(int32_t value) {
-    ObjRef intObject;
-    unsigned int msize = sizeof(uint32_t) + sizeof(int32_t);
-    if ((intObject = malloc(msize)) == NULL) {
-        printf("Failed to allocate int object!\n");
-        exit(1);
-    }
-    intObject->size = sizeof(int32_t);
-    *(int *) intObject->data = value;
-    return intObject;
+//    unsigned int msize = sizeof(uint32_t) + sizeof(int32_t);
+//    if ((intObject = malloc(msize)) == NULL) {
+//        printf("Failed to allocate int object!\n");
+//        exit(1);
+//    }
+//    intObject->size = sizeof(int32_t);
+//    *(int *) intObject->data = value;
+    bigFromInt(value);
+    return bip.res;
 }
 
 int popObjRef(ObjRef *ret) {
@@ -43,7 +37,7 @@ int popObjRef(ObjRef *ret) {
             printf("Tried to pop objref on int! stack pointer %d\n", sp);
             return 2;
         }
-        *ret = stack[sp].objRef;
+        *ret = stack[sp].u.objRef;
         return 0;
     } else {
         printf("Tried to pop on stack pointer %d\n", sp);
@@ -58,7 +52,7 @@ int popInt(int32_t *ret) {
             printf("Tried to pop int on objref! stack pointer %d\n", sp);
             return 2;
         }
-        *ret = stack[sp].number;
+        *ret = stack[sp].u.number;
         return 0;
     } else {
         printf("Tried to pop on stack pointer %d\n", sp);
@@ -72,7 +66,7 @@ int pushObjRef(ObjRef val) {
         return 2;
     } else {
         stack[sp].isObjRef = true;
-        stack[sp].objRef = val;
+        stack[sp].u.objRef = val;
         sp = sp + 1;
         return 0;
     }
@@ -84,7 +78,7 @@ int pushInt(int32_t val) {
         return 2;
     } else {
         stack[sp].isObjRef = false;
-        stack[sp].number = val;
+        stack[sp].u.number = val;
         sp = sp + 1;
         return 0;
     }
@@ -101,7 +95,7 @@ int execute(uint32_t ins) {
             return 1;
             break;
         case PUSHC:
-            if (pushObjRef(createIntObj(imm)) != 0) {
+            if (pushc(imm)) {
                 return 2;
             }
             break;

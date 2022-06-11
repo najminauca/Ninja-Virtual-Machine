@@ -14,7 +14,5 @@ int pushObjRef(ObjRef val);
 int pushInt(int32_t val);
 
 ObjRef createIntObj(int32_t value);
-int32_t getObjInt(ObjRef ref);
-void setObjInt(ObjRef ref, int32_t val);
 
 #endif //KSP_PUBLIC_EXEC_H
