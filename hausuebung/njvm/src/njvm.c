@@ -55,7 +55,7 @@ void load_program(const char *path) {
     //printf("Number of instructions %d\n",programm_size);
     //printf("Static variables %d\n",static_data_area_size);
     static_data_area = malloc(static_data_area_size * sizeof(ObjRef));
-    programm_speicher = malloc(programm_size);
+    programm_speicher = malloc(programm_size * sizeof(uint32_t));
     read_ojects = fread(programm_speicher, sizeof(uint32_t), programm_size, file);
     if (read_ojects != programm_size) {
         printf("ERROR: Mismatch of instruction size header and file length!");

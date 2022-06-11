@@ -62,13 +62,8 @@ int mod() {
 }
 
 int rdint() {
-    int32_t in = 0;
-    int r = scanf(" %d", &in);
-    if (r != 1) {
-        printf("ERROR: Invalid user input, expected 1 number, got %d, aborting\n", r);
-        return 1;
-    }
-    return pushObjRef(createIntObj(in));
+    bigRead(stdin);
+    return pushObjRef(bip.res);
 }
 
 int wrint() {
@@ -229,7 +224,7 @@ int gt() {
     bip.op1 = a;
     bip.op2 = b;
     int val = 0;
-    if (bigCmp() >= 1) { // >
+    if (bigCmp() > 0) { // >
         val = 1;
     }
     return pushObjRef(createIntObj(val));
