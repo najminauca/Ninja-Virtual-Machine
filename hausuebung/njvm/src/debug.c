@@ -19,11 +19,11 @@ void printStack(int i) {
     } else if(fp == i) {
         printf("fp      --->	");
         printNum(i);
-        printf("%d\n", *(int *)stack[i].u.objRef->data);
+        printf("%d\n", (stack[i].isObjRef == true) ? *(int *)stack[i].u.objRef->data : stack[i].u.number);
     } else {
         printf("		");
         printNum(i);
-        printf("%d\n", *(int *)stack[i].u.objRef->data);
+        printf("%d\n", (stack[i].isObjRef == true) ? *(int *)stack[i].u.objRef->data : stack[i].u.number);
     }
 }
 

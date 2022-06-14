@@ -4,7 +4,12 @@
 
 int pop(void) {
     sp--;
-    return *(int *)stack[sp].u.objRef->data;
+    if(stack[sp].isObjRef == true) {
+        return *(int *)stack[sp].u.objRef->data;
+    } else {
+        return stack[sp].u.number;
+    }
+    
 }
 
 void push(int i) {
@@ -102,11 +107,14 @@ void popg(int i) {
 }
 
 void asf(int size) {
-    pushc(fp);
+    stack[sp].isObjRef = false;
+    stack[sp].u.number = fp;
+    sp++;
     fp = sp;
     int i = 0;
     while(i < size) {
-        pushc(0);
+        stack[sp].isObjRef = false;
+        sp++;
         i++;
     }
     fSize = size;
@@ -233,7 +241,9 @@ void brt(int target) {
 }
 
 void call(int target) {
-    pushc(pc);
+    stack[sp].isObjRef = false;
+    stack[sp].u.number = pc;
+    sp++;
     pc = target;
 }
 
