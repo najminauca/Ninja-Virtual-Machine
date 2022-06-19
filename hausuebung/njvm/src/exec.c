@@ -25,8 +25,12 @@ ObjRef createObj(int32_t fields) {
         printf("Error: Failed to allocate int object!\n");
         exit(1);
     }
+    int i;
+    for (i = 0; i < fields; i++) {
+        GET_REFS_PTR(obj)[i] = NULL;
+    }
     obj->size = fields;
-    obj-> size |= MSB;
+    obj->size |= MSB;
     return obj;
 }
 
