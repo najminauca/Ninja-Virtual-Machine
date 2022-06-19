@@ -36,13 +36,6 @@ ObjRef createObj(int32_t fields) {
 
 /// Directly call bigint lib to convert from int32, return result
 ObjRef createIntObj(int32_t value) {
-//    unsigned int msize = sizeof(uint32_t) + sizeof(int32_t);
-//    if ((intObject = malloc(msize)) == NULL) {
-//        printf("Failed to allocate int object!\n");
-//        exit(1);
-//    }
-//    intObject->size = sizeof(int32_t);
-//    *(int *) intObject->data = value;
     bigFromInt(value);
     return bip.res;
 }
@@ -56,6 +49,7 @@ int popObjRef(ObjRef *ret) {
             return 2;
         }
         *ret = stack[sp].u.objRef;
+        stack[sp].u.objRef = NULL;
         return 0;
     } else {
         printf("Error: Tried to pop on stack pointer %d\n", sp);
@@ -95,6 +89,8 @@ int popInt(int32_t *ret) {
             return 2;
         }
         *ret = stack[sp].u.number;
+        stack[sp].isObjRef = true;
+        stack[sp].u.objRef = NULL;
         return 0;
     } else {
         printf("Tried to pop on stack pointer %d\n", sp);

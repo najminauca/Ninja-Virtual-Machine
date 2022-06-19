@@ -76,6 +76,9 @@ int run(int debug) {
     fp = 0;
     rvr = 0;
 
+    stack[sp].isObjRef = true;
+    stack[sp].u.objRef = NULL;
+
     int pause = debug;
 
     while (1) {
