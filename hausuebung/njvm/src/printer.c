@@ -148,33 +148,45 @@ void printProgram() {
     }
 }
 
-void printObjRef(ObjRef ref) {
+/// ObjRef printing, set full to true for multi-line recursive resolution
+void printObjRef(ObjRef ref, int full) {
     if (ref == NULL) {
         printf("null\n");
         return;
     }
     if (IS_PRIMITIVE(ref)) {
         if (ref->size == sizeof(int32_t)) {
-            printf("size: %d, data: (int) %d\n",ref->size,*(int*)ref->data);
+            printf("size: %d, data: (int) %d",ref->size,*(int*)ref->data);
         } else {
             printf("size: %d, data: (bigint) ",ref->size);
             bip.op1 = ref;
             bigPrint(stdout);
+        }
+        if (full) {
+            printf(",\n");
+        } else {
             printf("\n");
         }
     } else {
         int size = GET_ELEMENT_COUNT(ref);
         printf("size: %d, data: (objref) [",size);
+        if (full) {
+            printf("\n");
+        }
         int i;
         for (i=0; i < size;i++) {
             ObjRef val = GET_REFS_PTR(ref)[i];
-            if (i > 0) {
+            if (!full && i > 0) {
                 printf(",");
             }
             if (val != NULL) {
-                printf("0x%.8x",val);
+                if (full) {
+                    printObjRef(val,true);
+                } else {
+                    printf("%p",(void *) val);
+                }
             } else {
-                printf("null");
+                printf("null,\n");
             }
         }
         printf("]\n");
@@ -190,8 +202,8 @@ void printStack() {
             printf("\t\t");
         }
         if (stack[i].isObjRef) {
-            printf("%04d:\tObjref: ", i);
-            printObjRef(stack[i].u.objRef);
+            printf("%04d:\tObjref: %p ",i,(void*)stack[i].u.objRef);
+            printObjRef(stack[i].u.objRef,false);
         } else {
             printf("%04d:\t%d\n", i, stack[i].u.number);
         }
@@ -202,6 +214,6 @@ void printStatics() {
     int i;
     for(i = 0; i < static_data_area_size; i++) {
         printf("%04d:\t",i);
-        printObjRef(static_data_area[i]);
+        printObjRef(static_data_area[i],false);
     }
 }

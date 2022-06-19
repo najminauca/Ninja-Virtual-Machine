@@ -87,7 +87,7 @@ int run(int debug) {
         uint32_t ins = programm_speicher[pc];
         if(pause) {
             run_to = false;
-            printf("Debug mode. Possible actions: stack, statics, list, next, continue, quit, runto <addr/asm>\n");
+            printf("Debug mode. Possible actions: stack, statics, list, next, continue, quit, runto, inspect\n");
             printInstruction(pc,ins);
             char input [20];
             if (fgets(input,20,stdin) == NULL) {
@@ -125,6 +125,16 @@ int run(int debug) {
                     run_to = true;
                     pause = false;
                     printf("Running till instruction line %d\n",run_to_line);
+                } else if(strcmp(input, "inspect\n") == 0) {
+                    printf("pointer? (without 0x)\n");
+                    unsigned long in = -1;
+                    int r = scanf("%lx", &in);
+                    if (r != 1) {
+                        printf("Expected pointer\n");
+                        return 1;
+                    }
+                    printf("Inspecting %p\n",in);
+                    printObjRef((ObjRef) in, true);
                 } else {
                     printf("Invalid command\n");
                     continue;
