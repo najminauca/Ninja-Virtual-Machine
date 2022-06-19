@@ -17,6 +17,19 @@ void setObjInt(ObjRef ref, int32_t val) {
     *(int32_t *) ref->data = val;
 }
 
+/// Create object ObjRef, no raw values
+ObjRef createObj(int32_t fields) {
+    ObjRef obj;
+    unsigned int msize = sizeof(uint32_t) + fields*sizeof(int32_t);
+    if ((obj = malloc(msize)) == NULL) {
+        printf("Error: Failed to allocate int object!\n");
+        exit(1);
+    }
+    obj->size = fields;
+    obj-> size |= MSB;
+    return obj;
+}
+
 /// Directly call bigint lib to convert from int32, return result
 ObjRef createIntObj(int32_t value) {
 //    unsigned int msize = sizeof(uint32_t) + sizeof(int32_t);
@@ -30,19 +43,44 @@ ObjRef createIntObj(int32_t value) {
     return bip.res;
 }
 
+/// Pop ObjRef of any kind
 int popObjRef(ObjRef *ret) {
     if (sp > 0) { // TODO: check for invalid pop over stackframe
         sp = sp - 1;
         if (!stack[sp].isObjRef) {
-            printf("Tried to pop objref on int! stack pointer %d\n", sp);
+            printf("Error: Tried to pop objref on int! stack pointer %d\n", sp);
             return 2;
         }
         *ret = stack[sp].u.objRef;
         return 0;
     } else {
-        printf("Tried to pop on stack pointer %d\n", sp);
+        printf("Error: Tried to pop on stack pointer %d\n", sp);
         return 2;
     }
+}
+
+/// Pop ObjRef with int primitive value
+int popObjRefInt(ObjRef *ret) {
+    if (popObjRef(ret) != 0){
+        return 1;
+    }
+    if (!IS_PRIMITIVE(*ret)) {
+        printf("Error: Tried to pop primitive on obj");
+        return 1;
+    }
+    return 0;
+}
+
+/// Pop ObjRef with obj value
+int popObjRefObj(ObjRef *ret) {
+    if (popObjRef(ret) != 0){
+        return 1;
+    }
+    if (IS_PRIMITIVE(*ret)) {
+        printf("Error: Tried to pop obj on primitive obj");
+        return 1;
+    }
+    return 0;
 }
 
 int popInt(int32_t *ret) {
@@ -246,6 +284,56 @@ int execute(uint32_t ins) {
             break;
         case DUP:
             if (dup()) {
+                return 2;
+            }
+            break;
+        case NEW:
+            if (new(imm)) {
+                return 2;
+            }
+            break;
+        case GETF:
+            if (getf(imm)) {
+                return 2;
+            }
+            break;
+        case PUTF:
+            if (putf(imm)) {
+                return 2;
+            }
+            break;
+        case NEWA:
+            if (newa()) {
+                return 2;
+            }
+            break;
+        case GETFA:
+            if (getfa()) {
+                return 2;
+            }
+            break;
+        case PUTFA:
+            if (putfa()) {
+                return 2;
+            }
+            break;
+        case GETSZ:
+            if (getsz()) {
+                return 2;
+            }
+            break;
+        case PUSHN:
+            if (pushn()) {
+                return 2;
+            }
+            break;
+        case REFEQ:
+            if (refeq()) {
+                return 2;
+            }
+            break;
+        case REFNE:
+            if (refne()) {
                 return 2;
             }
             break;

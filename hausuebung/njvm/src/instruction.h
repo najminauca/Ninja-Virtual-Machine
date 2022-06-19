@@ -69,6 +69,25 @@ int popr();
 
 int dup();
 
+int new(int32_t imm);
+
+int getf(int32_t imm);
+
+int putf(int32_t imm);
+
+int newa();
+
+int getfa();
+
+int putfa();
+
+int getsz();
+
+int pushn();
+
+int refeq();
+
+int refne();
 
 #define NJVM_INSTRUCTION_H
 

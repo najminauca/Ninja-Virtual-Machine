@@ -13,7 +13,7 @@ int pushc(int32_t imm) {
 
 int add() {
     ObjRef ao, bo;
-    if (popObjRef(&bo) != 0 || popObjRef(&ao) != 0)
+    if (popObjRefInt(&bo) != 0 || popObjRefInt(&ao) != 0)
         return 1;
     bip.op1 = ao;
     bip.op2 = bo;
@@ -23,7 +23,7 @@ int add() {
 
 int sub() {
     ObjRef ao, bo;
-    if (popObjRef(&bo) != 0 || popObjRef(&ao) != 0)
+    if (popObjRefInt(&bo) != 0 || popObjRefInt(&ao) != 0)
         return 1;
     bip.op1 = ao;
     bip.op2 = bo;
@@ -33,7 +33,7 @@ int sub() {
 
 int mul() {
     ObjRef ao, bo;
-    if (popObjRef(&bo) != 0 || popObjRef(&ao) != 0)
+    if (popObjRefInt(&bo) != 0 || popObjRefInt(&ao) != 0)
         return 1;
     bip.op1 = ao;
     bip.op2 = bo;
@@ -43,7 +43,7 @@ int mul() {
 
 int c_div() {
     ObjRef ao, bo;
-    if (popObjRef(&bo) != 0 || popObjRef(&ao) != 0)
+    if (popObjRefInt(&bo) != 0 || popObjRefInt(&ao) != 0)
         return 1;
     bip.op1 = ao;
     bip.op2 = bo;
@@ -53,7 +53,7 @@ int c_div() {
 
 int mod() {
     ObjRef ao, bo;
-    if (popObjRef(&bo) != 0 || popObjRef(&ao) != 0)
+    if (popObjRefInt(&bo) != 0 || popObjRefInt(&ao) != 0)
         return 1;
     bip.op1 = ao;
     bip.op2 = bo;
@@ -68,7 +68,7 @@ int rdint() {
 
 int wrint() {
     ObjRef vo;
-    if (popObjRef(&vo) != 0)
+    if (popObjRefInt(&vo) != 0)
         return 1;
     bip.op1 = vo;
     bigPrint(stdout);
@@ -87,7 +87,7 @@ int rdchr() {
 
 int wrchr() {
     ObjRef vo;
-    if (popObjRef(&vo) != 0)
+    if (popObjRefInt(&vo) != 0)
         return 1;
     bip.op1 = vo;
     int v = bigToInt();
@@ -167,7 +167,7 @@ int popl(int32_t imm) {
 
 int eq() {
     ObjRef a, b;
-    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
+    if (popObjRefInt(&b) != 0 || popObjRefInt(&a) != 0)
         return 1;
     bip.op1 = a;
     bip.op2 = b;
@@ -180,7 +180,7 @@ int eq() {
 
 int ne() {
     ObjRef a, b;
-    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
+    if (popObjRefInt(&b) != 0 || popObjRefInt(&a) != 0)
         return 1;
     bip.op1 = a;
     bip.op2 = b;
@@ -193,7 +193,7 @@ int ne() {
 
 int lt() {
     ObjRef a, b;
-    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
+    if (popObjRefInt(&b) != 0 || popObjRefInt(&a) != 0)
         return 1;
     bip.op1 = a;
     bip.op2 = b;
@@ -206,7 +206,7 @@ int lt() {
 
 int le() {
     ObjRef a, b;
-    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
+    if (popObjRefInt(&b) != 0 || popObjRefInt(&a) != 0)
         return 1;
     bip.op1 = a;
     bip.op2 = b;
@@ -219,7 +219,7 @@ int le() {
 
 int gt() {
     ObjRef a, b;
-    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
+    if (popObjRefInt(&b) != 0 || popObjRefInt(&a) != 0)
         return 1;
     bip.op1 = a;
     bip.op2 = b;
@@ -232,7 +232,7 @@ int gt() {
 
 int ge() {
     ObjRef a, b;
-    if (popObjRef(&b) != 0 || popObjRef(&a) != 0)
+    if (popObjRefInt(&b) != 0 || popObjRefInt(&a) != 0)
         return 1;
     bip.op1 = a;
     bip.op2 = b;
@@ -318,4 +318,132 @@ int dup() {
         return 1;
     }
     return pushObjRef(stack[sp - 1].u.objRef);
+}
+
+int new(int32_t imm) {
+    return pushObjRef(createObj(imm));
+}
+
+int getf(int32_t imm) {
+    ObjRef a;
+    if (popObjRefObj(&a) != 0)
+        return 2;
+    int32_t count = GET_ELEMENT_COUNT(a);
+    if (imm >= count || imm < 0) {
+        printf("Error: can't getf %d on an obj of size %d!",imm,count);
+        return 2;
+    }
+    return pushObjRef(GET_REFS_PTR(a)[imm]);
+}
+
+int putf(int32_t imm) {
+    ObjRef val;
+    if (popObjRef(&val) != 0)
+        return 2;
+    ObjRef a;
+    if (popObjRefObj(&a) != 0)
+        return 2;
+    int32_t count = GET_ELEMENT_COUNT(a);
+    if (imm >= count || imm < 0) {
+        printf("Error: can't getf %d on an obj of size %d!",imm,count);
+        return 2;
+    }
+    GET_REFS_PTR(a)[imm] = val;
+    return 0;
+}
+
+int newa() {
+    ObjRef val;
+    if (popObjRefInt(&val) != 0)
+        return 2;
+    bip.op1 = val;
+    int32_t size = bigToInt();
+    if (size < 0) {
+        printf("Error: can't newa with size %d",size);
+        return 2;
+    }
+    return pushObjRef(createObj(size));
+}
+
+int getfa() {
+    ObjRef oPos;
+    if (popObjRefInt(&oPos) != 0)
+        return 2;
+    ObjRef a;
+    if (popObjRefObj(&a) != 0)
+        return 2;
+    bip.op1 = oPos;
+    int32_t pos = bigToInt();
+    int32_t size = GET_ELEMENT_COUNT(a);
+    if (pos < 0 || pos >= size) {
+        printf("Error: can't getfa with pos %d on obj size %d",pos,size);
+        return 2;
+    }
+    return pushObjRef(GET_REFS_PTR(a)[pos]);
+}
+
+int putfa() {
+    ObjRef val;
+    if (popObjRef(&val) != 0)
+        return 2;
+    ObjRef oPos;
+    if (popObjRefInt(&oPos) != 0)
+        return 2;
+    ObjRef a;
+    if (popObjRefObj(&a) != 0)
+        return 2;
+    bip.op1 = oPos;
+    int32_t pos = bigToInt();
+    int32_t size = GET_ELEMENT_COUNT(a);
+    if (pos < 0 || pos >= size) {
+        printf("Error: can't putfa with pos %d on obj size %d",pos,size);
+        return 2;
+    }
+    GET_REFS_PTR(a)[pos] = val;
+    return 0;
+}
+
+int getsz() {
+    ObjRef a;
+    if (popObjRef(&a) != 0)
+        return 2;
+    int32_t size;
+    if (IS_PRIMITIVE(a)) {
+        size = -1;
+    } else {
+        size = GET_ELEMENT_COUNT(a);
+    }
+    return pushObjRef(createIntObj(size));
+}
+
+int pushn() {
+    return pushObjRef(NULL);
+}
+
+int refeq() {
+    ObjRef a;
+    if (popObjRef(&a) != 0)
+        return 2;
+    ObjRef b;
+    if (popObjRef(&b) != 0)
+        return 2;
+    int32_t val = 0;
+    if (a == b) {
+        val = 1;
+    }
+    return pushObjRef(createIntObj(val));
+}
+
+int refne() {
+    ObjRef a;
+    if (popObjRef(&a) != 0)
+        return 2;
+    ObjRef b;
+    if (popObjRef(&b) != 0)
+        return 2;
+    int32_t val = 0;
+    if (a != b) {
+        val = 1;
+    }
+    return pushObjRef(createIntObj(val));
 }

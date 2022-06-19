@@ -40,12 +40,34 @@
 #define POPR 30
 #define DUP 31
 
-#define NJVM_VERSION 6
+#define NEW 32
+#define GETF 33
+#define PUTF 34
+#define NEWA 35
+#define GETFA 36
+#define PUTFA 37
+#define GETSZ 38
+#define PUSHN 39
+#define REFEQ 40
+#define REFNE 41
 
+#define NJVM_VERSION 7
 
-#define IMM(x) ((x) & 0x00FFFFFF)
-#define SIGN_EXTEND(i) ((i) & 0x00800000 ? (i) | 0xFF000000 : (i))
+// legacy A1, create an immediate value
+#define IMM(x) ((x) & 0x00FFFFFF)// legacy A1, create an immediate value
+// legacy A1, encode instruction for manual programm creation
 #define ENC(i) (i << 24)
+// retrieve immediate as int32_t from uint32_t
+#define SIGN_EXTEND(i) ((i) & 0x00800000 ? (i) | 0xFF000000 : (i))
+
+// aufrufen des MSB eines u/i32
+#define MSB (1 << (8 * sizeof(uint32_t) - 1))
+// check ob ObjRef ein primitive oder objekt ist
+#define IS_PRIMITIVE(objRef) (((objRef)->size & MSB) == 0)
+// Anzahl Elemente im Objekt unter beachtung des MSB
+#define GET_ELEMENT_COUNT(objRef) ((objRef)->size & ~MSB)
+// Auf objekt zugreifen
+#define GET_REFS_PTR(objRef) ((ObjRef *) (objRef)->data)
 
 //#define PROGRAM_LIMIT 1000
 #define STACK_LIMIT 1000

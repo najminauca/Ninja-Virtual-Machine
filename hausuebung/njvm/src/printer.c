@@ -105,6 +105,36 @@ void printInstruction(int i, uint32_t ins) {
         case DUP:
             printf("dup\n");
             break;
+        case NEW:
+            printf("NEW \t%04d\n", SIGN_EXTEND(IMM(ins)));
+            break;
+        case GETF:
+            printf("GETF \t%04d\n", SIGN_EXTEND(IMM(ins)));
+            break;
+        case PUTF:
+            printf("PUTF \t%04d\n", SIGN_EXTEND(IMM(ins)));
+            break;
+        case NEWA:
+            printf("NEWA\n");
+            break;
+        case GETFA:
+            printf("GETFA\n");
+            break;
+        case PUTFA:
+            printf("PUTFA\n");
+            break;
+        case GETSZ:
+            printf("GETSZ\n");
+            break;
+        case PUSHN:
+            printf("PUSHN\n");
+            break;
+        case REFEQ:
+            printf("REFEQ\n");
+            break;
+        case REFNE:
+            printf("REFNE\n");
+            break;
         default:
             printf("Unknown opcode %d at %d.. Aborting\n", opcode, i - 1);
             break;
