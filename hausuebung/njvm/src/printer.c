@@ -149,20 +149,35 @@ void printProgram() {
 }
 
 void printObjRef(ObjRef ref) {
-    if (ref->size == sizeof(int32_t)) {
-        printf("size: %d, data: (int) %d\n",ref->size,*(int*)ref->data);
+    if (ref == NULL) {
+        printf("null\n");
+        return;
+    }
+    if (IS_PRIMITIVE(ref)) {
+        if (ref->size == sizeof(int32_t)) {
+            printf("size: %d, data: (int) %d\n",ref->size,*(int*)ref->data);
+        } else {
+            printf("size: %d, data: (bigint) ",ref->size);
+            bip.op1 = ref;
+            bigPrint(stdout);
+            printf("\n");
+        }
     } else {
-        printf("size: %d, data: (bigint) ",ref->size);
-        bip.op1 = ref;
-        bigPrint(stdout);
-        printf("\n");
-// old code for anything
-//        printf("size: %d, data: ",ref->size);
-//        int i;
-//        for (i=0; i < ref->size; i++) {
-//            printf("%x",ref->data[i]);
-//        }
-//        printf("\n");
+        int size = GET_ELEMENT_COUNT(ref);
+        printf("size: %d, data: (objref) [",size);
+        int i;
+        for (i=0; i < size;i++) {
+            ObjRef val = GET_REFS_PTR(ref)[i];
+            if (i > 0) {
+                printf(",");
+            }
+            if (val != NULL) {
+                printf("0x%.8x",val);
+            } else {
+                printf("null");
+            }
+        }
+        printf("]\n");
     }
 }
 
