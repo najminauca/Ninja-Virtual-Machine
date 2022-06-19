@@ -80,11 +80,14 @@ int run(int debug) {
     stack[sp].u.objRef = NULL;
 
     int pause = debug;
+    int run_to_line = -1;
+    int run_to = false;
 
     while (1) {
         uint32_t ins = programm_speicher[pc];
         if(pause) {
-            printf("Debug mode. Possible actions: stack, statics, list, next, continue, quit\n");
+            run_to = false;
+            printf("Debug mode. Possible actions: stack, statics, list, next, continue, quit, runto <addr/asm>\n");
             printInstruction(pc,ins);
             char input [20];
             if (fgets(input,20,stdin) == NULL) {
@@ -106,11 +109,31 @@ int run(int debug) {
                 } else if(strcmp(input, "quit\n") == 0) {
                     ret = 0;
                     break;
+                } else if(strcmp(input, "runto\n") == 0) {
+                    printf("instruction line?\n");
+                    int32_t in = -1;
+                    int r = scanf("%d", &in);
+                    if (r != 1) {
+                        printf("Expected instruction line\n");
+                        return 1;
+                    }
+                    if (in < 0 || in > programm_size) {
+                        printf("Invalid program location %d!\n",in);
+                        continue;
+                    }
+                    run_to_line = in;
+                    run_to = true;
+                    pause = false;
+                    printf("Running till instruction line %d\n",run_to_line);
                 } else {
                     printf("Invalid command\n");
                     continue;
                 }
             }
+        } else if(run_to && pc == run_to_line) {
+            printf("Reached run-to location %d, pausing",run_to_line);
+            pause = true;
+            continue;
         }
         pc = pc + 1;
         count = count + 1;
