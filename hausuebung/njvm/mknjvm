@@ -11,6 +11,6 @@
 
 # The following line is an example for 
 
-echo gcc -g -Wall -std=c99 -pedantic -I src/bigint/build/include -L src/bigint/build/lib src/njvm.c src/operations.c src/debug.c src/execute.c src/bigint.c src/support.c -lbigint -o njvm
-gcc -g -Wall -std=c99 -pedantic -I src/bigint/build/include -L src/bigint/build/lib src/njvm.c src/operations.c src/debug.c src/execute.c src/bigint.c src/support.c -lbigint -o njvm
+echo gcc -g -Wall -std=c99 -pedantic -I src/bigint/build/include -L src/bigint/build/lib src/njvm.c src/operations.c src/debug.c src/execute.c src/support.c -lbigint -o njvm
+gcc -g -Wall -std=c99 -pedantic -I src/bigint/build/include -L src/bigint/build/lib src/njvm.c src/operations.c src/debug.c src/execute.c src/support.c -lbigint -o njvm
 
