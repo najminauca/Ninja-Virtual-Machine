@@ -1,129 +1,144 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include "njvm.h"
+#include "bigint.h"
 
-int pop(void) {
-    sp--;
-    if(stack[sp].isObjRef == true) {
-        return *(int *)stack[sp].u.objRef->data;
-    } else {
+int popInt(void) {
+    if(!stack[sp - 1].isObjRef) {
+        sp--;
         return stack[sp].u.number;
     }
-    
 }
 
-void push(int i) {
+ObjRef popObjRef(void) {
+    if(stack[sp - 1].isObjRef) {
+        sp--;
+        return stack[sp].u.objRef;
+    }
+}
+
+void pushObjRef(ObjRef o) {
     if(sp < MAX) {
-        ObjRef obj = malloc(sizeof(unsigned int) + sizeof(int));
-        obj->size = sizeof(int);
-        *(int *)obj->data = i;
         stack[sp].isObjRef = true;
-        stack[sp].u.objRef = obj;
+        stack[sp].u.objRef = o;
+        sp++;
+    }
+}
+
+void pushInt(int i) {
+    if(sp < MAX) {
+        stack[sp].isObjRef = false;
+        stack[sp].u.number = i;
         sp++;
     }
 }
 
 void pushc(int immediate) {
-    push(immediate);
+    bigFromInt(immediate);
+    pushObjRef(bip.res);
 }
 
 void add(void) {
     if(sp > 1){
-        int b = pop();
-        int a = pop();
-        pushc(a + b);
+        bip.op2 = popObjRef();
+        bip.op1 = popObjRef();
+        bigAdd();
+        pushObjRef(bip.res);
     }
 }
 
 void sub(void) {
     if(sp > 1){
-        int b = pop();
-        int a = pop();
-        pushc(a - b);
+        bip.op2 = popObjRef();
+        bip.op1 = popObjRef();
+        bigSub();
+        pushObjRef(bip.res);
     }
 }
 
 void mul(void) {
     if(sp > 1){
-        int b = pop();
-        int a = pop();
-        pushc(a * b);
+        bip.op2 = popObjRef();
+        bip.op1 = popObjRef();
+        bigMul();
+        pushObjRef(bip.res);
     }
 }
 
 void divnjvm(void) {
     if(sp > 1 && *(int *)stack[sp - 1].u.objRef->data != 0){
-        int b = pop();
-        int a = pop();
-        pushc(a / b);
+        bip.op2 = popObjRef();
+        bip.op1 = popObjRef();
+        bigDiv();
+        pushObjRef(bip.res);
     }
 }
 
 void mod(void) {
     if(sp > 1){
-        int b = pop();
-        int a = pop();
-        pushc(a % b);
+        bip.op2 = popObjRef();
+        bip.op1 = popObjRef();
+        bigDiv();
+        pushObjRef(bip.rem);
     }
 }
 
 void rdint(void) {
-    int read;
-    scanf("%d", &read);
-    pushc(read);
+    bigRead(stdin);
+    pushObjRef(bip.res);
 }
 
 void wrint(void) {
     if(sp > 0) {
-        printf("%d", pop());
+        bip.op1 = popObjRef();
+        bigPrint(stdout);
     }
 }
 
 void rdchr(void) {
     char read;
     scanf("%c", &read);
-    pushc(read);
+    pushc((int)read);
 }
 
 void wrchr(void) {
     if(sp > 0) {
-        printf("%c", pop());
+        bip.op1 = popObjRef();
+        int i = bigToInt();
+        printf("%c", i);
     }
 }
 
 void pushg(int i) {
     if(i < sdaSize) {
-        pushc(*(int *)sda[i]->data);
+        pushObjRef(sda[i]);
     }
 }
 
 void popg(int i) {
     if(i < sdaSize) {
-        ObjRef obj = malloc(sizeof(unsigned int) + sizeof(int));
-        obj->size = sizeof(int);
-        *(int *)obj->data = pop();
-        sda[i] = obj;
+        sda[i] = popObjRef();
     }
 }
 
 void asf(int size) {
-    stack[sp].isObjRef = false;
-    stack[sp].u.number = fp;
-    sp++;
+    pushInt(fp);
     fp = sp;
-    int i = 0;
+    sp = sp + size;
+    /*int i = 0;
     while(i < size) {
         stack[sp].isObjRef = false;
         sp++;
         i++;
-    }
+    }*/
     fSize = size;
 }
 
 void rsf(void) {
     if(fp != 0) {
         sp = fp;
-        fp = pop();
+        fp = popInt();
         fSize = sp - fp;
     }
 }
@@ -131,26 +146,23 @@ void rsf(void) {
 void pushl(int i) {
     int pos = fp + i;
     if(pos < fp + fSize) {
-        pushc(*(int *)stack[pos].u.objRef->data);
+        pushObjRef(stack[pos].u.objRef);
     }
 }
 
 void popl(int i) {
     int pos = fp + i;
     if(sp > fp && pos < fp + fSize) {
-        ObjRef obj = malloc(sizeof(unsigned int) + sizeof(int));
-        obj->size = sizeof(int);
-        *(int *)obj->data = pop();
         stack[pos].isObjRef = true;
-        stack[pos].u.objRef = obj;
+        stack[pos].u.objRef = popObjRef();
     }
 }
 
 void eq(void) {
     if(sp > 1) {
-        int b = pop();
-        int a = pop();
-        if(a == b) {    //True
+        bip.op2 = popObjRef();
+        bip.op1 = popObjRef();
+        if(bigCmp() == 0) {    //True
             pushc(1);
         }
         else {  //False
@@ -161,9 +173,9 @@ void eq(void) {
 
 void ne(void) {
     if(sp > 1) {
-        int b = pop();
-        int a = pop();
-        if(a != b) {    //True
+        bip.op2 = popObjRef();
+        bip.op1 = popObjRef();
+        if(bigCmp() != 0) {    //True
             pushc(1);
         }
         else {  //False
@@ -174,9 +186,9 @@ void ne(void) {
 
 void lt(void) {
     if(sp > 1) {
-        int b = pop();
-        int a = pop();
-        if(a < b) { //True
+        bip.op2 = popObjRef();
+        bip.op1 = popObjRef();
+        if(bigCmp() < 0) { //True
             pushc(1);
         }
         else {  //False
@@ -187,9 +199,9 @@ void lt(void) {
 
 void le(void) {
     if(sp > 1) {
-        int b = pop();
-        int a = pop();
-        if(a <= b) {    //True
+        bip.op2 = popObjRef();
+        bip.op1 = popObjRef();
+        if(bigCmp() < 1) {    //True
             pushc(1);
         }
         else {  //False
@@ -200,9 +212,9 @@ void le(void) {
 
 void gt(void) {
     if(sp > 1) {
-        int b = pop();
-        int a = pop();
-        if(a > b) { //True
+        bip.op2 = popObjRef();
+        bip.op1 = popObjRef();
+        if(bigCmp() > 0) { //True
             pushc(1);
         }
         else {  //False
@@ -213,9 +225,9 @@ void gt(void) {
 
 void ge(void) { 
     if(sp > 1) {
-        int b = pop();
-        int a = pop();
-        if(a >= b) {    //True
+        bip.op2 = popObjRef();
+        bip.op1 = popObjRef();
+        if(bigCmp() > -1) {    //True
             pushc(1);
         }
         else {  //False
@@ -229,26 +241,26 @@ void jmp(int target) {
 }
 
 void brf(int target) {
-    if(pop() == 0) {    //False
+    bip.op1 = popObjRef();
+    if(bigSgn() == 0) {    //False
         pc = target;
     }
 }
 
 void brt(int target) {
-    if(pop() == 1) {    //True
+    bip.op1 = popObjRef();
+    if(bigSgn() != 0) {    //True
         pc = target;
     }
 }
 
 void call(int target) {
-    stack[sp].isObjRef = false;
-    stack[sp].u.number = pc;
-    sp++;
+    pushInt(pc);
     pc = target;
 }
 
 void ret(void) {
-    pc = pop();
+    pc = popInt();
 }
 
 void drop(int n) {
@@ -259,20 +271,16 @@ void drop(int n) {
 
 void pushr(void) {
     if(sp > 1) {
-        pushc(*(int *)returnRegister->data);
+        pushObjRef(returnRegister);
     }
 }
 
 void popr(void) {
-    ObjRef obj = malloc(sizeof(unsigned int) + sizeof(int));
-    obj->size = sizeof(int);
-    *(int *)obj->data = pop();
-    returnRegister = obj;
-    sp--;
+    returnRegister = popObjRef();
 }
 
 void dup(void) {
     if(sp > 0) {
-        pushc(*(int*)stack[sp - 1].u.objRef->data);
+        pushObjRef(stack[sp - 1].u.objRef);
     }
 }
