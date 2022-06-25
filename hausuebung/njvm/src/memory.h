@@ -37,6 +37,7 @@ ObjRef createObj(int32_t fields);
 ObjRef createPrimitiveObj(int size);
 
 void enableMemoryZeroing();
+void enableGcStatsPrint();
 
 // garbage collection
 void gc();

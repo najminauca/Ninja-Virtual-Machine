@@ -46,7 +46,12 @@ uint32_t stack_size_bytes = STACK_SIZE_DEFAULT * MEMORY_UNIT;
 uint32_t heap_size_bytes = HEAP_SIZE_DEFAULT * MEMORY_UNIT;
 uint32_t heap_slab_size;
 
-int allocationSinceGc = false;
+bool allocationSinceGc = false;
+bool printGcStats = false;
+
+void enableGcStatsPrint() {
+    printGcStats = true;
+}
 
 void set_heap_size(int32_t size_kib) {
     if (heap != NULL) {
@@ -125,9 +130,9 @@ void * reallocate(ObjRef obj, void ** newFreePointer) {
     } else {
         unsigned long size;
         if (IS_PRIMITIVE(obj)) {
-            size = sizeof(ObjRef) + obj->size;
+            size = sizeof(Obj) + obj->size;
         } else {
-            size = sizeof(ObjRef) + (sizeof(void *) * GET_ELEMENT_COUNT(obj));
+            size = sizeof(Obj) + (sizeof(void *) * GET_ELEMENT_COUNT(obj));
         }
         gcReallocObj += 1;
         gcReallocBytes += size;
@@ -192,6 +197,9 @@ void gc() {
 
     allocationSinceGc = false;
     gcRuns += 1;
+    if (printGcStats) {
+        printStats();
+    }
 }
 
 
@@ -246,13 +254,21 @@ ObjRef createPrimitiveObj(int32_t size) {
 }
 
 void printStats() {
-    printf("Allocated Bytes \t %ld\n",allocatedBytes);
-    printf("Allocated Objects \t %ld\n",allocatedObjects);
-    printf("Amount GC runs \t %ld\n",gcRuns);
-    printf("Memory shortage runs \t %ld\n",gcRunsDueContention);
-    printf("GC memory freed \t %ld\n",gcFreed);
-    printf("GC obj reallocated \t %ld\n", gcReallocObj);
-    printf("GC bytes reallocated \t %ld\n",gcReallocBytes);
+    printf("Gargabe Collector, stats since last run:\n");
+    printf("\tAllocated Bytes \t %ld\n",allocatedBytes);
+    printf("\tAllocated Objects \t %ld\n",allocatedObjects);
+    printf("\tAmount GC runs \t %ld\n",gcRuns);
+    printf("\tMemory shortage runs \t %ld\n",gcRunsDueContention);
+    printf("\tGC memory freed \t %ld\n",gcFreed);
+    printf("\tGC obj reallocated \t %ld\n", gcReallocObj);
+    printf("\tGC bytes reallocated \t %ld\n",gcReallocBytes);
+    allocatedBytes = 0;
+    allocatedObjects = 0;
+    gcRunsDueContention = 0;
+    gcFreed = 0;
+    gcReallocObj = 0;
+    gcReallocBytes = 0;
+
 }
 
 /// Directly call bigint lib to convert from int32, return result

@@ -160,6 +160,7 @@ int run() {
     if(ret == 2) {
         error(2);
     }
+    gc();
 
     //printf("Finished after %d cycles\n", count);
     return ret;
@@ -171,6 +172,7 @@ void help(char* binary_name) {
     printf("\t --stack <KiB> \t\t stack size, default %d KiB\n",STACK_SIZE_DEFAULT);
     printf("\t --heap <KiB> \t\t heap size, default %d KiB\n",HEAP_SIZE_DEFAULT);
     printf("\t --gcpurge zero memory area after GC to debug memory corruptions\n");
+    printf("\t --gcstats print GC statistics when running\n");
     printf("\t --help \t\t show this help and exit\n");
 }
 
@@ -207,6 +209,8 @@ int main(int argc, char *argv[]) {
                 set_heap_size(in);
             } else if (strcmp(argv[i], "--gcpurge") == 0) {
                 enableMemoryZeroing();
+            } else if (strcmp(argv[i], "--gcstats") == 0) {
+                enableGcStatsPrint();
             } else if(i == argc -1) {
                 load_program(argv[i]);
                 program_loaded = true;
