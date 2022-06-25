@@ -10,12 +10,12 @@
 #include "memory.h"
 #include "bigint.h"
 
-void * heap = NULL;
+void *heap = NULL;
 uint32_t stack_limit;
 
 typedef struct {
-    void * start;
-    void * end;
+    void *start;
+    void *end;
 } Slab;
 
 Slab slab1;
@@ -23,7 +23,7 @@ Slab slab2;
 
 Slab *currentSlab;
 
-void * slabFreePointer;
+void *slabFreePointer;
 
 bool zeroMemoryAfterGc = false;
 
@@ -77,7 +77,7 @@ void init_memory() {
     }
     stack = malloc(stack_size_bytes);
     if (stack == NULL) {
-        printf("ERROR: Failed to allocate %d bytes for the stack!\n",stack_size_bytes);
+        printf("ERROR: Failed to allocate %d bytes for the stack!\n", stack_size_bytes);
         error(1);
     }
     stack_limit = stack_size_bytes / sizeof(Stackslot);
@@ -88,7 +88,7 @@ void init_memory() {
 
     heap = malloc(heap_size_bytes);
     if (heap == NULL && heap_size_bytes > 0) {
-        printf("ERROR: Failed to allocate %d bytes for the heap!\n",heap_size_bytes);
+        printf("ERROR: Failed to allocate %d bytes for the heap!\n", heap_size_bytes);
         error(1);
     }
     heap_slab_size = heap_size_bytes / 2;
@@ -122,7 +122,7 @@ void enableMemoryZeroing() {
     zeroMemoryAfterGc = true;
 }
 
-void * reallocate(ObjRef obj, void ** newFreePointer) {
+void *reallocate(ObjRef obj, void **newFreePointer) {
     if (obj == NULL) {
         return NULL;
     }
@@ -137,7 +137,7 @@ void * reallocate(ObjRef obj, void ** newFreePointer) {
         }
         gcReallocObj += 1;
         gcReallocBytes += size;
-        memcpy(*newFreePointer, obj,size);
+        memcpy(*newFreePointer, obj, size);
         ObjRef newObj = *newFreePointer;
         obj->brokenHeart = true;
         obj->forwardPointer = *newFreePointer;
@@ -147,8 +147,8 @@ void * reallocate(ObjRef obj, void ** newFreePointer) {
 }
 
 void gc() {
-    void * newFreePointer;
-    Slab * newSlab;
+    void *newFreePointer;
+    Slab *newSlab;
     if (currentSlab->start == slab1.start) {
         newSlab = &slab2;
     } else {
@@ -163,16 +163,16 @@ void gc() {
     bip.res = reallocate(bip.res, &newFreePointer);
 
     for (int i = 0; i < static_data_area_size; i++) {
-        static_data_area[i] = reallocate(static_data_area[i],&newFreePointer);
+        static_data_area[i] = reallocate(static_data_area[i], &newFreePointer);
     }
     for (int i = 0; i < sp; i++) {
         if (stack[i].isObjRef) {
-            stack[i].u.objRef = reallocate(stack[i].u.objRef,&newFreePointer);
+            stack[i].u.objRef = reallocate(stack[i].u.objRef, &newFreePointer);
         }
     }
 
     // scan phase
-    void * scanPos = newSlab->start;
+    void *scanPos = newSlab->start;
     while (scanPos < newFreePointer) {
         ObjRef obj = scanPos;
         if (IS_PRIMITIVE(obj)) {
@@ -197,7 +197,7 @@ void gc() {
     gcRuns += 1;
     if (printGcStats) {
         printStats();
-    } else if(debug) {
+    } else if (debug) {
         printf("Running GC\n");
     }
 }
@@ -218,7 +218,7 @@ ObjRef allocate(unsigned int size) {
             gc();
             return allocate(size);
         } else {
-            printf("ERROR: out of memory, tried to allocate %d bytes\n",size);
+            printf("ERROR: out of memory, tried to allocate %d bytes\n", size);
             error(1);
         }
     }
@@ -234,7 +234,7 @@ ObjRef allocate(unsigned int size) {
 
 /// Create object ObjRef, no raw values
 ObjRef createObj(int32_t fields) {
-    unsigned int msize = sizeof(Obj) + (fields*sizeof(void *));
+    unsigned int msize = sizeof(Obj) + (fields * sizeof(void *));
     ObjRef obj = allocate(msize);
     int i;
     for (i = 0; i < fields; i++) {
@@ -255,13 +255,13 @@ ObjRef createPrimitiveObj(int32_t size) {
 
 void printStats() {
     printf("Gargabe Collector, stats since last run:\n");
-    printf("\tAllocated Bytes \t %ld\n",allocatedBytes);
-    printf("\tAllocated Objects \t %ld\n",allocatedObjects);
-    printf("\tAmount GC runs \t %ld\n",gcRuns);
-    printf("\tMemory shortage runs \t %ld\n",gcRunsDueContention);
-    printf("\tGC memory freed \t %ld\n",gcFreed);
+    printf("\tAllocated Bytes \t %ld\n", allocatedBytes);
+    printf("\tAllocated Objects \t %ld\n", allocatedObjects);
+    printf("\tAmount GC runs \t %ld\n", gcRuns);
+    printf("\tMemory shortage runs \t %ld\n", gcRunsDueContention);
+    printf("\tGC memory freed \t %ld\n", gcFreed);
     printf("\tGC obj reallocated \t %ld\n", gcReallocObj);
-    printf("\tGC bytes reallocated \t %ld\n",gcReallocBytes);
+    printf("\tGC bytes reallocated \t %ld\n", gcReallocBytes);
     allocatedBytes = 0;
     allocatedObjects = 0;
     gcRunsDueContention = 0;
@@ -296,7 +296,7 @@ int popObjRef(ObjRef *ret) {
 
 /// Pop ObjRef with int primitive value
 int popObjRefInt(ObjRef *ret) {
-    if (popObjRef(ret) != 0){
+    if (popObjRef(ret) != 0) {
         return 1;
     }
     if (!IS_PRIMITIVE(*ret)) {
@@ -308,7 +308,7 @@ int popObjRefInt(ObjRef *ret) {
 
 /// Pop ObjRef with obj value
 int popObjRefObj(ObjRef *ret) {
-    if (popObjRef(ret) != 0){
+    if (popObjRef(ret) != 0) {
         return 1;
     }
     if (IS_PRIMITIVE(*ret)) {

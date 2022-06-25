@@ -21,28 +21,39 @@ extern Stackslot *stack;
 extern uint32_t static_data_area_size;
 
 void set_heap_size(int32_t size_kib);
+
 void set_stack_size(int32_t size_kib);
 
 // zugriffsfunktionen
 int popInt(int32_t *);
+
 int popObjRef(ObjRef *ret);
+
 int popObjRefInt(ObjRef *ret);
+
 int popObjRefObj(ObjRef *ret);
 
 int pushObjRef(ObjRef val);
+
 int pushInt(int32_t val);
 
 ObjRef createIntObj(int32_t value);
+
 ObjRef createObj(int32_t fields);
+
 ObjRef createPrimitiveObj(int size);
 
 void enableMemoryZeroing();
+
 void enableGcStatsPrint();
 
 // garbage collection
 void gc();
+
 void init_memory();
+
 void free_all();
+
 void printStats();
 
 #endif //NJVM_MEMORY_H

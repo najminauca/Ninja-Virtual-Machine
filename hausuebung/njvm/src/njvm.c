@@ -43,12 +43,12 @@ void load_program(const char *path) {
 
     //printf("Format %c\n",headers[0]);
     if (headers[0] != 0x46424a4e) {
-        printf("ERROR: invalid binary header %x",headers[0]);
+        printf("ERROR: invalid binary header %x", headers[0]);
         exit(1);
     }
     //printf("Version %d\n",headers[1]);
     if (headers[1] != NJVM_VERSION) {
-        printf("ERROR: Invalid binary version %d expected %d",headers[1],NJVM_VERSION);
+        printf("ERROR: Invalid binary version %d expected %d", headers[1], NJVM_VERSION);
         exit(1);
     }
     //printf("Number of instructions %d\n",programm_size);
@@ -86,31 +86,31 @@ int run() {
 
     while (1) {
         uint32_t ins = programm_speicher[pc];
-        if(pause) {
+        if (pause) {
             run_to = false;
             printf("Debug mode. Possible actions: stack, statics, list, next, continue, quit, runto, inspect\n");
-            printInstruction(pc,ins);
-            char input [20];
-            if (fgets(input,20,stdin) == NULL) {
+            printInstruction(pc, ins);
+            char input[20];
+            if (fgets(input, 20, stdin) == NULL) {
                 continue;
             } else {
-                if(strcmp(input, "stack\n") == 0) {
+                if (strcmp(input, "stack\n") == 0) {
                     printStack();
                     continue;
-                } else if(strcmp(input, "statics\n") == 0) {
+                } else if (strcmp(input, "statics\n") == 0) {
                     printStatics();
                     continue;
-                } else if(strcmp(input, "list\n") == 0) {
+                } else if (strcmp(input, "list\n") == 0) {
                     printProgram();
                     continue;
-                } else if(strcmp(input, "next\n") == 0) {
+                } else if (strcmp(input, "next\n") == 0) {
                     pause = 1;
-                } else if(strcmp(input, "continue\n") == 0) {
+                } else if (strcmp(input, "continue\n") == 0) {
                     pause = 0;
-                } else if(strcmp(input, "quit\n") == 0) {
+                } else if (strcmp(input, "quit\n") == 0) {
                     ret = 0;
                     break;
-                } else if(strcmp(input, "runto\n") == 0) {
+                } else if (strcmp(input, "runto\n") == 0) {
                     printf("instruction line?\n");
                     int32_t in = -1;
                     int r = scanf("%d", &in);
@@ -119,14 +119,14 @@ int run() {
                         return 1;
                     }
                     if (in < 0 || in > programm_size) {
-                        printf("Invalid program location %d!\n",in);
+                        printf("Invalid program location %d!\n", in);
                         continue;
                     }
                     run_to_line = in;
                     run_to = true;
                     pause = false;
-                    printf("Running till instruction line %d\n",run_to_line);
-                } else if(strcmp(input, "inspect\n") == 0) {
+                    printf("Running till instruction line %d\n", run_to_line);
+                } else if (strcmp(input, "inspect\n") == 0) {
                     printf("pointer? (without 0x)\n");
                     unsigned long in = -1;
                     int r = scanf("%lx", &in);
@@ -134,15 +134,15 @@ int run() {
                         printf("Expected pointer\n");
                         return 1;
                     }
-                    printf("Inspecting %lu\n",in);
+                    printf("Inspecting %lu\n", in);
                     printObjRef((ObjRef) in, true);
                 } else {
                     printf("Invalid command\n");
                     continue;
                 }
             }
-        } else if(run_to && pc == run_to_line) {
-            printf("Reached run-to location %d, pausing",run_to_line);
+        } else if (run_to && pc == run_to_line) {
+            printf("Reached run-to location %d, pausing", run_to_line);
             pause = true;
             continue;
         }
@@ -157,7 +157,7 @@ int run() {
     if (debug) {
         printStats();
     }
-    if(ret == 2) {
+    if (ret == 2) {
         error(2);
     }
     gc();
@@ -166,11 +166,11 @@ int run() {
     return ret;
 }
 
-void help(char* binary_name) {
+void help(char *binary_name) {
     printf("usage: %s [options] <code file>\n", binary_name);
     printf("\t --version \t\tshow version and exit\n");
-    printf("\t --stack <KiB> \t\t stack size, default %d KiB\n",STACK_SIZE_DEFAULT);
-    printf("\t --heap <KiB> \t\t heap size, default %d KiB\n",HEAP_SIZE_DEFAULT);
+    printf("\t --stack <KiB> \t\t stack size, default %d KiB\n", STACK_SIZE_DEFAULT);
+    printf("\t --heap <KiB> \t\t heap size, default %d KiB\n", HEAP_SIZE_DEFAULT);
     printf("\t --gcpurge zero memory area after GC to debug memory corruptions\n");
     printf("\t --gcstats print GC statistics when running\n");
     printf("\t --help \t\t show this help and exit\n");
@@ -180,7 +180,7 @@ int main(int argc, char *argv[]) {
     bool program_loaded = false;
     if (argc > 1) {
         int i;
-        for(i = 1; i < argc; i++) {
+        for (i = 1; i < argc; i++) {
             if (strcmp(argv[i], "--help") == 0) {
                 help(argv[0]);
                 return 0;
@@ -193,7 +193,7 @@ int main(int argc, char *argv[]) {
                 i++;
                 char *ptr;
                 long in = strtol(argv[i], &ptr, 10);
-                if ( *ptr != '\0' || in < 1) {
+                if (*ptr != '\0' || in < 1) {
                     printf("Expected value > 0\n");
                     return 1;
                 }
@@ -211,11 +211,11 @@ int main(int argc, char *argv[]) {
                 enableMemoryZeroing();
             } else if (strcmp(argv[i], "--gcstats") == 0) {
                 enableGcStatsPrint();
-            } else if(i == argc -1) {
+            } else if (i == argc - 1) {
                 load_program(argv[i]);
                 program_loaded = true;
             } else {
-                printf("ERROR: Unknown argument `%s`",argv[i]);
+                printf("ERROR: Unknown argument `%s`", argv[i]);
                 return 1;
             }
         }
@@ -240,12 +240,12 @@ int main(int argc, char *argv[]) {
 // Abort program and exit
 void error(int status) {
     if (debug) {
-        printf("ERROR: Error code %d\n",status);
+        printf("ERROR: Error code %d\n", status);
         //printStack();
         uint32_t ins = programm_speicher[pc];
-        printInstruction(pc,ins);
-        ins = programm_speicher[pc-1];
-        printInstruction(pc-1,ins);
+        printInstruction(pc, ins);
+        ins = programm_speicher[pc - 1];
+        printInstruction(pc - 1, ins);
     }
     free_all();
     exit(status);

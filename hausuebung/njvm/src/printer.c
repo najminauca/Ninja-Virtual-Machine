@@ -145,7 +145,7 @@ void printInstruction(int i, uint32_t ins) {
 void printProgram() {
     int i = 0;
     for (i = 0; i < programm_size; i++) {
-        printInstruction(i,programm_speicher[i]);
+        printInstruction(i, programm_speicher[i]);
     }
 }
 
@@ -157,9 +157,9 @@ void printObjRef(ObjRef ref, int full) {
     }
     if (IS_PRIMITIVE(ref)) {
         if (ref->size == sizeof(int32_t)) {
-            printf("size: %d, data: (int) %d",ref->size,*(int*)ref->data);
+            printf("size: %d, data: (int) %d", ref->size, *(int *) ref->data);
         } else {
-            printf("size: %d, data: (bigint) ",ref->size);
+            printf("size: %d, data: (bigint) ", ref->size);
             bip.op1 = ref;
             bigPrint(stdout);
         }
@@ -170,21 +170,21 @@ void printObjRef(ObjRef ref, int full) {
         }
     } else {
         int size = GET_ELEMENT_COUNT(ref);
-        printf("size: %d, data: (objref) [",size);
+        printf("size: %d, data: (objref) [", size);
         if (full) {
             printf("\n");
         }
         int i;
-        for (i=0; i < size;i++) {
+        for (i = 0; i < size; i++) {
             ObjRef val = GET_REFS_PTR(ref)[i];
             if (!full && i > 0) {
                 printf(",");
             }
             if (val != NULL) {
                 if (full) {
-                    printObjRef(val,true);
+                    printObjRef(val, true);
                 } else {
-                    printf("%p",(void *) val);
+                    printf("%p", (void *) val);
                 }
             } else {
                 printf("null,\n");
@@ -203,8 +203,8 @@ void printStack() {
             printf("\t\t");
         }
         if (stack[i].isObjRef) {
-            printf("%04d:\tObjref: %p ",i,(void*)stack[i].u.objRef);
-            printObjRef(stack[i].u.objRef,false);
+            printf("%04d:\tObjref: %p ", i, (void *) stack[i].u.objRef);
+            printObjRef(stack[i].u.objRef, false);
         } else {
             printf("%04d:\t%d\n", i, stack[i].u.number);
         }
@@ -213,8 +213,8 @@ void printStack() {
 
 void printStatics() {
     int i;
-    for(i = 0; i < static_data_area_size; i++) {
-        printf("%04d:\t",i);
-        printObjRef(static_data_area[i],false);
+    for (i = 0; i < static_data_area_size; i++) {
+        printf("%04d:\t", i);
+        printObjRef(static_data_area[i], false);
     }
 }
