@@ -233,7 +233,6 @@ int main(int argc, char *argv[]) {
     printf("Ninja Virtual Machine stopped\n");
 
     free(programm_speicher);
-    free(static_data_area);
     free_all();
     return ret;
 }

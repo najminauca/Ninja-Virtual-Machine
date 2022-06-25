@@ -95,7 +95,7 @@ void init_memory() {
     slab1.start = heap;
     slab1.end = heap + heap_slab_size;
     slab2.end = heap + heap_size_bytes;
-    slab2.start = slab2.end - heap_slab_size;
+    slab2.start = slab1.end;
 
     if (zeroMemoryAfterGc) {
         memset(heap, 0, heap_size_bytes);
@@ -115,6 +115,7 @@ void free_all() {
         free(stack);
         stack = NULL;
     }
+    free(static_data_area);
 }
 
 void enableMemoryZeroing() {
@@ -146,9 +147,6 @@ void * reallocate(ObjRef obj, void ** newFreePointer) {
 }
 
 void gc() {
-    if (debug) {
-        printf("Running gc\n");
-    }
     void * newFreePointer;
     Slab * newSlab;
     if (currentSlab->start == slab1.start) {
@@ -178,13 +176,13 @@ void gc() {
     while (scanPos < newFreePointer) {
         ObjRef obj = scanPos;
         if (IS_PRIMITIVE(obj)) {
-            scanPos += sizeof(ObjRef) + obj->size;
+            scanPos += sizeof(Obj) + obj->size;
         } else {
             int size = GET_ELEMENT_COUNT(obj);
             for (int i = 0; i < size; i++) {
                 GET_REFS_PTR(obj)[i] = reallocate(GET_REFS_PTR(obj)[i], &newFreePointer);
             }
-            scanPos += sizeof(ObjRef) + sizeof(void *) * size;
+            scanPos += sizeof(Obj) + sizeof(void *) * size;
         }
     }
 
@@ -199,6 +197,8 @@ void gc() {
     gcRuns += 1;
     if (printGcStats) {
         printStats();
+    } else if(debug) {
+        printf("Running GC\n");
     }
 }
 
