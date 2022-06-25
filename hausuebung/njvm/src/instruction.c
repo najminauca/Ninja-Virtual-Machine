@@ -6,6 +6,7 @@
 #include "njvm.h"
 #include "exec.h"
 #include "bigint.h"
+#include "memory.h"
 
 int pushc(int32_t imm) {
     return pushObjRef(createIntObj(imm));

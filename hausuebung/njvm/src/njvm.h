@@ -69,10 +69,9 @@
 // Auf objekt zugreifen
 #define GET_REFS_PTR(objRef) ((ObjRef *) (objRef)->data)
 
-//#define PROGRAM_LIMIT 1000
-#define STACK_LIMIT 1000
-
 typedef struct {
+    bool brokenHeart;
+    void *forwardPointer;
     uint32_t size;
     unsigned char data[1];
 } *ObjRef;
@@ -87,10 +86,7 @@ typedef struct {
 
 extern uint32_t *programm_speicher;
 extern uint32_t programm_size;
-// globale variabeln
-extern uint32_t static_data_area_size;
-extern ObjRef *static_data_area;
-extern Stackslot stack[STACK_LIMIT];
+
 // Stackpointer
 extern int sp;
 // Programmcounter
@@ -99,5 +95,10 @@ extern int pc;
 extern int fp;
 // return value register
 extern ObjRef rvr;
+// for internal debug output when enabled
+extern bool debug;
+
+// Exit programm on error, freeing resources, maybe print debug stuff
+void error(int status);
 
 #endif //KSP_PUBLIC_NJVM_H

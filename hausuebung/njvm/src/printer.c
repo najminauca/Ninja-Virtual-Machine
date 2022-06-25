@@ -4,6 +4,7 @@
 #include "stdio.h"
 #include "njvm.h"
 #include "bigint.h"
+#include "memory.h"
 
 void printInstruction(int i, uint32_t ins) {
     uint32_t opcode = ins >> 24;

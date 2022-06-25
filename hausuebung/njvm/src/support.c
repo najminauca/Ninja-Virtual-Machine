@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "njvm.h"
+#include "memory.h"
 
 // Helpers for BigInt lib as per support.h
 
@@ -14,11 +15,7 @@ void fatalError(char *msg) {
 void * newPrimObject(int dataSize) {
     ObjRef bigObjRef;
 
-    bigObjRef = malloc(sizeof(unsigned int) +
-                       dataSize * sizeof(unsigned char));
-    if (bigObjRef == NULL) {
-        fatalError("newPrimObject() got no memory");
-    }
+    bigObjRef = createObj(dataSize);
     bigObjRef->size = dataSize;
     return bigObjRef;
 }

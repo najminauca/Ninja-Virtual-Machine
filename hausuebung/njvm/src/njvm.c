@@ -10,19 +10,18 @@
 #include "exec.h"
 #include "programme.h"
 #include "printer.h"
+#include "memory.h"
 
 const int VERSION = 0;
 
 uint32_t programm_size = 0;
 uint32_t *programm_speicher;
 // globale variabeln
-uint32_t static_data_area_size = 0;
-ObjRef *static_data_area;
-Stackslot stack[STACK_LIMIT];
 int sp = 0;
 int pc = 0;
 int fp = 0;
 ObjRef rvr = 0;
+bool debug = false;
 
 void load_program(const char *path) {
     FILE *file;
@@ -68,13 +67,15 @@ void load_program(const char *path) {
     fclose(file);
 }
 
-int run(int debug) {
+int run() {
     int count = 0;
     int ret = 0;
     sp = 0;
     pc = 0;
     fp = 0;
     rvr = 0;
+
+    init_memory();
 
     stack[sp].isObjRef = true;
     stack[sp].u.objRef = NULL;
@@ -152,18 +153,26 @@ int run(int debug) {
             break;
         }
     }
+
+    if (debug) {
+        printStats();
+    }
+
     //printf("Finished after %d cycles\n", count);
     return ret;
 }
 
 void help(char* binary_name) {
     printf("usage: %s [options] <code file>\n", binary_name);
-    printf("\t --version   show version and exit\n");
-    printf("\t --help      show this help and exit\n");
+    printf("\t --version \t\tshow version and exit\n");
+    printf("\t --stack <KiB> \t\t stack size, default %d KiB\n",STACK_SIZE_DEFAULT);
+    printf("\t --heap <KiB> \t\t heap size, default %d KiB\n",HEAP_SIZE_DEFAULT);
+    printf("\t --gcpurge zero memory area after GC to debug memory corruptions\n");
+    printf("\t --help \t\t show this help and exit\n");
 }
 
 int main(int argc, char *argv[]) {
-    int debug = 0;
+    bool program_loaded = false;
     if (argc > 1) {
         int i;
         for(i = 1; i < argc; i++) {
@@ -175,8 +184,29 @@ int main(int argc, char *argv[]) {
                 return 0;
             } else if (strcmp(argv[i], "--debug") == 0) {
                 debug = 1;
+            } else if (strcmp(argv[i], "--stack") == 0) {
+                i++;
+                char *ptr;
+                long in = strtol(argv[i], &ptr, 10);
+                if ( *ptr != '\0' || in < 1) {
+                    printf("Expected value > 0\n");
+                    return 1;
+                }
+                set_stack_size(in);
+            } else if (strcmp(argv[i], "--heap") == 0) {
+                i++;
+                char *ptr;
+                long in = strtol(argv[i], &ptr, 10);
+                if (*ptr != '\0' || in < 1) {
+                    printf("Expected value > 0\n");
+                    return 1;
+                }
+                set_heap_size(in);
+            } else if (strcmp(argv[i], "--gcpurge") == 0) {
+                enableMemoryZeroing();
             } else if(i == argc -1) {
                 load_program(argv[i]);
+                program_loaded = true;
             } else {
                 printf("ERROR: Unknown argument `%s`",argv[i]);
                 return 1;
@@ -186,12 +216,26 @@ int main(int argc, char *argv[]) {
         help(argv[0]);
         return 0;
     }
+    if (!program_loaded) {
+        printf("No programm specified to load.\n");
+        help(argv[0]);
+        return 1;
+    }
     printf("Ninja Virtual Machine started\n");
     int ret = run(debug);
     printf("Ninja Virtual Machine stopped\n");
 
     free(programm_speicher);
     free(static_data_area);
+    free_all();
     return ret;
 }
 
+// Abort program and exit
+void error(int status) {
+    if (debug) {
+        printf("Running error code for status %d",status);
+    }
+    free_all();
+    exit(status);
+}
