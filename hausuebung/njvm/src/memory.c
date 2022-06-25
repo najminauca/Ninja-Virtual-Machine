@@ -226,7 +226,7 @@ ObjRef allocate(unsigned int size) {
 
 /// Create object ObjRef, no raw values
 ObjRef createObj(int32_t fields) {
-    unsigned int msize = sizeof(ObjRef) + (fields*sizeof(void *));
+    unsigned int msize = sizeof(Obj) + (fields*sizeof(void *));
     ObjRef obj = allocate(msize);
     int i;
     for (i = 0; i < fields; i++) {
@@ -239,7 +239,7 @@ ObjRef createObj(int32_t fields) {
 
 /// Create primitive ObjRef for primitive
 ObjRef createPrimitiveObj(int32_t size) {
-    unsigned int msize = sizeof(ObjRef) + size;
+    unsigned int msize = sizeof(Obj) + size;
     ObjRef obj = allocate(msize);
     obj->size = size;
     return obj;

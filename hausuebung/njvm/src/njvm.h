@@ -74,7 +74,8 @@ typedef struct {
     void *forwardPointer;
     uint32_t size;
     unsigned char data[];
-} *ObjRef;
+} Obj;
+typedef Obj* ObjRef;
 
 typedef struct {
     bool isObjRef;
