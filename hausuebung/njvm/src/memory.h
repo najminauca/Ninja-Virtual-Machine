@@ -34,6 +34,7 @@ int pushInt(int32_t val);
 
 ObjRef createIntObj(int32_t value);
 ObjRef createObj(int32_t fields);
+ObjRef createPrimitiveObj(int size);
 
 void enableMemoryZeroing();
 

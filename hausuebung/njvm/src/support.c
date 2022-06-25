@@ -7,17 +7,13 @@
 
 // taken vom bigint/tst/support.c
 void fatalError(char *msg) {
-    printf("Fatal error: %s\n", msg);
-    exit(1);
+    printf("ERROR bip: %s\n", msg);
+    error(1);
 }
 
 // taken vom bigint/tst/support.c
 void * newPrimObject(int dataSize) {
-    ObjRef bigObjRef;
-
-    bigObjRef = createObj(dataSize);
-    bigObjRef->size = dataSize;
-    return bigObjRef;
+    return createPrimitiveObj(dataSize);
 }
 
 // taken vom bigint/tst/support.c

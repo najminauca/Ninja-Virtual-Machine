@@ -10,9 +10,6 @@
 #include "memory.h"
 #include "bigint.h"
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wpointer-arith"
-
 void * heap = NULL;
 uint32_t stack_limit;
 
@@ -24,9 +21,9 @@ typedef struct {
 Slab slab1;
 Slab slab2;
 
-Slab *currentBank;
+Slab *currentSlab;
 
-void * bankFreePointer;
+void * slabFreePointer;
 
 bool zeroMemoryAfterGc = false;
 
@@ -35,6 +32,9 @@ long allocatedBytes = 0;
 long allocatedObjects = 0;
 long gcRuns = 0;
 long gcRunsDueContention = 0;
+unsigned long gcFreed = 0;
+unsigned long gcReallocBytes = 0;
+unsigned long gcReallocObj = 0;
 
 // globals
 uint32_t static_data_area_size = 0;
@@ -92,8 +92,13 @@ void init_memory() {
     slab2.end = heap + heap_size_bytes;
     slab2.start = slab2.end - heap_slab_size;
 
-    currentBank = &slab1;
-    bankFreePointer = currentBank->start;
+    if (zeroMemoryAfterGc) {
+        memset(heap, 0, heap_size_bytes);
+        memset(stack, 0, stack_size_bytes);
+    }
+
+    currentSlab = &slab1;
+    slabFreePointer = currentSlab->start;
 }
 
 void free_all() {
@@ -111,14 +116,82 @@ void enableMemoryZeroing() {
     zeroMemoryAfterGc = true;
 }
 
-void gc() {
-    //TODO
+void * reallocate(ObjRef obj, void ** newFreePointer) {
+    if (obj == NULL) {
+        return NULL;
+    }
+    if (obj->brokenHeart) {
+        return obj->forwardPointer;
+    } else {
+        unsigned long size;
+        if (IS_PRIMITIVE(obj)) {
+            size = sizeof(ObjRef) + obj->size;
+        } else {
+            size = sizeof(ObjRef) + (sizeof(void *) * GET_ELEMENT_COUNT(obj));
+        }
+        gcReallocObj += 1;
+        gcReallocBytes += size;
+        memcpy(*newFreePointer, obj,size);
+        ObjRef newObj = *newFreePointer;
+        obj->brokenHeart = true;
+        obj->forwardPointer = *newFreePointer;
+        *newFreePointer += size;
+        return newObj;
+    }
+}
 
-    if (zeroMemoryAfterGc) {
-        memset(currentBank->start,0,heap_slab_size);
+void gc() {
+    if (debug) {
+        printf("Running gc\n");
+    }
+    void * newFreePointer;
+    Slab * newSlab;
+    if (currentSlab->start == slab1.start) {
+        newSlab = &slab2;
+    } else {
+        newSlab = &slab1;
+    }
+    newFreePointer = newSlab->start;
+    // reallocate root objects
+    rvr = reallocate(rvr, &newFreePointer);
+    bip.op1 = reallocate(bip.op1, &newFreePointer);
+    bip.op2 = reallocate(bip.op2, &newFreePointer);
+    bip.rem = reallocate(bip.rem, &newFreePointer);
+    bip.res = reallocate(bip.res, &newFreePointer);
+
+    for (int i = 0; i < static_data_area_size; i++) {
+        static_data_area[i] = reallocate(static_data_area[i],&newFreePointer);
+    }
+    for (int i = 0; i < sp; i++) {
+        if (stack[i].isObjRef) {
+            stack[i].u.objRef = reallocate(stack[i].u.objRef,&newFreePointer);
+        }
     }
 
+    // scan phase
+    void * scanPos = newSlab->start;
+    while (scanPos < newFreePointer) {
+        ObjRef obj = scanPos;
+        if (IS_PRIMITIVE(obj)) {
+            scanPos += sizeof(ObjRef) + obj->size;
+        } else {
+            int size = GET_ELEMENT_COUNT(obj);
+            for (int i = 0; i < size; i++) {
+                GET_REFS_PTR(obj)[i] = reallocate(GET_REFS_PTR(obj)[i], &newFreePointer);
+            }
+            scanPos += sizeof(ObjRef) + sizeof(void *) * size;
+        }
+    }
+
+    if (zeroMemoryAfterGc) {
+        memset(currentSlab->start, 0, heap_slab_size);
+    }
+    gcFreed += (slabFreePointer - currentSlab->start) - (newFreePointer - newSlab->start);
+    currentSlab = newSlab;
+    slabFreePointer = newFreePointer;
+
     allocationSinceGc = false;
+    gcRuns += 1;
 }
 
 
@@ -130,30 +203,45 @@ void setObjInt(ObjRef ref, int32_t val) {
     *(int32_t *) ref->data = val;
 }
 
-/// Create object ObjRef, no raw values
-ObjRef createObj(int32_t fields) {
-    unsigned int msize = sizeof(uint32_t) + fields*sizeof(int32_t);
-    if (bankFreePointer + msize > currentBank->end) {
-        if (!allocationSinceGc) {
+ObjRef allocate(unsigned int size) {
+    if (slabFreePointer + size > currentSlab->end) {
+        if (allocationSinceGc) {
             gcRunsDueContention += 1;
             gc();
-            return createObj(fields);
+            return allocate(size);
         } else {
-            printf("ERROR: out of memory, tried to allocate %d bytes",msize);
+            printf("ERROR: out of memory, tried to allocate %d bytes\n",size);
             error(1);
         }
     }
     allocatedObjects += 1;
-    allocatedBytes += msize;
-    ObjRef obj = bankFreePointer;
-    bankFreePointer += msize;
+    allocatedBytes += size;
+    ObjRef obj = slabFreePointer;
+    slabFreePointer += size;
+    obj->brokenHeart = false;
+    obj->forwardPointer = NULL;
+    allocationSinceGc = true;
+    return obj;
+}
+
+/// Create object ObjRef, no raw values
+ObjRef createObj(int32_t fields) {
+    unsigned int msize = sizeof(ObjRef) + (fields*sizeof(void *));
+    ObjRef obj = allocate(msize);
     int i;
     for (i = 0; i < fields; i++) {
         GET_REFS_PTR(obj)[i] = NULL;
     }
     obj->size = fields;
     obj->size |= MSB;
-    allocationSinceGc = true;
+    return obj;
+}
+
+/// Create primitive ObjRef for primitive
+ObjRef createPrimitiveObj(int32_t size) {
+    unsigned int msize = sizeof(ObjRef) + size;
+    ObjRef obj = allocate(msize);
+    obj->size = size;
     return obj;
 }
 
@@ -162,6 +250,9 @@ void printStats() {
     printf("Allocated Objects \t %ld\n",allocatedObjects);
     printf("Amount GC runs \t %ld\n",gcRuns);
     printf("Memory shortage runs \t %ld\n",gcRunsDueContention);
+    printf("GC memory freed \t %ld\n",gcFreed);
+    printf("GC obj reallocated \t %ld\n", gcReallocObj);
+    printf("GC bytes reallocated \t %ld\n",gcReallocBytes);
 }
 
 /// Directly call bigint lib to convert from int32, return result
@@ -251,4 +342,3 @@ int pushInt(int32_t val) {
         return 0;
     }
 }
-#pragma clang diagnostic pop

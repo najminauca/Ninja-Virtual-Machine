@@ -134,7 +134,7 @@ int run() {
                         printf("Expected pointer\n");
                         return 1;
                     }
-                    printf("Inspecting %p\n",in);
+                    printf("Inspecting %lu\n",in);
                     printObjRef((ObjRef) in, true);
                 } else {
                     printf("Invalid command\n");
@@ -156,6 +156,9 @@ int run() {
 
     if (debug) {
         printStats();
+    }
+    if(ret == 2) {
+        error(2);
     }
 
     //printf("Finished after %d cycles\n", count);
@@ -222,7 +225,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     printf("Ninja Virtual Machine started\n");
-    int ret = run(debug);
+    int ret = run();
     printf("Ninja Virtual Machine stopped\n");
 
     free(programm_speicher);
@@ -234,7 +237,12 @@ int main(int argc, char *argv[]) {
 // Abort program and exit
 void error(int status) {
     if (debug) {
-        printf("Running error code for status %d",status);
+        printf("ERROR: Error code %d\n",status);
+        //printStack();
+        uint32_t ins = programm_speicher[pc];
+        printInstruction(pc,ins);
+        ins = programm_speicher[pc-1];
+        printInstruction(pc-1,ins);
     }
     free_all();
     exit(status);

@@ -51,7 +51,7 @@
 #define REFEQ 40
 #define REFNE 41
 
-#define NJVM_VERSION 7
+#define NJVM_VERSION 8
 
 // legacy A1, create an immediate value
 #define IMM(x) ((x) & 0x00FFFFFF)// legacy A1, create an immediate value
@@ -73,7 +73,7 @@ typedef struct {
     bool brokenHeart;
     void *forwardPointer;
     uint32_t size;
-    unsigned char data[1];
+    unsigned char data[];
 } *ObjRef;
 
 typedef struct {
