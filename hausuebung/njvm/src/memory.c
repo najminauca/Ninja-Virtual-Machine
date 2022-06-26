@@ -82,7 +82,7 @@ void init_memory() {
     }
     stack_limit = stack_size_bytes / sizeof(Stackslot);
     if (stack_limit < 1) {
-        printf("ERROR: Stack byte size < 1\n");
+        printf("ERROR: Stack slot size < 1\n");
         error(1);
     }
 
@@ -147,6 +147,7 @@ void *reallocate(ObjRef obj, void **newFreePointer) {
 }
 
 void gc() {
+    exit(123);
     void *newFreePointer;
     Slab *newSlab;
     if (currentSlab->start == slab1.start) {
@@ -212,7 +213,7 @@ void setObjInt(ObjRef ref, int32_t val) {
 }
 
 ObjRef allocate(unsigned int size) {
-    if (slabFreePointer + size > currentSlab->end) {
+    /*if (slabFreePointer + size > currentSlab->end) {
         if (allocationSinceGc) {
             gcRunsDueContention += 1;
             gc();
@@ -228,7 +229,10 @@ ObjRef allocate(unsigned int size) {
     slabFreePointer += size;
     obj->brokenHeart = false;
     obj->forwardPointer = NULL;
-    allocationSinceGc = true;
+    allocationSinceGc = true;*/
+    ObjRef obj = malloc(size);
+    obj->brokenHeart = false;
+    obj->forwardPointer = NULL;
     return obj;
 }
 

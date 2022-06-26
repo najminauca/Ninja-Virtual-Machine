@@ -69,9 +69,9 @@
 // Auf objekt zugreifen
 #define GET_REFS_PTR(objRef) ((ObjRef *) (objRef)->data)
 
-typedef struct {
+typedef struct ObjRef {
     bool brokenHeart;
-    void *forwardPointer;
+    struct ObjRef* forwardPointer;
     uint32_t size;
     unsigned char data[];
 } Obj;

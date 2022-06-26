@@ -125,6 +125,10 @@ int asf(int32_t imm) {
         return 2;
     }
     fp = sp;
+    for (int i = 0; i < imm; i++) {
+        stack[sp + i].u.objRef = NULL;
+        stack[sp + i].isObjRef = true;
+    }
     sp = sp + imm;
     return 0;
 }
@@ -238,7 +242,7 @@ int ge() {
     bip.op1 = a;
     bip.op2 = b;
     int val = 0;
-    if (bigCmp() > -1) { // >=
+    if (bigCmp() >= 0) {
         val = 1;
     }
     return pushObjRef(createIntObj(val));
@@ -261,7 +265,7 @@ int brf(int32_t imm) {
     // returns whether a is <, =, > 0
     if (bigSgn() == 0) {
         if (imm > programm_size || imm < 0) {
-            printf("Error: BRF to %d out of range\n", imm);
+            printf("Error: BRF to %d out of programm range\n", imm);
             return 2;
         }
         pc = imm;
@@ -314,6 +318,10 @@ int popr() {
 }
 
 int dup() {
+    if (sp < 1) {
+        printf("Error: stack empty, can't dup with stackpointer %d\n", sp);
+        return 2;
+    }
     if (!stack[sp - 1].isObjRef) {
         printf("Error: can't dup on int, expected objref! stackpointer %d\n", sp);
         return 2;
@@ -329,6 +337,10 @@ int getf(int32_t imm) {
     ObjRef a;
     if (popObjRefObj(&a) != 0)
         return 2;
+    if (a == NULL) {
+        printf("Error: can't getf with NULL array\n");
+        return 2;
+    }
     int32_t count = GET_ELEMENT_COUNT(a);
     if (imm >= count || imm < 0) {
         printf("Error: can't getf %d on an obj of size %d!",imm,count);
@@ -346,7 +358,11 @@ int putf(int32_t imm) {
         return 2;
     int32_t count = GET_ELEMENT_COUNT(a);
     if (imm >= count || imm < 0) {
-        printf("Error: can't getf %d on an obj of size %d!",imm,count);
+        printf("Error: can't putf %d on an obj of size %d!",imm,count);
+        return 2;
+    }
+    if (a == NULL) {
+        printf("Error: can't putf with NULL array\n");
         return 2;
     }
     GET_REFS_PTR(a)[imm] = val;
@@ -370,14 +386,18 @@ int getfa() {
     ObjRef oPos;
     if (popObjRefInt(&oPos) != 0)
         return 2;
+    bip.op1 = oPos;
+    int32_t pos = bigToInt();
     ObjRef a;
     if (popObjRefObj(&a) != 0)
         return 2;
-    bip.op1 = oPos;
-    int32_t pos = bigToInt();
     int32_t size = GET_ELEMENT_COUNT(a);
     if (pos < 0 || pos >= size) {
         printf("Error: can't getfa with pos %d on obj size %d",pos,size);
+        return 2;
+    }
+    if (a == NULL) {
+        printf("Error: can't getfa with NULL array\n");
         return 2;
     }
     return pushObjRef(GET_REFS_PTR(a)[pos]);
@@ -390,11 +410,15 @@ int putfa() {
     ObjRef oPos;
     if (popObjRefInt(&oPos) != 0)
         return 2;
+    bip.op1 = oPos;
+    int32_t pos = bigToInt();
     ObjRef a;
     if (popObjRefObj(&a) != 0)
         return 2;
-    bip.op1 = oPos;
-    int32_t pos = bigToInt();
+    if (a == NULL) {
+        printf("Error: can't putfa with NULL array\n");
+        return 2;
+    }
     int32_t size = GET_ELEMENT_COUNT(a);
     if (pos < 0 || pos >= size) {
         printf("Error: can't putfa with pos %d on obj size %d\n",pos,size);

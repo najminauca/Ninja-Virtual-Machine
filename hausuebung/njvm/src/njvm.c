@@ -46,13 +46,17 @@ void load_program(const char *path) {
         printf("ERROR: invalid binary header %x", headers[0]);
         exit(1);
     }
-    //printf("Version %d\n",headers[1]);
+    if (debug) {
+        printf("Version %d\n",headers[1]);
+    }
     if (headers[1] != NJVM_VERSION) {
         printf("ERROR: Invalid binary version %d expected %d", headers[1], NJVM_VERSION);
         exit(1);
     }
-    //printf("Number of instructions %d\n",programm_size);
-    //printf("Static variables %d\n",static_data_area_size);
+    if (debug) {
+        printf("Number of instructions %d\n",programm_size);
+        printf("Static variables %d\n",static_data_area_size);
+    }
     static_data_area = malloc(static_data_area_size * sizeof(ObjRef));
     int i;
     for (i = 0; i < static_data_area_size; i++) {
@@ -142,7 +146,7 @@ int run() {
                 }
             }
         } else if (run_to && pc == run_to_line) {
-            printf("Reached run-to location %d, pausing", run_to_line);
+            printf("Reached run-to location %d, pausing\n", run_to_line);
             pause = true;
             continue;
         }

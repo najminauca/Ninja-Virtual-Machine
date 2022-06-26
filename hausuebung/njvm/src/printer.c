@@ -8,40 +8,40 @@
 
 void printInstruction(int i, uint32_t ins) {
     uint32_t opcode = ins >> 24;
-    printf("%04d\t", i);
+    printf("%04d:\t", i);
     switch (opcode) {
         case HALT:
-            printf("halt\t\n");
+            printf("halt\n");
             break;
         case PUSHC:
             printf("pushc\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case ADD:
-            printf("add\t\n");
+            printf("add\n");
             break;
         case SUB:
-            printf("sub\t\n");
+            printf("sub\n");
             break;
         case MUL:
-            printf("mul\t\n");
+            printf("mul\n");
             break;
         case DIV:
-            printf("c_div\t\n");
+            printf("div\n");
             break;
         case MOD:
-            printf("mod\t\n");
+            printf("mod\n");
             break;
         case RDINT:
-            printf("rdint\t\n");
+            printf("rdint\n");
             break;
         case WRINT:
-            printf("wrint\t\n");
+            printf("wrint\n");
             break;
         case RDCHR:
-            printf("rdchr\t\n");
+            printf("rdchr\n");
             break;
         case WRCHR:
-            printf("wrchr\t\n");
+            printf("wrchr\n");
             break;
         case PUSHG:
             printf("pushg\t%d\n", SIGN_EXTEND(IMM(ins)));
@@ -50,7 +50,7 @@ void printInstruction(int i, uint32_t ins) {
             printf("popg\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case ASF:
-            printf("asf \t%d\n", SIGN_EXTEND(IMM(ins)));
+            printf("asf\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case RSF:
             printf("rsf\n");
@@ -62,40 +62,40 @@ void printInstruction(int i, uint32_t ins) {
             printf("popl\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case EQ:
-            printf("eq  \t\n");
+            printf("eq\n");
             break;
         case NE:
-            printf("ne  \t\n");
+            printf("ne\n");
             break;
         case LT:
-            printf("lt  \t\n");
+            printf("lt\n");
             break;
         case LE:
-            printf("le  \t\n");
+            printf("le\n");
             break;
         case GT:
-            printf("gt  \t\n");
+            printf("gt\n");
             break;
         case GE:
-            printf("ge  \t\n");
+            printf("ge\n");
             break;
         case JMP:
-            printf("jmp \t%04d\n", SIGN_EXTEND(IMM(ins)));
+            printf("jmp\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case BRF:
-            printf("brf \t%04d\n", SIGN_EXTEND(IMM(ins)));
+            printf("brf\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case BRT:
-            printf("brt \t%04d\n", SIGN_EXTEND(IMM(ins)));
+            printf("brt\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case CALL:
-            printf("call \t%04d\n", SIGN_EXTEND(IMM(ins)));
+            printf("call\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case RET:
             printf("ret\n");
             break;
         case DROP:
-            printf("drop \t%04d\n", SIGN_EXTEND(IMM(ins)));
+            printf("drop\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case PUSHR:
             printf("pushr\n");
@@ -107,34 +107,34 @@ void printInstruction(int i, uint32_t ins) {
             printf("dup\n");
             break;
         case NEW:
-            printf("NEW \t%04d\n", SIGN_EXTEND(IMM(ins)));
+            printf("new\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case GETF:
-            printf("GETF \t%04d\n", SIGN_EXTEND(IMM(ins)));
+            printf("getf\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case PUTF:
-            printf("PUTF \t%04d\n", SIGN_EXTEND(IMM(ins)));
+            printf("putf\t%d\n", SIGN_EXTEND(IMM(ins)));
             break;
         case NEWA:
-            printf("NEWA\n");
+            printf("newa\n");
             break;
         case GETFA:
-            printf("GETFA\n");
+            printf("getfa\n");
             break;
         case PUTFA:
-            printf("PUTFA\n");
+            printf("putfa\n");
             break;
         case GETSZ:
-            printf("GETSZ\n");
+            printf("getsz\n");
             break;
         case PUSHN:
-            printf("PUSHN\n");
+            printf("pushn\n");
             break;
         case REFEQ:
-            printf("REFEQ\n");
+            printf("refeq\n");
             break;
         case REFNE:
-            printf("REFNE\n");
+            printf("refne\n");
             break;
         default:
             printf("Unknown opcode %d at %d.. Aborting\n", opcode, i - 1);
@@ -203,10 +203,10 @@ void printStack() {
             printf("\t\t");
         }
         if (stack[i].isObjRef) {
-            printf("%04d:\tObjref: %p ", i, (void *) stack[i].u.objRef);
+            printf("%d:\tObjref: %p ", i, (void *) stack[i].u.objRef);
             printObjRef(stack[i].u.objRef, false);
         } else {
-            printf("%04d:\t%d\n", i, stack[i].u.number);
+            printf("%d:\t%d\n", i, stack[i].u.number);
         }
     }
 }
@@ -214,7 +214,7 @@ void printStack() {
 void printStatics() {
     int i;
     for (i = 0; i < static_data_area_size; i++) {
-        printf("%04d:\t", i);
+        printf("%d:\t", i);
         printObjRef(static_data_area[i], false);
     }
 }
