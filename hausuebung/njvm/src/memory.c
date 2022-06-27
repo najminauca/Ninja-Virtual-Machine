@@ -147,7 +147,6 @@ void *reallocate(ObjRef obj, void **newFreePointer) {
 }
 
 void gc() {
-    exit(123);
     void *newFreePointer;
     Slab *newSlab;
     if (currentSlab->start == slab1.start) {
@@ -213,7 +212,7 @@ void setObjInt(ObjRef ref, int32_t val) {
 }
 
 ObjRef allocate(unsigned int size) {
-    /*if (slabFreePointer + size > currentSlab->end) {
+    if (slabFreePointer + size > currentSlab->end) {
         if (allocationSinceGc) {
             gcRunsDueContention += 1;
             gc();
@@ -229,10 +228,10 @@ ObjRef allocate(unsigned int size) {
     slabFreePointer += size;
     obj->brokenHeart = false;
     obj->forwardPointer = NULL;
-    allocationSinceGc = true;*/
-    ObjRef obj = malloc(size);
+    allocationSinceGc = true;
+    /*ObjRef obj = malloc(size);
     obj->brokenHeart = false;
-    obj->forwardPointer = NULL;
+    obj->forwardPointer = NULL;*/
     return obj;
 }
 

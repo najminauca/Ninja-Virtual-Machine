@@ -17,7 +17,7 @@ int execute(uint32_t ins) {
     switch (dec_ins) {
         case HALT:
             //printf("Found halt instruction\n");
-            return 1;
+            return 0;
         case PUSHC:
             if (pushc(imm)) {
                 return 2;

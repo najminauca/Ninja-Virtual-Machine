@@ -73,7 +73,7 @@ void load_program(const char *path) {
 
 int run() {
     int count = 0;
-    int ret = 0;
+    int ret = -1;
     sp = 0;
     pc = 0;
     fp = 0;
@@ -153,7 +153,7 @@ int run() {
         pc = pc + 1;
         count = count + 1;
         ret = execute(ins);
-        if (ret != 0) {
+        if (ret != -1) {
             break;
         }
     }
