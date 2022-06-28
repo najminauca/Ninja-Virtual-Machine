@@ -228,6 +228,6 @@ int execute(uint32_t ins) {
             return 2;
     }
 
-    return 0;
+    return -1;
 }
 
