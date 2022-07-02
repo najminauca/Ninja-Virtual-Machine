@@ -4,6 +4,7 @@
 #include "operations.h"
 #include "execute.h"
 #include "njvm.h"
+#include "bigint.h"
 
 int bp = -1;
 
@@ -11,19 +12,28 @@ void printStack(int i) {
     if(sp == fp) {
         printf("sp, fp  --->	");
         printNum(i);
-        printf("xxxx\n");
+        printf("(xxxxxx) xxxxxx\n");
     } else if(sp == i) {
         printf("sp      --->	");
         printNum(i);
-        printf("xxxx\n");
+        printf("(xxxxxx) xxxxxx\n");
     } else if(fp == i) {
         printf("fp      --->	");
         printNum(i);
-        printf("%d\n", (stack[i].isObjRef == true) ? *(int *)stack[i].u.objRef->data : stack[i].u.number);
+        if(stack[i].isObjRef) {
+            printf("(objref) %p\n", (void *)stack[i].u.objRef);
+        } else {
+            printf("(number) %d\n", (int)stack[i].u.number);
+        }
+        
     } else {
         printf("		");
         printNum(i);
-        printf("%d\n", (stack[i].isObjRef == true) ? *(int *)stack[i].u.objRef->data : stack[i].u.number);
+        if(stack[i].isObjRef) {
+            printf("(objref) %p\n", (void *)stack[i].u.objRef);
+        } else {
+            printf("(number) %d\n", (int)stack[i].u.number);
+        }
     }
 }
 
@@ -36,7 +46,7 @@ void debugRun(unsigned int ir) {
         scanf("%s", c);
 
         if(strcmp(c, "inspect") == 0) {
-            printf("DEBUG [inspect]: stack, data?\n");
+            printf("DEBUG [inspect]: stack, data, object?\n");
             scanf("%s", c);
 
             if(strcmp(c, "stack") == 0) {
@@ -57,6 +67,41 @@ void debugRun(unsigned int ir) {
                     }
                 }
                 printf("	--- end of data ---\n");
+            } else if(strcmp(c, "object") == 0) {
+                printf("object position in stack?\n");
+                int i;
+                scanf("%d", &i);
+                if(i >= 0 && stack[i].isObjRef) {
+                    if(stack[i].u.objRef == NULL) {
+                        printf("(objref) nil\n");
+                        printf("	--- end of object ---\n");
+                    }
+                    else if(!IS_PRIM(stack[i].u.objRef)) {
+                    printf("<compound object>\n");
+                        if(stack[i].u.objRef != NULL) {
+                            int size = GET_SIZE(stack[i].u.objRef);
+                            for(int j = 0; j < size; j++) {
+                                printf("field ");
+                                printNum(j);
+                                printf("(objref) %p\n", (void*) GET_REFS(stack[i].u.objRef)[j]);
+                            }
+                            printf("	--- end of object ---\n");
+                        } else {
+                            printf("field ");
+                            printNum(0);
+                            printf("(objref) %p\n", (void*) GET_REFS(stack[i].u.objRef));
+                            printf("	--- end of object ---\n");
+                        }
+                    
+                    } else if(IS_PRIM(stack[i].u.objRef)) {
+                        printf("<primitive object>\n");
+                        printf("(value)         ");
+                        bip.op1 = stack[i].u.objRef;
+                        bigPrint(stdout);
+                        printf("\n");
+                        printf("	--- end of object ---\n");
+                    }
+                }
             }
         }
         else if(strcmp(c, "list") == 0) {
