@@ -109,7 +109,37 @@ void execute(unsigned int ir) {
             popr();
             break;
         case DUP:
-            dup();    
+            dup();
+            break;
+        case NEW:
+            njnew(immediate);
+            break;
+        case GETF:
+            getf(immediate);
+            break;
+        case PUTF:
+            putf(immediate);
+            break;
+        case NEWA:
+            newa();
+            break;
+        case GETFA:
+            getfa();
+            break;
+        case PUTFA:
+            putfa();
+            break;
+        case GETSZ:
+            getsz();
+            break;
+        case PUSHN:
+            pushn();
+            break;
+        case REFEQ:
+            refeq();
+            break;
+        case REFNE:
+            refne();   
     }
 }
 
@@ -214,5 +244,34 @@ void listProg(unsigned int ir, int pc) {
         case DUP: 
             printf("dup\t\n");
             break; 
+        case NEW: 
+            printf("new\t%d\n", immediate);
+            break; 
+        case GETF: 
+            printf("getf\t%d\n", immediate);
+            break; 
+        case PUTF: 
+            printf("putf\t%d\n", immediate);
+            break; 
+        case NEWA: 
+            printf("newa\t\n");
+            break; 
+        case GETFA: 
+            printf("getfa\t\n");
+            break; 
+        case PUTFA: 
+            printf("putfa\t\n");
+            break; 
+        case GETSZ: 
+            printf("getsz\t\n");
+            break; 
+        case PUSHN: 
+            printf("pushn\t\n");
+            break; 
+        case REFEQ: 
+            printf("refeq\t\n");
+            break; 
+        case REFNE: 
+            printf("refne\t\n");
     }
 }

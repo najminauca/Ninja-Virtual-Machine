@@ -7,7 +7,7 @@
 #include "njvm.h"
 #include "debug.h"
 
-const int VERSION = 4;
+const int VERSION = 7;
 
 unsigned int *program_memory;
 StackSlot stack[MAX];

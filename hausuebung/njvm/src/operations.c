@@ -284,3 +284,97 @@ void dup(void) {
         pushObjRef(stack[sp - 1].u.objRef);
     }
 }
+
+void njnew(int n) {
+    ObjRef o = malloc(sizeof(unsigned int) + (n * sizeof(void *)));
+    for(int i = 0; i < n; i++) {
+        GET_REFS(o)[i] = NULL;
+    }
+    o->size = n;
+    o->size = o->size | MSB;
+    pushObjRef(o);
+}
+
+void getf(int n) {
+    ObjRef o = popObjRef();
+    if(n <= GET_SIZE(o) && n >= 0) {
+        pushObjRef(GET_REFS(o)[n]);
+    }
+}
+
+void putf(int n) {
+    ObjRef value = popObjRef();
+    ObjRef arr = popObjRef();
+    if(n <= GET_SIZE(arr) && n >= 0) {
+        GET_REFS(arr)[n] = value;
+    }
+}
+
+void newa(void) {
+    ObjRef value = popObjRef();
+    bip.op1 = value;
+    int size = bigToInt();
+    if(size >= 0) {
+        ObjRef o = malloc(sizeof(unsigned int) + (size * sizeof(void *)));
+        for(int i = 0; i < size; i++) {
+            GET_REFS(o)[i] = NULL;
+        }
+        o->size = size;
+        o->size = o->size | MSB;
+        pushObjRef(o);
+    }
+}
+
+void getfa(void) {
+    bip.op1 = popObjRef();
+    int pos = bigToInt();
+    ObjRef arr = popObjRef();
+    if(pos >= 0 || pos < GET_SIZE(arr)) {
+        pushObjRef(GET_REFS(arr)[pos]);
+    }
+}
+
+void putfa(void) {
+    ObjRef val = popObjRef();
+    bip.op1 = popObjRef();
+    int pos = bigToInt();
+    ObjRef arr = popObjRef();
+    if(pos >= 0 || pos < GET_SIZE(arr)) {
+        GET_REFS(arr)[pos] = val;
+    }
+}
+
+void getsz(void) {
+    ObjRef arr = popObjRef();
+    int size;
+    if(IS_PRIM(arr)) {
+        size = -1;
+    } else {
+        size = GET_SIZE(arr);
+    }
+    pushc(size);
+}
+
+void pushn(void) {
+    pushObjRef(NULL);
+}
+
+void refeq(void) {
+    ObjRef b = popObjRef();
+    ObjRef a = popObjRef();
+    if(a == b) {
+        pushc(1);
+    } else {
+        pushc(0);
+    }
+}
+
+void refne(void) {
+    ObjRef b = popObjRef();
+    ObjRef a = popObjRef();
+    if(a != b) {    //True
+        pushc(1);
+    } else {    //False
+        pushc(0);
+    }
+}

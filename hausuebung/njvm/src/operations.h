@@ -96,4 +96,34 @@ void popr(void);
 #define DUP 31
 void dup(void);
 
+#define NEW 32
+void njnew(int n);
+
+#define GETF 33
+void getf(int n);
+
+#define PUTF 34
+void putf(int n);
+
+#define NEWA 35
+void newa(void);
+
+#define GETFA 36
+void getfa(void);
+
+#define PUTFA 37
+void putfa(void);
+
+#define GETSZ 38
+void getsz(void);
+
+#define PUSHN 39
+void pushn(void);
+
+#define REFEQ 40
+void refeq(void);
+
+#define REFNE 41
+void refne(void);
+
 #endif
