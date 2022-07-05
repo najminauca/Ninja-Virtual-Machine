@@ -6,11 +6,12 @@
 #include "execute.h"
 #include "njvm.h"
 #include "debug.h"
+#include "garbage.h"
 
 const int VERSION = 7;
 
 unsigned int *program_memory;
-StackSlot stack[MAX];
+StackSlot *stack;
 int sp = 0;
 int pc = 0;
 int pcSize = 0;
@@ -37,6 +38,10 @@ void print() {
 
 void run() {
     pc = 0;
+
+    allocateStack();
+    allocateHeap();
+
     unsigned int ir; 
     while(1) {
         ir = program_memory[pc];
@@ -108,6 +113,18 @@ int main(int argc, char** argv) {
                     return 0;
                 } else if(strcmp("--debug", argv[i]) == 0) {
                     debugBool = 1;
+                } else if(strcmp("--stack", argv[i]) == 0) {
+                    i = i + 1;
+                    char *ptr;
+                    stack_n = strtol(argv[i], &ptr, 10);
+                } else if(strcmp("--heap", argv[i]) == 0) {
+                    i = i + 1;
+                    char *ptr;
+                    heap_n = strtol(argv[i], &ptr, 10);
+                } else if(strcmp("--gcpurge", argv[i]) == 0) {
+                    purge = true;
+                } else if(strcmp("--gcstats", argv[i]) == 0) {
+                    stats = true;
                 } else {
                     printf("unknown command line argument '%s', try '%s --help'\n",argv[i],argv[0]);
                     return 1;
