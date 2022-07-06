@@ -8,10 +8,10 @@
 #include "debug.h"
 #include "garbage.h"
 
-const int VERSION = 7;
+const int VERSION = 8;
 
 unsigned int *program_memory;
-StackSlot *stack;
+StackSlot *stack = NULL;
 int sp = 0;
 int pc = 0;
 int pcSize = 0;
@@ -39,8 +39,8 @@ void print() {
 void run() {
     pc = 0;
 
-    allocateStack();
-    allocateHeap();
+    createStack();
+    createHeap();
 
     unsigned int ir; 
     while(1) {

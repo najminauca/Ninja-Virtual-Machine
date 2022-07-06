@@ -38,6 +38,7 @@ extern int sdaSize;
 extern int runBool;
 extern int quit;
 extern ObjRef returnRegister;
+extern debugBool;
 
 void run();
 void print();

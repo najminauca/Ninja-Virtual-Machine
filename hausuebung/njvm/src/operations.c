@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include "njvm.h"
 #include "bigint.h"
+#include "garbage.h"
 
 int popInt(void) {
     if(!stack[sp - 1].isObjRef) {
@@ -286,12 +287,13 @@ void dup(void) {
 }
 
 void njnew(int n) {
-    ObjRef o = malloc(sizeof(unsigned int) + (n * sizeof(void *)));
+    unsigned int msize = sizeof(Obj) + (n * sizeof(void *));
+    ObjRef o = allocateObj(msize);  //Object allocation
     for(int i = 0; i < n; i++) {
         GET_REFS(o)[i] = NULL;
     }
     o->size = n;
-    o->size = o->size | MSB;
+    o->size |= MSB;
     pushObjRef(o);
 }
 
@@ -315,12 +317,13 @@ void newa(void) {
     bip.op1 = value;
     int size = bigToInt();
     if(size >= 0) {
-        ObjRef o = malloc(sizeof(unsigned int) + (size * sizeof(void *)));
+        unsigned int msize = sizeof(Obj) + (size * sizeof(void *));
+        ObjRef o = allocateObj(msize);  //Object allocation
         for(int i = 0; i < size; i++) {
             GET_REFS(o)[i] = NULL;
         }
         o->size = size;
-        o->size = o->size | MSB;
+        o->size |= MSB;
         pushObjRef(o);
     }
 }

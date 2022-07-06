@@ -16,8 +16,9 @@ extern bool stats;
 extern int stack_n;
 extern int heap_n;
 
-void allocateHeap();
-
-void allocateStack();
+void createHeap();
+void createStack();
+ObjRef allocateObj(unsigned int size);
+void collect();
 
 #endif

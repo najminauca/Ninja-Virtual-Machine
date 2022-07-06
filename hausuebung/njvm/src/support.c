@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "njvm.h"
+#include "garbage.h"
 
 
 /*
@@ -33,11 +34,13 @@ void fatalError(char *msg) {
 void * newPrimObject(int dataSize) {
   ObjRef bigObjRef;
 
-  bigObjRef = malloc(sizeof(unsigned int) +
-                  dataSize * sizeof(unsigned char));
+  unsigned int msize = sizeof(Obj) + dataSize;
+  bigObjRef = allocateObj(msize);
+
   if (bigObjRef == NULL) {
     fatalError("newPrimObject() got no memory");
   }
+  
   bigObjRef->size = dataSize;
   return bigObjRef;
 }
