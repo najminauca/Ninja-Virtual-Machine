@@ -332,7 +332,7 @@ void getfa(void) {
     bip.op1 = popObjRef();
     int pos = bigToInt();
     ObjRef arr = popObjRef();
-    if(pos >= 0 || pos < GET_SIZE(arr)) {
+    if(pos >= 0 && pos < GET_SIZE(arr)) {
         pushObjRef(GET_REFS(arr)[pos]);
     }
 }
@@ -342,7 +342,7 @@ void putfa(void) {
     bip.op1 = popObjRef();
     int pos = bigToInt();
     ObjRef arr = popObjRef();
-    if(pos >= 0 || pos < GET_SIZE(arr)) {
+    if(pos >= 0 && pos < GET_SIZE(arr)) {
         GET_REFS(arr)[pos] = val;
     }
 }

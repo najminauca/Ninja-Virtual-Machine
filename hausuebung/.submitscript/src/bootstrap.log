@@ -1,0 +1,127 @@
+Identified Python 3.8.10 at /usr/bin/python3.8
+[Bootstrap] Identified pip 22.1.1 from /home/tokimpoi/.local/lib/python3.8/site-packages/pip (python 3.8)' at /usr/bin/python3.8 -m pip
+[Bootstrap] Identified 'pipenv, version 2022.5.2' at /usr/bin/python3.8 -m pipenv
+[Bootstrap] Running '/usr/bin/python3.8 -m pipenv install --python 3.8' to ensure the existence of a virtual environment.
+[Bootstrap] This may take a moment.
+Creating a virtualenv for this project...
+Pipfile: /home/tokimpoi/KSP/ksp_2022/hausuebung/.submitscript/src/Pipfile
+Using /usr/bin/python3.8 (3.8.10) to create virtualenv...
+⠋ Creating virtual environment...⠙ Creating virtual environment...⠹ Creating virtual environment...⠸ Creating virtual environment...⠼ Creating virtual environment...⠴ Creating virtual environment...⠦ Creating virtual environment...⠧ Creating virtual environment...⠇ Creating virtual environment...⠏ Creating virtual environment...⠋ Creating virtual environment...⠙ Creating virtual environment...created virtual environment CPython3.8.10.final.0-64 in 716ms
+  creator CPython3Posix(dest=/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=/home/tokimpoi/.local/share/virtualenv)
+    added seed packages: pip==22.1.1, setuptools==62.3.2, wheel==0.37.1
+  activators BashActivator,CShellActivator,FishActivator,NushellActivator,PowerShellActivator,PythonActivator
+
+✔ Successfully created virtual environment! 
+Virtualenv location: /home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY
+Installing dependencies from Pipfile.lock (da6003)...
+  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 0/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 1/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 2/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 3/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 4/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 5/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 6/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 7/12 — 00:00:00An error occurred while installing pathlib==1.0.1; python_version <= '3.9' --hash=sha256:6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f! Will try again.
+  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 8/12 — 00:00:04  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 9/12 — 00:00:04  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 10/12 — 00:00:04  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 11/12 — 00:00:04  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 12/12 — 00:00:04  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 12/12 — 00:00:10
+Installing initially failed dependencies...
+  ☤  ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 0/1 — 00:00:00[pipenv.exceptions.InstallError]: Collecting pathlib==1.0.1
+[pipenv.exceptions.InstallError]:   Using cached pathlib-1.0.1.tar.gz (49 kB)
+[pipenv.exceptions.InstallError]:   Preparing metadata (setup.py): started
+[pipenv.exceptions.InstallError]:   Preparing metadata (setup.py): finished with status 'error'
+[pipenv.exceptions.InstallError]: error: subprocess-exited-with-error
+[pipenv.exceptions.InstallError]:   
+[pipenv.exceptions.InstallError]:   × python setup.py egg_info did not run successfully.
+[pipenv.exceptions.InstallError]:   │ exit code: 1
+[pipenv.exceptions.InstallError]:   ╰─> [20 lines of output]
+[pipenv.exceptions.InstallError]:       Traceback (most recent call last):
+[pipenv.exceptions.InstallError]:         File "<string>", line 2, in <module>
+[pipenv.exceptions.InstallError]:         File "<pip-setuptools-caller>", line 34, in <module>
+[pipenv.exceptions.InstallError]:         File "/tmp/pip-install-kqxtmt83/pathlib_8990357014e943b99b468ad826b2b272/setup.py", line 6, in <module>
+[pipenv.exceptions.InstallError]:           setup(
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_distutils/core.py", line 109, in setup
+[pipenv.exceptions.InstallError]:           _setup_distribution = dist = klass(attrs)
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/dist.py", line 475, in __init__
+[pipenv.exceptions.InstallError]:           for ep in metadata.entry_points(group='distutils.setup_keywords'):
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_vendor/importlib_metadata/__init__.py", line 999, in entry_points
+[pipenv.exceptions.InstallError]:           return SelectableGroups.load(eps).select(**params)
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_vendor/importlib_metadata/__init__.py", line 449, in load
+[pipenv.exceptions.InstallError]:           ordered = sorted(eps, key=by_group)
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_vendor/importlib_metadata/__init__.py", line 997, in <genexpr>
+[pipenv.exceptions.InstallError]:           dist.entry_points for dist in unique(distributions())
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_vendor/importlib_metadata/__init__.py", line 609, in entry_points
+[pipenv.exceptions.InstallError]:           return EntryPoints._from_text_for(self.read_text('entry_points.txt'), self)
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_vendor/importlib_metadata/__init__.py", line 917, in read_text
+[pipenv.exceptions.InstallError]:           return self._path.joinpath(filename).read_text(encoding='utf-8')
+[pipenv.exceptions.InstallError]:       AttributeError: 'PosixPath' object has no attribute 'read_text'
+[pipenv.exceptions.InstallError]:       [end of output]
+[pipenv.exceptions.InstallError]:   
+[pipenv.exceptions.InstallError]:   note: This error originates from a subprocess, and is likely not a problem with pip.
+[pipenv.exceptions.InstallError]: error: metadata-generation-failed
+[pipenv.exceptions.InstallError]: 
+[pipenv.exceptions.InstallError]: × Encountered error while generating package metadata.
+[pipenv.exceptions.InstallError]: ╰─> See above for output.
+[pipenv.exceptions.InstallError]: 
+[pipenv.exceptions.InstallError]: note: This is an issue with the package mentioned above, not pip.
+[pipenv.exceptions.InstallError]: hint: See above for details.
+ERROR: Couldn't install package: pathlib
+ Package installation failed...
+  ☤  ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 0/1 — 00:00:02
+[Bootstrap] Installing script dependencies failed.
+[Bootstrap] I will now try to remove and recreate a potentially existing virtual environment.
+Removing virtualenv (/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY)...
+⠋ Running...[Bootstrap] Running '/usr/bin/python3.8 -m pipenv install --python 3.8' to ensure the existence of a virtual environment.
+[Bootstrap] This may take a moment.
+Creating a virtualenv for this project...
+Pipfile: /home/tokimpoi/KSP/ksp_2022/hausuebung/.submitscript/src/Pipfile
+Using /usr/bin/python3.8 (3.8.10) to create virtualenv...
+⠋ Creating virtual environment...⠙ Creating virtual environment...⠹ Creating virtual environment...⠸ Creating virtual environment...⠼ Creating virtual environment...⠴ Creating virtual environment...created virtual environment CPython3.8.10.final.0-64 in 231ms
+  creator CPython3Posix(dest=/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, setuptools=bundle, wheel=bundle, via=copy, app_data_dir=/home/tokimpoi/.local/share/virtualenv)
+    added seed packages: pip==22.1.1, setuptools==62.3.2, wheel==0.37.1
+  activators BashActivator,CShellActivator,FishActivator,NushellActivator,PowerShellActivator,PythonActivator
+
+✔ Successfully created virtual environment! 
+Virtualenv location: /home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY
+Installing dependencies from Pipfile.lock (da6003)...
+  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 0/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 1/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 2/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 3/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 4/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 5/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 6/12 — 00:00:00  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 7/12 — 00:00:00An error occurred while installing pathlib==1.0.1; python_version <= '3.9' --hash=sha256:6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f! Will try again.
+  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 8/12 — 00:00:03  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 9/12 — 00:00:03  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 10/12 — 00:00:03  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 11/12 — 00:00:03  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 12/12 — 00:00:03  🐍   ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 12/12 — 00:00:08
+Installing initially failed dependencies...
+  ☤  ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 0/1 — 00:00:00[pipenv.exceptions.InstallError]: Collecting pathlib==1.0.1
+[pipenv.exceptions.InstallError]:   Using cached pathlib-1.0.1.tar.gz (49 kB)
+[pipenv.exceptions.InstallError]:   Preparing metadata (setup.py): started
+[pipenv.exceptions.InstallError]:   Preparing metadata (setup.py): finished with status 'error'
+[pipenv.exceptions.InstallError]: error: subprocess-exited-with-error
+[pipenv.exceptions.InstallError]:   
+[pipenv.exceptions.InstallError]:   × python setup.py egg_info did not run successfully.
+[pipenv.exceptions.InstallError]:   │ exit code: 1
+[pipenv.exceptions.InstallError]:   ╰─> [20 lines of output]
+[pipenv.exceptions.InstallError]:       Traceback (most recent call last):
+[pipenv.exceptions.InstallError]:         File "<string>", line 2, in <module>
+[pipenv.exceptions.InstallError]:         File "<pip-setuptools-caller>", line 34, in <module>
+[pipenv.exceptions.InstallError]:         File "/tmp/pip-install-9eatksdd/pathlib_4b09e3a3d2fe438c845b600e26e94e17/setup.py", line 6, in <module>
+[pipenv.exceptions.InstallError]:           setup(
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_distutils/core.py", line 109, in setup
+[pipenv.exceptions.InstallError]:           _setup_distribution = dist = klass(attrs)
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/dist.py", line 475, in __init__
+[pipenv.exceptions.InstallError]:           for ep in metadata.entry_points(group='distutils.setup_keywords'):
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_vendor/importlib_metadata/__init__.py", line 999, in entry_points
+[pipenv.exceptions.InstallError]:           return SelectableGroups.load(eps).select(**params)
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_vendor/importlib_metadata/__init__.py", line 449, in load
+[pipenv.exceptions.InstallError]:           ordered = sorted(eps, key=by_group)
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_vendor/importlib_metadata/__init__.py", line 997, in <genexpr>
+[pipenv.exceptions.InstallError]:           dist.entry_points for dist in unique(distributions())
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_vendor/importlib_metadata/__init__.py", line 609, in entry_points
+[pipenv.exceptions.InstallError]:           return EntryPoints._from_text_for(self.read_text('entry_points.txt'), self)
+[pipenv.exceptions.InstallError]:         File "/home/tokimpoi/.local/share/virtualenvs/src-73KxTPdY/lib/python3.8/site-packages/setuptools/_vendor/importlib_metadata/__init__.py", line 917, in read_text
+[pipenv.exceptions.InstallError]:           return self._path.joinpath(filename).read_text(encoding='utf-8')
+[pipenv.exceptions.InstallError]:       AttributeError: 'PosixPath' object has no attribute 'read_text'
+[pipenv.exceptions.InstallError]:       [end of output]
+[pipenv.exceptions.InstallError]:   
+[pipenv.exceptions.InstallError]:   note: This error originates from a subprocess, and is likely not a problem with pip.
+[pipenv.exceptions.InstallError]: error: metadata-generation-failed
+[pipenv.exceptions.InstallError]: 
+[pipenv.exceptions.InstallError]: × Encountered error while generating package metadata.
+[pipenv.exceptions.InstallError]: ╰─> See above for output.
+[pipenv.exceptions.InstallError]: 
+[pipenv.exceptions.InstallError]: note: This is an issue with the package mentioned above, not pip.
+[pipenv.exceptions.InstallError]: hint: See above for details.
+ERROR: Couldn't install package: pathlib
+ Package installation failed...
+  ☤  ▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉▉ 0/1 — 00:00:02
+[Bootstrap] Installing script dependencies failed again.
+[Bootstrap] There is nothing more I can do about this. Please get help from your teacher.
+[Bootstrap] I'm giving up.

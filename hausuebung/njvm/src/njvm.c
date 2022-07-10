@@ -8,7 +8,7 @@
 #include "debug.h"
 #include "garbage.h"
 
-const int VERSION = 8;
+const int VERSION = 7;
 
 unsigned int *program_memory;
 StackSlot *stack = NULL;
@@ -151,7 +151,6 @@ int main(int argc, char** argv) {
     printf("Ninja Virtual Machine stopped\n");
         
     free(program_memory);
-    free(sda);
 
     return 0;
 }
