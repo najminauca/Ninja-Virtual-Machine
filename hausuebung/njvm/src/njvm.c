@@ -8,7 +8,7 @@
 #include "debug.h"
 #include "garbage.h"
 
-const int VERSION = 7;
+const int VERSION = 8;
 
 unsigned int *program_memory;
 StackSlot *stack = NULL;
@@ -66,7 +66,7 @@ void readBin(char * filename) {
     }
 
     read_len = fread(c, 1, 4, filepointer);
-    if(c[0] != VERSION) {
+    if(c[0] > VERSION) {
         exit(25);
     }
 

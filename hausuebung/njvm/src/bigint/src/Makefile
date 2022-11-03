@@ -5,7 +5,7 @@
 BUILD = ../build
 
 CC = gcc
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -m64
 
 all:		support.h bigint.h libbigint.a
 

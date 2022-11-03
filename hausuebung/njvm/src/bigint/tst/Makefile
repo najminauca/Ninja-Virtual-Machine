@@ -5,8 +5,8 @@
 BUILD = ../build
 
 CC = gcc
-CFLAGS = -g -Wall -I$(BUILD)/include
-LDFLAGS = -g -Wall -L$(BUILD)/lib
+CFLAGS = -g -Wall -m64 -I$(BUILD)/include
+LDFLAGS = -g -Wall -m64 -L$(BUILD)/lib
 LDLIBS = -lbigint
 
 all:		testbip
